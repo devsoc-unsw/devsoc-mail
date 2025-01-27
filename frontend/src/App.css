@@ -4,3 +4,10 @@
   padding: 2rem;
   text-align: center;
 }
+
+#login-box {
+  /* TODO: add styles here */
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+}
