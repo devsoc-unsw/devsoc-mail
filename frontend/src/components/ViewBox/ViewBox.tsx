@@ -1,4 +1,5 @@
 import "./ViewBox.css";
+import ArrowBackIosRoundedIcon from "@mui/icons-material/ArrowBackIosRounded";
 
 type ViewBoxProps = {
   subject: string;
@@ -12,24 +13,28 @@ const ViewBox = (props: ViewBoxProps) => {
   return (
     <>
       <div id="mail-box">
-        <div id="mail-header">
+        <div id="mail-header" className="bottom-border">
           <div className="header-left">
-            <button>&lt;</button>
-            <p>{props.subject}</p>
+            <button>
+              <ArrowBackIosRoundedIcon />
+            </button>
+            <strong>{props.subject}</strong>
           </div>
           <p>{props.date}</p>
         </div>
         <div id="mail-users">
-          <div className="user">
-            <p>From:</p>
+          <div className="user bottom-border mail-padding">
+            <strong>From:&nbsp;</strong>
             <p>{props.from}</p>
           </div>
-          <div className="user">
-            <p>To:</p>
+          <div className="user bottom-border mail-padding">
+            <strong>To:&nbsp;</strong>
             <p>{props.to.join(", ")}</p>
           </div>
         </div>
-        <div id="mail-body">{props.body}</div>
+        <div id="mail-body" className="mail-padding">
+          {props.body}
+        </div>
       </div>
     </>
   );
