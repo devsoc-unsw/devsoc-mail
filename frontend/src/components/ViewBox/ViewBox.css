@@ -1,0 +1,20 @@
+#mail-box {
+  width: 100%;
+}
+
+#mail-header {
+  padding: 0 10px;
+  background-color: #d9807e;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+}
+
+.header-left {
+  display: flex;
+  gap: 6px;
+}
+
+.user {
+  display: flex;
+}
