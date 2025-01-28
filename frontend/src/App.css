@@ -1,8 +1,10 @@
 #root {
-  max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
   text-align: center;
+}
+
+p {
+  margin: 0;
 }
 
 #login-box {
@@ -10,4 +12,23 @@
   display: flex;
   flex-direction: column;
   width: 250px;
+}
+
+.page {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#view-page {
+  width: 80vw;
+}
+
+#view-page-header {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
 }

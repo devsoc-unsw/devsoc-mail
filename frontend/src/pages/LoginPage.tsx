@@ -6,14 +6,14 @@ const LoginPage = () => {
   return (
     <>
       <img src={Logo}></img>
-      <div id="login-box">
+      <form id="login-box">
         <h2>Login</h2>
         <Input text="Email" />
         <Input text="Password" />
         <a>Forgot password?</a>
         <AuthButton to='/mail'/>
         <p>Don’t have an account? Register</p>
-      </div>
+      </form>
     </>
   );
 };

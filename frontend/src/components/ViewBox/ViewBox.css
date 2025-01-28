@@ -1,0 +1,39 @@
+#mail-box {
+  width: 100%;
+  border: 3px solid black;
+  border-radius: 23px;
+}
+
+#mail-header {
+  padding: 10px;
+  background-color: #d9807e;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  border-radius: 20px 20px 0 0;
+}
+
+.header-left {
+  display: flex;
+  gap: 6px;
+}
+
+.bottom-border {
+  border-bottom: 3px solid black;
+}
+
+.user {
+  display: flex;
+  height: 40px;
+}
+
+.mail-padding {
+  padding: 0 15px;
+}
+
+#mail-body {
+  margin: 5px;
+  text-align: justify;
+  height: 250px;
+  overflow-y: scroll;
+}
