@@ -11,7 +11,7 @@ const LoginPage = () => {
         <Input text="Email" />
         <Input text="Password" />
         <a>Forgot password?</a>
-        <AuthButton />
+        <AuthButton to='/mail'/>
         <p>Don’t have an account? Register</p>
       </div>
     </>
