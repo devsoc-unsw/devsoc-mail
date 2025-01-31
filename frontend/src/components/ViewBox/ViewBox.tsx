@@ -1,7 +1,7 @@
 import "./ViewBox.css";
 import ArrowBackIosRoundedIcon from "@mui/icons-material/ArrowBackIosRounded";
 
-type ViewBoxProps = {
+export type ViewBoxProps = {
   subject: string;
   date: string; // change this into Date object once database is implemented
   from: string;

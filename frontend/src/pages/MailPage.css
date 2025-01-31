@@ -1,0 +1,19 @@
+.search-bar {
+    position: absolute;
+    top : 2rem;
+    left: 20rem;
+}
+
+.devsoc-logo {
+    width: 10%;
+    height: auto;
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+}
+
+.email {
+    position: absolute;
+    top: 5rem;
+    left: 20rem;
+}

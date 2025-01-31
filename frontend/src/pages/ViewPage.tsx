@@ -8,7 +8,7 @@ const ViewPage = () => {
     <div id="view-page" className="page">
       <div id="view-page-header">
         <img src={Logo} height="50px"></img>
-        <button onClick={() => navigate("/")}>Exit button</button>
+        <button onClick={() => navigate("/mail")}>Exit button</button>
       </div>
       <ViewBox
         subject="Dummy"
