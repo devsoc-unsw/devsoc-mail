@@ -2,10 +2,12 @@ import Logo from "../assets/Logo.png";
 import { Input } from "../components/Input";
 import { Email } from "../components/Email/Email";
 import "./MailPage.css";
+import { Composebutton } from "../components/ComposeButton";
 
 const MailPage = () => {
   return (
     <>
+      <Composebutton></Composebutton>
       <img src={Logo} className="devsoc-logo"></img>
       <div className="search-bar">
         <Input text="Search" />

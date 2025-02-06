@@ -14,7 +14,6 @@ const Email = (props: EmailProps) => {
   const navigate = useNavigate();
   return (
     <button
-      
       onClick={() => {
         navigate(props.page);
       }}
