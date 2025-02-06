@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import "./ViewBox.css";
 import ArrowBackIosRoundedIcon from "@mui/icons-material/ArrowBackIosRounded";
 
@@ -10,12 +11,13 @@ export type ViewBoxProps = {
 };
 
 const ViewBox = (props: ViewBoxProps) => {
+  const navigate = useNavigate();
   return (
     <>
       <div id="mail-box">
         <div id="mail-header" className="bottom-border">
           <div className="header-left">
-            <button>
+            <button onClick={() => navigate("/mail")}>
               <ArrowBackIosRoundedIcon />
             </button>
             <strong>{props.subject}</strong>
