@@ -1,13 +1,13 @@
-import Logo from "../assets/Logo.png";
-import { Input } from "../components/Input";
-import { Email } from "../components/Email/Email";
-import "./MailPage.css";
+import Logo from "../../assets/Logo.png";
+import { Input } from "../../components/Input/Input";
+import { Email } from "../../components/Email/Email";
+import styles from "./MailPage.module.css";
 
 const MailPage = () => {
   return (
     <>
-      <img src={Logo} className="devsoc-logo"></img>
-      <div className="search-bar">
+      <img src={Logo} className={styles.devsocLogo}></img>
+      <div className={styles.searchBar}>
         <Input text="Search" />
       </div>
       <div className="email">

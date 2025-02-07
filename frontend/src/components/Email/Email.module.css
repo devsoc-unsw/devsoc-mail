@@ -1,0 +1,12 @@
+.emailBox {
+  display: flex;
+  gap: 10px;
+}
+
+.emailFrom {
+  font-weight: bold;
+}
+
+.emailSubject {
+  font-weight: bold;
+}

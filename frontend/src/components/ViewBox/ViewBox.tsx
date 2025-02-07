@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import "./ViewBox.css";
 import ArrowBackIosRoundedIcon from "@mui/icons-material/ArrowBackIosRounded";
+import styles from "./ViewBox.module.css";
 
 export type ViewBoxProps = {
   subject: string;
@@ -14,8 +14,8 @@ const ViewBox = (props: ViewBoxProps) => {
   const navigate = useNavigate();
   return (
     <>
-      <div id="mail-box">
-        <div id="mail-header" className="bottom-border">
+      <div id={styles.mailBox}>
+        <div id={styles.mailHeader}>
           <div className="header-left">
             <button onClick={() => navigate("/mail")}>
               <ArrowBackIosRoundedIcon />
@@ -24,19 +24,17 @@ const ViewBox = (props: ViewBoxProps) => {
           </div>
           <p>{props.date}</p>
         </div>
-        <div id="mail-users">
-          <div className="user bottom-border mail-padding">
+        <div id={styles.mailUser}>
+          <div className={styles.user}>
             <strong>From:&nbsp;</strong>
             <p>{props.from}</p>
           </div>
-          <div className="user bottom-border mail-padding">
+          <div className={styles.user}>
             <strong>To:&nbsp;</strong>
             <p>{props.to.join(", ")}</p>
           </div>
         </div>
-        <div id="mail-body" className="mail-padding">
-          {props.body}
-        </div>
+        <div id={styles.mailBody}>{props.body}</div>
       </div>
     </>
   );
