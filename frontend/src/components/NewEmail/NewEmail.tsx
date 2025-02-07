@@ -1,26 +1,26 @@
 import Dialog from "@mui/material/Dialog";
-import { useState } from "react";
+import React, { useState } from "react";
 import styles from "./NewEmail.module.css";
 import { Input } from "../Input/Input";
-import { DiscardButton } from "../DiscardButton/DiscardButton";
+import { Button } from "../Button/Button";
 
 type NewEmailProps = {
   open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const NewEmail = (props: NewEmailProps) => {
-  const [open, setOpen] = useState(props.open);
   const handleClose = () => {
-    setOpen(false);
+    props.setOpen(false);
   };
 
   return (
     <>
       <Dialog open={props.open} onClose={handleClose} fullWidth={true}>
-        <div className={styles.header}>
+        <header className={styles.header}>
           <h2>New Email</h2>
-          <DiscardButton />
-        </div>
+          <Button text="Discard email" onClick={handleClose} />
+        </header>
         <div className={styles.grid}>
           <strong>From:&nbsp;</strong>
           <p>placeholder@devsoc.mail</p>
@@ -34,6 +34,7 @@ const NewEmail = (props: NewEmailProps) => {
           <Input />
         </div>
         <textarea className={styles.content} rows={11}></textarea>
+        <Button text="Send email" />
       </Dialog>
     </>
   );

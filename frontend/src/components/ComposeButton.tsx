@@ -10,7 +10,10 @@ export const Composebutton = () => {
   return (
     <>
       <button onClick={handleClick}>New Email</button>
-      <NewEmail open={showComposeEmailPopup} />
+      <NewEmail
+        open={showComposeEmailPopup}
+        setOpen={setShowComposeEmailPopup}
+      />
     </>
   );
 };

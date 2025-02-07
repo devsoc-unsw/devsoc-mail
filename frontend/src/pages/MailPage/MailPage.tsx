@@ -7,7 +7,7 @@ import { Composebutton } from "../../components/ComposeButton";
 const MailPage = () => {
   return (
     <>
-      <Composebutton></Composebutton>
+      <Composebutton />
       <img src={Logo} className={styles.devsocLogo}></img>
       <div className={styles.searchBar}>
         <Input text="Search" />
@@ -20,7 +20,7 @@ const MailPage = () => {
           to={["me@devsoc.mail", "you@devsoc.mail"]}
           body="Lorem ipsum odor amet... "
           page="/view"
-        ></Email>
+        />
       </div>
     </>
   );
