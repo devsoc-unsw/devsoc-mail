@@ -1,11 +1,11 @@
 type InputProp = {
-  text: string;
+  text?: string;
 };
 
 const Input = (props: InputProp) => {
   return (
     <>
-      <input placeholder={props.text}></input>
+      <input placeholder={props.text ? props.text : ""}></input>
     </>
   );
 };

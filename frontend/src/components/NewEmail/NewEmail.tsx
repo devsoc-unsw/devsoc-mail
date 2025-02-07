@@ -1,42 +1,39 @@
 import Dialog from "@mui/material/Dialog";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
 import { useState } from "react";
 import styles from "./NewEmail.module.css";
+import { Input } from "../Input/Input";
+import { DiscardButton } from "../DiscardButton/DiscardButton";
 
-const NewEmail = () => {
-  const [open, setOpen] = useState(false);
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+type NewEmailProps = {
+  open: boolean;
+};
 
+const NewEmail = (props: NewEmailProps) => {
+  const [open, setOpen] = useState(props.open);
   const handleClose = () => {
     setOpen(false);
   };
 
   return (
     <>
-      <button onClick={handleClickOpen}>Trigger</button>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>
-          <div className="flex">
-            <h2>Placeholder title</h2>
-            <button>Discard email</button>
-          </div>
-          <div className="user mail-padding">
-            <strong>From:&nbsp;</strong>
-            <p>Me</p>
-          </div>
-          <div className="user mail-padding">
-            <strong>To:&nbsp;</strong>
-            <p>Me</p>
-          </div>
-          <div className="flex">
-            <strong>Subject:&nbsp;</strong>
-            <p>I'm a potato</p>
-          </div>
-        </DialogTitle>
-        <DialogContent>I'm a content</DialogContent>
+      <Dialog open={props.open} onClose={handleClose} fullWidth={true}>
+        <div className={styles.header}>
+          <h2>New Email</h2>
+          <DiscardButton />
+        </div>
+        <div className={styles.grid}>
+          <strong>From:&nbsp;</strong>
+          <p>placeholder@devsoc.mail</p>
+        </div>
+        <div className={styles.grid}>
+          <strong>To:&nbsp;</strong>
+          <Input />
+        </div>
+        <div className={styles.grid}>
+          <strong>Subject:&nbsp;</strong>
+          <Input />
+        </div>
+        <textarea className={styles.content} rows={11}></textarea>
       </Dialog>
     </>
   );

@@ -1,3 +1,17 @@
-.flex {
+.header {
   display: flex;
+  gap: 5px;
+  justify-content: space-between;
+  padding: 0 15px;
+}
+
+.grid {
+  display: flex;
+  height: 40px;
+  padding: 0 15px;
+  border-bottom: 3px solid black;
+}
+
+.content {
+  margin: 15px;
 }
