@@ -1,6 +1,9 @@
 .emailBox {
   display: flex;
   gap: 10px;
+  background-color: white;
+  align-items: center;
+  border: 1px solid black;
 }
 
 .emailFrom {
@@ -9,4 +12,13 @@
 
 .emailSubject {
   font-weight: bold;
+}
+
+.emailButton {
+  background-color: white;
+  border: 0;
+  padding-right: 1.5rem;
+  text-align: center;
+  display: flex;
+  gap: 0.5rem;
 }
