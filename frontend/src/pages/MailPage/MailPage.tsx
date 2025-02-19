@@ -63,10 +63,6 @@ const MailPage = () => {
       <button onClick={deleteEmails}>Delete All</button>
       <Composebutton />
       <img src={Logo} className={styles.devsocLogo}></img>
-      <div className={styles.searchBar}>
-        <Input text="Search" />
-      </div>
-
       <div className="email">
         {emails.map((email) => (
           <Email
