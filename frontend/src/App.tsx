@@ -1,3 +1,5 @@
+// DO NOT MODIFY THIS FILE PLS :D
+
 import { Routes, Route } from "react-router-dom";
 import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
