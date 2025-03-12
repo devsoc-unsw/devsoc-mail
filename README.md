@@ -2,9 +2,6 @@
 
 epic training program project
 
-1. `docker run --name devsoc-mail-db -d mongo:latest`
-2. `npm run dev`
-
 # Workshop 2 - Vite + Advanced JS + React
 ## Task 1: Your first Vite project
 https://vite.dev/guide/
