@@ -15,11 +15,11 @@ import "./App.css";
  */
 
 
-// 1. Import the view page by uncommenting below
+// 1. Import the view page by uncommenting below.
 // import { ViewPage } from "./pages/ViewPage";
 
 
-
+// 2. Then, add a child route inside the mail route. 
 
 function App() {
   return (
@@ -27,11 +27,10 @@ function App() {
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/mail" element={<MailPage />} />
-        
-        {/* 2. Uncomment the line below to make the route */}
-        {/* <Route path="/mail/view" element={<ViewPage />} /> */}
-
+        <Route path="/mail" element={<MailPage />}>
+          {/* Add a child route for the view page below */}
+            
+        </Route>
       </Routes>
     </>
   );
