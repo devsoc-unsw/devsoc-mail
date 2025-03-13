@@ -6,6 +6,7 @@ epic training program project
 
 ## Task 1: Your First Vite Project
 Note: This task is completely **UNRELATED** to devsoc-mail. Feel free to skip this Task 1.
+
 https://vite.dev/guide/
 1. Run `npm create vite@latest`
 2. Choose your framework (e.g. React)
