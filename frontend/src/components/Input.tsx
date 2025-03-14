@@ -1,14 +1,16 @@
-type InputProp = {
-  text?: string;
-  className?: string;
-};
+import { twMerge } from "tailwind-merge";
 
-const Input = (props: InputProp) => {
+interface InputProps {
+  placeholder?: string;
+  className?: string;
+}
+
+const Input = (props: InputProps) => {
   return (
     <>
       <input
-        placeholder={props.text}
-        className={`rounded p-2 ${props.className || ""}`}
+        placeholder={props.placeholder}
+        className={twMerge("rounded p-2", props.className)}
       />
     </>
   );

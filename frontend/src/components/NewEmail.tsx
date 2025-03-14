@@ -2,10 +2,10 @@ import Dialog from "@mui/material/Dialog";
 import React from "react";
 import { Input } from "./Input";
 
-type NewEmailProps = {
+interface NewEmailProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-};
+}
 
 const NewEmail = (props: NewEmailProps) => {
   const handleClose = () => {
@@ -31,11 +31,11 @@ const NewEmail = (props: NewEmailProps) => {
         </div>
         <div className="flex h-12 px-6 border-b border-black items-center py-1">
           <strong className="w-20">To:</strong>
-          <Input className="flex-1" text="To" />
+          <Input className="flex-1" placeholder="To" />
         </div>
         <div className="flex h-12 px-6 border-b border-black items-center py-1">
           <strong className="w-20">Subject:</strong>
-          <Input className="flex-1" text="Subject" />
+          <Input className="flex-1" placeholder="Subject" />
         </div>
 
         <textarea

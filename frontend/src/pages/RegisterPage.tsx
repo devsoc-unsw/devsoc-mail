@@ -11,10 +11,10 @@ const RegisterPage = () => {
         className="min-w-full flex flex-col justify-center p-8 bg-white border-3 border-black rounded-lg shadow-md"
       >
         <h2 className="text-4xl font-semibold text-center mb-4">Register</h2>
-        <Input text="Name" />
-        <Input text="Email" />
-        <Input text="Password" />
-        <Input text="Confirm Password" />
+        <Input placeholder="Name" />
+        <Input placeholder="Email" />
+        <Input placeholder="Password" />
+        <Input placeholder="Confirm Password" />
         <a className="text-sm text-black-600 underline text-left mt-2">
           Forgot password?
         </a>

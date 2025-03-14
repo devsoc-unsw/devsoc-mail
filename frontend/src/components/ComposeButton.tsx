@@ -7,7 +7,7 @@ interface ComposeButtonProps {
   className?: string;
 }
 
-export const Composebutton = (props: ComposeButtonProps) => {
+export const ComposeButton = (props: ComposeButtonProps) => {
   const [showComposeEmailPopup, setShowComposeEmailPopup] = useState(false);
 
   const handleClick = () => {

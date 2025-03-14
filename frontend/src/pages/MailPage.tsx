@@ -1,7 +1,7 @@
 import Logo from "../assets/Logo.png";
 import { Input } from "../components/Input";
 import { Email } from "../components/Email";
-import { Composebutton } from "../components/ComposeButton";
+import { ComposeButton } from "../components/ComposeButton";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Button } from "../components/Button";
@@ -53,7 +53,7 @@ const MailPage = () => {
     <main className="max-w-4xl mx-auto p-4 bg-white flex flex-col">
       <nav className="flex justify-between items-center">
         <img src={Logo} className="h-10"></img>
-        <Input text="Search" className="w-1/2 border-2 border-black" />
+        <Input placeholder="Search" className="w-1/2 border-2 border-black" />
         <Button
           onClick={() => {
             navigate("/");
@@ -72,7 +72,7 @@ const MailPage = () => {
           >
             Delete All
           </Button>
-          <Composebutton className="bg-[#5DAB61] border-2 border-black p-2 rounded" />
+          <ComposeButton className="bg-[#5DAB61] border-2 border-black p-2 rounded" />
         </div>
         <div className="flex flex-col gap-4">
           {emails.map((email) => (

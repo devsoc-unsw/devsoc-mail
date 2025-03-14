@@ -1,10 +1,11 @@
+import React from "react";
 import { twMerge } from "tailwind-merge";
 
-type ButtonProps = {
+interface ButtonProps {
   onClick?: () => void;
   className?: string;
   children?: React.ReactNode;
-};
+}
 
 const Button = (props: ButtonProps) => {
   return (

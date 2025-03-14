@@ -1,13 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import ArrowBackIosRoundedIcon from "@mui/icons-material/ArrowBackIosRounded";
 
-export type ViewBoxProps = {
+interface ViewBoxProps {
   subject: string;
   date: string; // change this into Date object once database is implemented
   from: string;
   to: string[];
   body: string;
-};
+}
 
 const ViewBox = (props: ViewBoxProps) => {
   const navigate = useNavigate();
