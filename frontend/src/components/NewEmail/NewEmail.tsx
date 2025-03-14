@@ -8,14 +8,6 @@ type NewEmailProps = {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-/**
- * Workshop 2: Typescript + Component Exercise
- *
- * Notice line 35-46 seems to be repeating the same component three times.
- * Make a reusable component and replace/adjust the code as needed
- *
- * TODO: Make a reusable component for "From", "To", and "Subject"
- */
 const NewEmail = (props: NewEmailProps) => {
   const handleClose = () => {
     props.setOpen(false);
@@ -24,31 +16,38 @@ const NewEmail = (props: NewEmailProps) => {
   return (
     <>
       <Dialog open={props.open} onClose={handleClose} fullWidth={true}>
-        <header className="flex gap-1.5 justify-between px-4">
-          <h2>New Email</h2>
-          <Button text="Discard email" onClick={handleClose} />
+        <header className="flex justify-between items-center px-6 py-3 bg-[#D9807E] text-white">
+          <h2 className="text-2xl font-normal">New Email</h2>
+          <button
+            onClick={handleClose}
+            className="bg-[#D34B48] text-white px-4 py-1.5 rounded-lg border-2 border-black"
+          >
+            Discard email
+          </button>
         </header>
 
-        {/* This part seem to be repeated a lot, huh? Let's make a reusable component!
-            Put the component inside components folder
-        */}
-        <div className="flex h-10 px-4 border-b-3 border-black">
-          <strong>From:&nbsp;</strong>
-          <p>placeholder@devsoc.mail</p>
+        <div className="flex h-12 px-6 border-b border-black items-center py-1">
+          <strong className="w-20">From:</strong>
+          <p>eve.miles@devsoc.mail</p>
         </div>
-        <div className="flex h-10 px-4 border-b-3 border-black">
-          <strong>To:&nbsp;</strong>
-          <Input />
+        <div className="flex h-12 px-6 border-b border-black items-center py-1">
+          <strong className="w-20">To:</strong>
+          <Input className="flex-1" text="To" />
         </div>
-        <div className="flex h-10 px-4 border-b-3 border-black">
-          <strong>
-            Subject:&nbsp; <p id="mail-subject">No Subject</p>
-          </strong>
-          <Input />
+        <div className="flex h-12 px-6 border-b border-black items-center py-1">
+          <strong className="w-20">Subject:</strong>
+          <Input className="flex-1" text="Subject" />
         </div>
 
-        <textarea className="m-4" rows={11}></textarea>
-        <Button text="Send email" />
+        <textarea
+          className="m-6 p-3 w-[calc(100%-3rem)] h-64 border border-black rounded-lg resize-none"
+          placeholder="Write your message here..."
+        />
+        <div className="px-6 pb-4">
+          <button className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors">
+            Send Email
+          </button>
+        </div>
       </Dialog>
     </>
   );

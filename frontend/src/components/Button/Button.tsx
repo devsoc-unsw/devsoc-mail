@@ -7,8 +7,7 @@ type ButtonProps = {
 const Button = (props: ButtonProps) => {
   return (
     <button
-      style={{ backgroundColor: "#D9807E", border: "2px solid black" }}
-      className={`p-2 ${props.className}`}
+      className={`bg-[#D9807E] border-2 border-black p-2 ${props.className}`}
       onClick={props.onClick}
     >
       {props.text}

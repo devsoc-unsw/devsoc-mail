@@ -54,7 +54,7 @@ const MailPage = () => {
     <main className="max-w-4xl mx-auto p-4 bg-white flex flex-col">
       <nav className="flex justify-between items-center">
         <img src={Logo} className="h-10"></img>
-        <Input text="Search" className="w-1/2" />
+        <Input text="Search" className="w-1/2 border-2 border-black" />
         <Button
           onClick={() => {
             navigate("/");
