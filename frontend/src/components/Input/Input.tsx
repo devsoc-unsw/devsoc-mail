@@ -5,7 +5,8 @@ type InputProp = {
 const Input = (props: InputProp) => {
   return (
     <>
-      <input placeholder={props.text}></input>
+      <input placeholder={props.text}
+      className="border-black border-2 rounded p-2 m-1"></input>
     </>
   );
 };
