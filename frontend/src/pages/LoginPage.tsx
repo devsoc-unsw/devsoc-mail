@@ -4,21 +4,16 @@ import { AuthButton } from "../components/AuthButton";
 
 const LoginPage = () => {
   return (
-    <div className="max-w-3xl mx-auto flex flex-col items-center min-h-screen p-4 bg-white">
-      <img src={Logo} className="mb-15"></img>
-      <form
-        id="login-box"
-        className="w-full flex flex-col justify-center p-8 bg-white border-3 border-black rounded-lg shadow-md"
-      >
-        <h2 className="text-4xl font-semibold text-center mb-4">Login</h2>
-        <Input placeholder="Email" className="border-2 border-black" />
-        <Input placeholder="Password" className="border-2 border-black mt-2" />
-        <a className="text-sm text-black-600 underline text-left mt-2">
-          Forgot password?
-        </a>
+    <div>
+      <img src={Logo} />
+      <form>
+        <h2>Login</h2>
+        <Input placeholder="Email" />
+        <Input placeholder="Password" />
+        <a>Forgot password?</a>
         <AuthButton to="/mail" text="Login" />
-        <p className="text-left">
-          Don’t have an account? <span className="underline">Register</span>
+        <p>
+          Don't have an account? <span>Register</span>
         </p>
       </form>
     </div>
