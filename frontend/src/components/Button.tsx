@@ -10,10 +10,7 @@ interface ButtonProps {
 const Button = (props: ButtonProps) => {
   return (
     <button
-      className={twMerge(
-        "bg-[#D9807E] border-2 border-black p-2",
-        props.className
-      )}
+      className="bg-[#D9807E] border-2 border-black p-2"
       onClick={props.onClick}
     >
       {props.children}
