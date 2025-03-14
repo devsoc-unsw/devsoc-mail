@@ -8,6 +8,8 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
+import { Button } from "@/components/ui/button"
+
 const MailPage = () => {
   const navigate = useNavigate();
   const [selectedEmails, setSelectedEmails] = useState<number[]>([]);
@@ -66,7 +68,7 @@ const MailPage = () => {
           <Input text="Search" />
         </div>
         <div className="mt-4 mb-4">
-          <button onClick={deleteEmails}>Delete All</button>
+          <Button className="cursor-pointer bg-[#D34B48] border-2 border-black p-2" onClick={deleteEmails}>Delete All</Button>
           <Composebutton />
           <img src={Logo} className={styles.devsocLogo}></img>
         </div>
