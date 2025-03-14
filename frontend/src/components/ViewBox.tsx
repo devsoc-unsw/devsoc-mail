@@ -9,6 +9,12 @@ interface ViewBoxProps {
   body: string;
 }
 
+/*
+  Workshop 4 exercise 2:
+  - Style the ViewBox component to match the mockup
+  - Feel free to reorganize the html structure
+*/
+
 const ViewBox = (props: ViewBoxProps) => {
   const navigate = useNavigate();
   return (
