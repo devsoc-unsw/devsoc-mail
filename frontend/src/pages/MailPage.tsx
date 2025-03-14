@@ -1,11 +1,10 @@
-import Logo from "../../assets/Logo.png";
-import { Input } from "../../components/Input/Input";
-import { Email } from "../../components/Email/Email";
-import { Composebutton } from "../../components/ComposeButton";
+import Logo from "../assets/Logo.png";
+import { Input } from "../components/Input";
+import { Email } from "../components/Email";
+import { Composebutton } from "../components/ComposeButton";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-
-import { Button } from "@/components/ui/button";
+import { Button } from "../components/Button";
 
 const MailPage = () => {
   const navigate = useNavigate();
@@ -59,7 +58,7 @@ const MailPage = () => {
           onClick={() => {
             navigate("/");
           }}
-          className="bg-[#D9807E] border-2 border-black p-2"
+          className="bg-[#D9807E] border-2 border-black p-2 rounded"
         >
           Logout
         </Button>
@@ -68,12 +67,12 @@ const MailPage = () => {
       <div className="border-black border-3 rounded-lg mt-4">
         <div className="mt-4 mb-4 flex justify-between px-4">
           <Button
-            className="cursor-pointer bg-[#D34B48] border-2 border-black p-2"
+            className="cursor-pointer text-white bg-[#D34B48] border-2 border-black p-2 rounded"
             onClick={deleteEmails}
           >
             Delete All
           </Button>
-          <Composebutton />
+          <Composebutton className="bg-[#5DAB61] border-2 border-black p-2 rounded" />
         </div>
         <div className="flex flex-col gap-4">
           {emails.map((email) => (

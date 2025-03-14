@@ -1,7 +1,7 @@
 import Dialog from "@mui/material/Dialog";
 import React from "react";
-import { Input } from "../Input/Input";
-import { Button } from "../Button/Button";
+import { Input } from "./Input";
+import { Button } from "./Button";
 
 type NewEmailProps = {
   open: boolean;

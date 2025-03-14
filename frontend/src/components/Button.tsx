@@ -1,16 +1,21 @@
+import { twMerge } from "tailwind-merge";
+
 type ButtonProps = {
-  text: string;
   onClick?: () => void;
   className?: string;
+  children?: React.ReactNode;
 };
 
 const Button = (props: ButtonProps) => {
   return (
     <button
-      className={`bg-[#D9807E] border-2 border-black p-2 ${props.className}`}
+      className={twMerge(
+        "bg-[#D9807E] border-2 border-black p-2",
+        props.className
+      )}
       onClick={props.onClick}
     >
-      {props.text}
+      {props.children}
     </button>
   );
 };

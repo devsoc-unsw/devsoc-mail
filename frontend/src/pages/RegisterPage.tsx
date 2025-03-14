@@ -1,6 +1,6 @@
 import Logo from "../assets/Logo.png";
-import { Input } from "../components/Input/Input";
-import { AuthButton } from "../components/AuthButton/AuthButton";
+import { Input } from "../components/Input";
+import { AuthButton } from "../components/AuthButton";
 
 const RegisterPage = () => {
   return (

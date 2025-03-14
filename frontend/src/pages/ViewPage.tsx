@@ -1,4 +1,4 @@
-import { ViewBox } from "../components/ViewBox/ViewBox";
+import { ViewBox } from "../components/ViewBox";
 import Logo from "../assets/Logo.png";
 import { useNavigate } from "react-router-dom";
 
