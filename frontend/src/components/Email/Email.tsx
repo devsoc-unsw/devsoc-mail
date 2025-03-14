@@ -37,12 +37,16 @@ const Email = (props: EmailProps) => {
           onClick={() => {
             navigate(props.page);
           }}
-          className={styles.emailButton}
+          className="bg-white border-0 text-center flex gap-2 w-full"
         >
           <p className={styles.emailFrom}>{props.from}</p>
           <p className={styles.emailSubject}>{props.subject}</p>
           <p>{props.body}</p>
-          <p>{props.date}</p>
+          <div className="flex justify-end w-40/100">
+            <div></div>
+            <p className="text-right">{props.date}</p>
+          </div>
+
         </button>
       </div>
     );

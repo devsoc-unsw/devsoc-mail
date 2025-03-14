@@ -60,28 +60,33 @@ const MailPage = () => {
       >
         <LogoutIcon></LogoutIcon>
       </IconButton>
-      <button onClick={deleteEmails}>Delete All</button>
-      <Composebutton />
-      <img src={Logo} className={styles.devsocLogo}></img>
-      <div className={styles.searchBar}>
-        <Input text="Search" />
-      </div>
 
-      <div className="email">
-        {emails.map((email) => (
-          <Email
-            id={email.id}
-            subject={email.subject}
-            date={email.date}
-            from={email.from}
-            to={email.to}
-            body={email.body}
-            page={email.page}
-            setSelectedEmails={setSelectedEmails}
-            selectedEmails={selectedEmails}
-          ></Email>
-        ))}
+      <div className="h-[40vw] w-[50vw] border-black border-3 rounded-lg">
+        <div className={styles.searchBar}>
+          <Input text="Search" />
+        </div>
+        <div className="mt-4 mb-4">
+          <button onClick={deleteEmails}>Delete All</button>
+          <Composebutton />
+          <img src={Logo} className={styles.devsocLogo}></img>
+        </div>
+        <div className="email">
+          {emails.map((email) => (
+            <Email
+              id={email.id}
+              subject={email.subject}
+              date={email.date}
+              from={email.from}
+              to={email.to}
+              body={email.body}
+              page={email.page}
+              setSelectedEmails={setSelectedEmails}
+              selectedEmails={selectedEmails}
+            ></Email>
+          ))}
+        </div>
       </div>
+      
     </>
   );
 };
