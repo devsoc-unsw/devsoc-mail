@@ -2,6 +2,7 @@
 
 @plugin "tailwindcss-animate";
 
+@import "tailwindcss/preflight.css" layer(base);
 @custom-variant dark (&:is(.dark *));
 
 :root {
@@ -48,14 +49,6 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
-}
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
 }
 
 .dark {

@@ -1,11 +1,8 @@
-// DO NOT MODIFY THIS FILE PLS :D
-
 import { Routes, Route } from "react-router-dom";
 import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
 import { MailPage } from "./pages/MailPage/MailPage";
 import { ViewPage } from "./pages/ViewPage";
-import "./App.css";
 
 function App() {
   return (
