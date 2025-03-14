@@ -12,6 +12,7 @@ interface ViewBoxProps {
 /*
   Workshop 4 exercise 2:
   - Style the ViewBox component to match the mockup
+  - You won't need any new components for this exercise, just focus on applying tailwind classes
   - Feel free to reorganize the html structure
 */
 
