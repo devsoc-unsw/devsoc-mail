@@ -1,6 +1,5 @@
 import Dialog from "@mui/material/Dialog";
 import React from "react";
-import styles from "./NewEmail.module.css";
 import { Input } from "../Input/Input";
 import { Button } from "../Button/Button";
 
@@ -25,7 +24,7 @@ const NewEmail = (props: NewEmailProps) => {
   return (
     <>
       <Dialog open={props.open} onClose={handleClose} fullWidth={true}>
-        <header className={styles.header}>
+        <header className="flex gap-1.5 justify-between px-4">
           <h2>New Email</h2>
           <Button text="Discard email" onClick={handleClose} />
         </header>
@@ -33,22 +32,22 @@ const NewEmail = (props: NewEmailProps) => {
         {/* This part seem to be repeated a lot, huh? Let's make a reusable component!
             Put the component inside components folder
         */}
-        <div className={styles.grid}>
+        <div className="flex h-10 px-4 border-b-3 border-black">
           <strong>From:&nbsp;</strong>
           <p>placeholder@devsoc.mail</p>
         </div>
-        <div className={styles.grid}>
+        <div className="flex h-10 px-4 border-b-3 border-black">
           <strong>To:&nbsp;</strong>
           <Input />
         </div>
-        <div className={styles.grid}>
+        <div className="flex h-10 px-4 border-b-3 border-black">
           <strong>
             Subject:&nbsp; <p id="mail-subject">No Subject</p>
           </strong>
           <Input />
         </div>
 
-        <textarea className={styles.content} rows={11}></textarea>
+        <textarea className="m-4" rows={11}></textarea>
         <Button text="Send email" />
       </Dialog>
     </>

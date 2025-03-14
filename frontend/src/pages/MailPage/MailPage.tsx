@@ -1,14 +1,11 @@
 import Logo from "../../assets/Logo.png";
 import { Input } from "../../components/Input/Input";
 import { Email } from "../../components/Email/Email";
-import styles from "./MailPage.module.css";
 import { Composebutton } from "../../components/ComposeButton";
-import { IconButton } from "@mui/material";
-import LogoutIcon from "@mui/icons-material/Logout";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 
 const MailPage = () => {
   const navigate = useNavigate();
@@ -54,25 +51,31 @@ const MailPage = () => {
   };
 
   return (
-    <>
-      <IconButton
-        onClick={() => {
-          navigate("/");
-        }}
-      >
-        <LogoutIcon></LogoutIcon>
-      </IconButton>
+    <main className="max-w-4xl mx-auto p-4 bg-white flex flex-col">
+      <nav className="flex justify-between items-center">
+        <img src={Logo} className="h-10"></img>
+        <Input text="Search" className="w-1/2" />
+        <Button
+          onClick={() => {
+            navigate("/");
+          }}
+          className="bg-[#D9807E] border-2 border-black p-2"
+        >
+          Logout
+        </Button>
+      </nav>
 
-      <div className="h-[40vw] w-[50vw] border-black border-3 rounded-lg">
-        <div className={styles.searchBar}>
-          <Input text="Search" />
-        </div>
-        <div className="mt-4 mb-4">
-          <Button className="cursor-pointer bg-[#D34B48] border-2 border-black p-2" onClick={deleteEmails}>Delete All</Button>
+      <div className="border-black border-3 rounded-lg mt-4">
+        <div className="mt-4 mb-4 flex justify-between px-4">
+          <Button
+            className="cursor-pointer bg-[#D34B48] border-2 border-black p-2"
+            onClick={deleteEmails}
+          >
+            Delete All
+          </Button>
           <Composebutton />
-          <img src={Logo} className={styles.devsocLogo}></img>
         </div>
-        <div className="email">
+        <div className="flex flex-col gap-4">
           {emails.map((email) => (
             <Email
               id={email.id}
@@ -88,8 +91,7 @@ const MailPage = () => {
           ))}
         </div>
       </div>
-      
-    </>
+    </main>
   );
 };
 
