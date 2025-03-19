@@ -110,7 +110,7 @@ You have a few tasks before you:
 
 > ❗️ Hint: `str.match(/\d/g)` will check if the string `str` contains numbers. The numbers themselves will be returned in an array. Recall that the length of an array can be checked with `.length`.
 
-## Task 5: Writing Good Passwords, And Checking Them Better
+## Task 6: Writing Good Passwords, And Checking Them Better
 
 Our `useEffect` example is sound, but maybe inefficient. We know that [we don't need Effects to handle user events](https://react.dev/learn/you-might-not-need-an-effect#how-to-remove-unnecessary-effects). How can we optimise our code from the previous task by removing the `useEffect` while keeping the [side effect](<https://en.wikipedia.org/wiki/Side_effect_(computer_science)>) of updating our `passwordScore` when the password itself is updated?
 
