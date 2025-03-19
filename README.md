@@ -4,6 +4,8 @@ epic training program project
 
 # Workshop 2 - Vite + Advanced JS + React
 
+Authors: Alyssa Cheong and Giselle Angela Hanjaya Putri
+
 ## Task 1: Your First Vite Project
 
 Note: This task is completely **UNRELATED** to devsoc-mail. Feel free to skip this Task 1.

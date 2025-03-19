@@ -1,18 +1,12 @@
-import { useNavigate } from "react-router-dom";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface AuthButtonProps {
-  to: string; // navigates to route specified when the button is clicked
+  to: string;
+  children: React.ReactNode;
 }
 
-/**
- * Workshop 2: Component Exercise
- *
- * The button currently only displays 'MODIFY ME' by default
- * We want it to display any String we pass in the component
- *
- * TODO: use props to customize the text button
- */
-const AuthButton = ({ to }: AuthButtonProps) => {
+const AuthButton = ({ to, children }: AuthButtonProps) => {
   const navigate = useNavigate();
   return (
     <>
@@ -21,7 +15,7 @@ const AuthButton = ({ to }: AuthButtonProps) => {
           navigate(to);
         }}
       >
-        MODIFY ME
+        {children}
       </button>
     </>
   );
