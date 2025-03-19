@@ -4,13 +4,13 @@ epic training program project
 
 # Workshop 3 - React Hooks
 
-Authors: Lachlan Shoesmith
+Author: Lachlan Shoesmith
 
 ## Task 1: Tracking Inputs
 
-You might remember from last week's workshop that we have an `Input` component, which acts as a Reactified version of the `<input />` HTML element you know and maybe like. Or not.
+You might remember from last week's workshop that we have an `Input` component, which acts as a Reactified version of the `<input />` HTML element you know and love. Or hate.
 
-Right now, the `Input` component doesn't actually store anything typed into it. It's up to you to change that!
+Right now, the `Input` component doesn't actually store anything typed into it anywhere useful. It's up to you to change that!
 
 > 💁‍♀️ Tip: Consider installing the [React Developer Tools](https://react.dev/learn/react-developer-tools), which lets you inspect components and view their internal state.
 
@@ -54,15 +54,15 @@ My `LoginPage` component looks something like this:
 
 ```jsx
 const LoginPage = () => {
-  const userData = localStorage.getItem("userData");
-  if (userData != null) {
-    alert("User already logged in.");
+  const userDataObject = localStorage.getItem("userData");
+  if (userDataObject != null) {
+    alert("User is already logged in.");
   }
   return <>...</>;
 };
 ```
 
-If I am indeed signed in, this seems to pop up kind of erratically. Discuss with the people around you why this might occur and what a working alternative to the given example could be.
+If I am indeed signed in, this seems to pop up kind of erratically. I only want to check if a user is logged in once: when the page first loads. Discuss with the people around you why this might occur and what a working alternative to the given example could be.
 
 > ❗️ Hint: By calling a browser API like `localStorage`, we are _connecting to an external system_. Does React have a means of handling these?
 
@@ -74,7 +74,7 @@ On the `RegisterPage`, I want to tell users if their passwords are good or not. 
 - A _good_ password has between 8 and 12 characters, inclusive.
 - A _great_ password has 12 or more characters and at least two numbers.
 
-> 🤭 Aside: This is not genuine password advice. I am not to be held liable for an account compromising that happens if you do follow this advice.
+> 🤭 Aside: This is not genuine password advice. I am not liable for any account compromising that happens if you do follow this advice.
 
 To display this information, I can update my `RegisterPage` to look something like this.
 
