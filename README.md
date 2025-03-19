@@ -15,7 +15,7 @@ https://vite.dev/guide/
 3. Follow the instruction:
    - `cd your-project-name`
    - `npm install`
-4. Your're done😎
+4. Your're done 😎
 
 ## Task 2: Create a Register Page
 
@@ -37,3 +37,5 @@ The login page displays the button with text 'MODIFY ME.' Change the props of `A
 
 The view page, used for displaying emails, is currently inaccessible!
 Open `App.tsx` and follow the instructions within to change that.
+
+Then, add a `<Link />` to the register page from the login page.
