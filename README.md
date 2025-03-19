@@ -64,7 +64,7 @@ const LoginPage = () => {
 };
 ```
 
-If I am indeed signed in, this seems to pop up kind of erratically. I only want to check if a user is logged in once: when the page first loads. Discuss with the people around you why this might occur and what a working alternative to the given example could be.
+If I am indeed signed in, this alert I've made seems to pop up kind of erratically. I only want to check if a user is logged in once: when the page first loads. Discuss with the people around you why this might occur and what a working alternative to the given example could be.
 
 > ❗️ Hint: By calling a browser API like `localStorage`, we are _connecting to an external system_. Does React have a means of handling these?
 
