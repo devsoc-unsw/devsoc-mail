@@ -26,7 +26,7 @@ Discuss with the people around you how you could possibly perform this state lif
 
 ## Task 3: Signing Users In
 
-Let's take a break from exploring React concepts for a moment and discuss how we can log users in. You may have seen or used the [`localStorage API`](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage#examples) offered by web browsers before. If not, review the examples in the aforementioned link.
+Let's take a break from exploring React concepts for a moment and discuss how we can log users in. You may have seen or used the [`localStorage` API](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage#examples) offered by web browsers before. If not, review the examples in the aforementioned link.
 
 Essentially, `localStorage` lets us access a website-specific\* hash map. This object holds unique _keys_. Each key has a _value_ associated with it. Importantly, both keys and values must be strings. If you wanted to store another object as a value in `localStorage`, you'd need to `JSON.stringify()` it first.
 
