@@ -45,7 +45,9 @@ Anyway, you should now be storing a user's email and password in the `LoginPage`
 This data should be added to `localStorage` only once the `AuthButton` has been clicked.
 
 > ❗️ Hint: You might find [this Stack Overflow answer](https://stackoverflow.com/a/65541747/3991859) helpful in terms of figuring out how to get your button working.
+
 > ❗️ Hint: You could combine your desired `onClick` behaviour for `AuthButton` with the existing `onClick` functionality in `AuthButton`.
+
 > ❗️ Hint: Consider looking into how to represent [function types in TypeScript](https://www.typescriptlang.org/docs/handbook/2/functions.html#function-type-expressions) when updating the `AuthButton` props.
 
 ## Task 4: Checking If Users Are Signed In
