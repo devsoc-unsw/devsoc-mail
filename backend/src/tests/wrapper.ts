@@ -50,3 +50,11 @@ export function requestAuthRegister(name: string, email: string, password: strin
     payload: { name, email, password }
   });
 }
+
+export function requestAuthLogin(email: string, password: string) {
+  return requestHelper({
+    method: 'POST',
+    path: '/auth/login',
+    payload: { email, password }
+  });
+}

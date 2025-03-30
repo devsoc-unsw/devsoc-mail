@@ -2,16 +2,17 @@ import fs from 'fs';
 import  { v4 as uuidv4 } from 'uuid';
 import { Session, SessionStore } from './constants/types';
 
-export const sessionStore: SessionStore = { sessions: [] };
+const sessionStore: SessionStore = { sessions: [] };
+const SESSION_PATH = "./src/sessions.json";
 
 export function saveSessions() {
   const data = JSON.stringify(sessionStore, null, 2);
-  fs.writeFileSync('sessions.json', data, { flag: 'w' });
+  fs.writeFileSync(SESSION_PATH, data, { flag: 'w' });
 }
 
 export function loadSessions() {
-  if (fs.existsSync('sessions.json')) {
-    const data = fs.readFileSync('sessions.json', { flag: 'r' });
+  if (fs.existsSync(SESSION_PATH)) {
+    const data = fs.readFileSync(SESSION_PATH, { flag: 'r' });
     sessionStore.sessions = JSON.parse(data.toString());
   } else {
     // if file doesn't exist
