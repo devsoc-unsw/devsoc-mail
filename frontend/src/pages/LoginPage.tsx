@@ -7,12 +7,14 @@ import { useEffect, useState } from 'react';
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  
   useEffect(() => {
     const userDataObject = localStorage.getItem('userData');
     if (userDataObject != null) {
       alert('User is already logged in.');
     }
   }, []);
+
   return (
     <>
       <img src={Logo}></img>
@@ -32,7 +34,6 @@ const LoginPage = () => {
             const dataString = JSON.stringify(data);
             localStorage.setItem('userData', dataString);
           }}
-          to="/mail"
         >
           Log in
         </AuthButton>

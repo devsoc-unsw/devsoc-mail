@@ -3,7 +3,8 @@ import styles from "./MailPage.module.css";
 import { Composebutton } from "../../components/ComposeButton";
 import { IconButton } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
-
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 /**
  * Workshop 2: Routes exercise
@@ -19,7 +20,14 @@ import LogoutIcon from "@mui/icons-material/Logout";
  */
 
 const MailPage = () => {
-  
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!localStorage.getItem("sessionId")) {
+      alert("User does not have access. Please log in.");
+      navigate("/");
+    }
+  }, []);
 
   return (
     <>
