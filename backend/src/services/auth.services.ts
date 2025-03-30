@@ -1,7 +1,6 @@
 import { ErrorMap } from "../constants/errors";
 import { Name, Email, Password, Session, UserId } from "../constants/types";
-import  { v4 as uuidv4 } from 'uuid';
-import { sessionStore } from "../dataStore"
+import { sessionStore,generateSessionId, saveSessions, getSessions, setSessions } from "../dataStore"
 
 function generateUserId(): UserId {
     return Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
@@ -77,11 +76,14 @@ export function authRegister(name: Name, email: Email, password: Password): Sess
         throw new Error(isValidPassword(password) as string);
     }
 
-    const sessions: Session[] = sessionStore.sessions;
+    const sessions: Session[] = getSessions();
     const session: Session = {
-        sessionId: uuidv4(), 
+        sessionId: generateSessionId(), 
         userId: generateUserId()
     }
+
     sessions.push(session);
+    setSessions(sessions);
+
     return session;
 }

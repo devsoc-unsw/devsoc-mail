@@ -3,7 +3,11 @@ import * as authService from "../services/auth.services";
 
 async function register(req: Request, res: Response) {
     try {
-    } catch (err) {
+      const { name, email, password } = req.body;
+      const auth = authService.authRegister(name, email, password);
+      res.json(auth);
+    } catch (err: any) {
+      return res.status(400).json({ error: err.message });
     }
 }
 

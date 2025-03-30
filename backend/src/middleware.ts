@@ -1,19 +1,23 @@
 import { Request, Response, NextFunction } from "express";
+import {loadSessions, getSessions } from "./dataStore"
 import { ErrorMap, StatusCodeMap } from "./constants/errors";
+import { Session } from "./constants/types";
 // import { getSessionsCollection } from "./db";
 
 // Session check middleware
 async function sessionMiddleware(req: Request, _res: Response, next: NextFunction) {
     const sessionId = req.header('session');
-    // const sessions = getSessionsCollection();
-    // const sessionExists = await sessions.find({ sessionId: sessionId }).hasNext()
+    loadSessions();
 
-    // if(sessionId && sessionExists) {
-    //     // Next error rather than throw is due to this being an asynchronous function
-    //     next(ErrorMap.INVALID_SESSION);
-    // } else {
-    //     next();
-    // }
+    let sessions: Session[] = getSessions();
+    const sessionExists = sessions.find(s => s.sessionId === sessionId);
+    if (sessionId && sessionExists) {
+        // Next error rather than throw is due to this being an asynchronous function
+        next(ErrorMap["INVALID_SESSION"]);
+    } else {
+        // if session doesn't exist
+        next();
+    }
 }
 
 // Error catching and throwing middleware

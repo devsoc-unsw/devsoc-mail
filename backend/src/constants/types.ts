@@ -46,3 +46,7 @@ export type Mail = {
 	message: Message,
 	readBy: Array<UserId>
 }
+
+export type SessionStore = {
+	sessions: Session[]
+}
