@@ -6,6 +6,7 @@ import mailRoutes from './routes/mail.routes';
 import { PORT } from "../config.json"
 import { errorMiddleware } from "./middleware";
 import cors from "cors";
+import { loadData } from "./dataStore";
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ app.listen(port, () => {
 
 // database connection
 // dbConnect();
+loadData();
 
 // routes & middleware
 app.use(express.json());

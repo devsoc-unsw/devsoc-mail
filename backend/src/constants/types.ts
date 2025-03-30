@@ -31,9 +31,10 @@ export type Session = {
 
 export type User = {
     // _id: ObjectId,
+	name: Name,
 	email: Email
 	password: Password
-	inbox: UserMail
+	inbox: UserMail | {}
 }
 
 export type Mail = {
@@ -47,6 +48,12 @@ export type Mail = {
 	readBy: Array<UserId>
 }
 
+// types for dataStore
 export type SessionStore = {
 	sessions: Session[]
+}
+
+export type DataStore = {
+	users: User[],
+	mails: Mail[]
 }

@@ -1,6 +1,6 @@
 import { ErrorMap } from "../constants/errors";
-import { Name, Email, Password, Session, UserId } from "../constants/types";
-import { generateSessionId, getSessions, setSessions } from "../dataStore"
+import { Name, Email, Password, Session, UserId, User } from "../constants/types";
+import { generateSessionId, getData, getSessions, setData, setSessions } from "../dataStore"
 
 function generateUserId(): UserId {
     return Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
@@ -81,9 +81,18 @@ export function authRegister(name: Name, email: Email, password: Password): Sess
         sessionId: generateSessionId(), 
         userId: generateUserId()
     }
-
     sessions.push(session);
     setSessions(sessions);
+
+    const database = getData();
+    const user: User = {
+        name: name,
+        email: email,
+        password: password,
+        inbox: {}
+    }
+    database.users.push(user);
+    setData(database);
 
     return session;
 }
