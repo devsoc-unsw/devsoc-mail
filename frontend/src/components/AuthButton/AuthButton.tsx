@@ -1,21 +1,18 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 
 interface AuthButtonProps {
-  to: string;
   children: React.ReactNode;
   onClick?: () => void;
 }
 
-const AuthButton = ({ to, children, onClick }: AuthButtonProps) => {
-  const navigate = useNavigate();
+const AuthButton = ({ children, onClick }: AuthButtonProps) => {
   return (
     <>
       <button
         onClick={() => {
           if (onClick) onClick();
-          navigate(to);
         }}
+        type="submit"
       >
         {children}
       </button>
