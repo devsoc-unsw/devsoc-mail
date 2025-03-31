@@ -7,10 +7,18 @@ async function register(req: Request, res: Response) {
       const auth = authService.authRegister(name, email, password);
       res.json(auth);
     } catch (err: any) {
-      return res.status(400).json({ error: err.message });
+      res.status(400).json({ error: err.message });
     }
 }
 
+/**
+ * Workshop 5 Exercise 1
+ * Implement this login function
+ * Body contains email and password
+ * Route is already implemented for you! (check mail.routes.ts directory)
+ * 
+ * HINT: You might want to work on auth.services.ts first
+ */
 async function login(req: Request, res: Response) {
   try {
   } catch (err) {

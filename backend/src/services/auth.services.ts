@@ -97,6 +97,21 @@ export function authRegister(name: Name, email: Email, password: Password): Sess
     return session;
 }
 
+/**
+ * Logs in an existing user and returns a session
+ * Workshop 5 Exercise 1
+ * 
+ * Errors to handle: 
+ * 400 Email does not have the suffix @devsoc.mail
+ * 400 Email does not exist
+ * 400 Password is incorrect
+ * 
+ * Otherwise, return a session + store the session into sessionStore
+ * 
+ * HINT: see function authRegister
+ * 
+ * @param email 
+ * @param password 
+ */
 export function authLogin(email: Email, password: Password) {
-    // do stuff
 }
