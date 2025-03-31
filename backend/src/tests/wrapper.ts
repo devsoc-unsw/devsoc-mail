@@ -5,16 +5,16 @@ interface RequestOptions {
   method: HttpVerb;
   path: string;
   payload?: object;
-  token?: string;
+  session?: string;
 }
   
 const SERVER_URL = `http://localhost:${PORT}`;
 const TIMEOUT_MS = 5000;
 
-export function requestHelper({ method, path, payload, token }: RequestOptions): any {
+export function requestHelper({ method, path, payload, session }: RequestOptions): any {
   let query: any = {};
   let body: any = {};
-  const header = { token };
+  const header = { session };
 
   if (['PUT', 'POST'].includes(method)) {
     body = payload;
@@ -56,5 +56,14 @@ export function requestAuthLogin(email: string, password: string) {
     method: 'POST',
     path: '/auth/login',
     payload: { email, password }
+  });
+}
+
+export function requestMailSend(receivers: string[], title: string, message: string, session: string) {
+  return requestHelper({
+    method: 'POST',
+    path: '/mail/send',
+    payload: { receivers, title, message },
+    session: session
   });
 }
