@@ -5,6 +5,7 @@ interface AuthButtonProps {
   to?: string; // navigates to route specified when the button is clicked
   text?: string; // text to display on the button
   className?: string;
+  onClick?: () => void;
 }
 
 const AuthButton = (props: AuthButtonProps) => {

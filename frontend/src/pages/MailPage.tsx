@@ -9,7 +9,7 @@ import { Button } from "../components/Button";
 const MailPage = () => {
   const navigate = useNavigate();
   const [selectedEmails, setSelectedEmails] = useState<number[]>([]);
-
+  const [searchTerm, setSearchTerm] = useState<string>("");
   const [emails, setEmails] = useState([
     {
       id: 1,
@@ -52,7 +52,7 @@ const MailPage = () => {
     <main>
       <nav>
         <img src={Logo} />
-        <Input placeholder="Search" />
+        <Input placeholder="Search" setter={setSearchTerm} />
         <Button onClick={() => navigate("/")}>Logout</Button>
       </nav>
 
