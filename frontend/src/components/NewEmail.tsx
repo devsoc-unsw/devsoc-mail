@@ -1,5 +1,5 @@
 import Dialog from "@mui/material/Dialog";
-import React from "react";
+import React, { useState } from "react";
 import { Input } from "./Input";
 
 interface NewEmailProps {
@@ -8,6 +8,8 @@ interface NewEmailProps {
 }
 
 const NewEmail = (props: NewEmailProps) => {
+  const [to, setTo] = useState<string[]>([]);
+  const [subject, setSubject] = useState<string>("");
   const handleClose = () => {
     props.setOpen(false);
   };
@@ -31,11 +33,11 @@ const NewEmail = (props: NewEmailProps) => {
         </div>
         <div className="flex h-12 px-6 border-b border-black items-center py-1">
           <strong className="w-20">To:</strong>
-          <Input className="flex-1" placeholder="To" />
+          <Input className="flex-1" placeholder="To" setter={setTo} />
         </div>
         <div className="flex h-12 px-6 border-b border-black items-center py-1">
           <strong className="w-20">Subject:</strong>
-          <Input className="flex-1" placeholder="Subject" />
+          <Input className="flex-1" placeholder="Subject" setter={setSubject} />
         </div>
 
         <textarea

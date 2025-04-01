@@ -11,3 +11,7 @@ createRoot(document.getElementById("root")!).render(
     </StrictMode>
   </BrowserRouter>
 );
+
+/**
+ * Workshop 2: App component has been wrapped with <BrowserRouter> already.
+ */

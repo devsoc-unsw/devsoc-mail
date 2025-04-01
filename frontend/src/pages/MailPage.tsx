@@ -9,7 +9,7 @@ import { Button } from "../components/Button";
 const MailPage = () => {
   const navigate = useNavigate();
   const [selectedEmails, setSelectedEmails] = useState<number[]>([]);
-
+  const [searchTerm, setSearchTerm] = useState<string>("");
   const [emails, setEmails] = useState([
     {
       id: 1,
@@ -53,7 +53,11 @@ const MailPage = () => {
     <main className="max-w-4xl mx-auto p-4 bg-white flex flex-col">
       <nav className="flex justify-between items-center">
         <img src={Logo} className="h-10"></img>
-        <Input placeholder="Search" className="w-1/2 border-2 border-black" />
+        <Input
+          placeholder="Search"
+          className="w-1/2 border-2 border-black"
+          setter={setSearchTerm}
+        />
         <Button
           onClick={() => {
             navigate("/");
