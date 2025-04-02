@@ -60,6 +60,7 @@ const RegisterPage = () => {
       <form
         id="login-box"
         className="min-w-full flex flex-col justify-center p-8 bg-white border-3 border-black rounded-lg shadow-md"
+        onSubmit={handleRegister}
       >
         <h2 className="text-4xl font-semibold text-center mb-4">Register</h2>
         <Input

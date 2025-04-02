@@ -13,6 +13,7 @@ const AuthButton = (props: AuthButtonProps) => {
   return (
     <>
       <button
+        type="submit"
         onClick={() => {
           navigate(props.to || "");
         }}
