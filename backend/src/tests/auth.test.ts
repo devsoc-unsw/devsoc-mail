@@ -1,4 +1,4 @@
-import { requestAuthLogin, requestAuthRegister } from "./wrapper"
+import { requestAuthLogin, requestAuthRegister, requestClear } from "./wrapper"
 
 const SESSION = { 
   sessionId: expect.any(String),
@@ -7,6 +7,10 @@ const SESSION = {
 
 const ERROR = { error: expect.any(String) };
 const LONG_NAME = "Ramonaaaaaaaaaaaaaaaaaaaaaaaaa Flowersssssssssssssss Ramonaaaaaaaaaaaaaaaaaaaaaaaaa Flowersssssssssssssss"
+
+beforeEach(() => {
+  const c = requestClear();
+});
 
 describe('Test register', () => {
   test('Successful register', () => {
