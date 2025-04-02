@@ -33,7 +33,12 @@ async function singleMailView(req: Request, res: Response) {
 
 async function sendMail(req: Request, res: Response) {
     try {
-    } catch (err) {
+        const { receivers, title, message } = req.body;
+        const session = req.header('session');
+        const resp = mailService.sendMail(receivers, title, message, session as string);
+        res.json(resp);
+    } catch (err: any) {
+        res.status(400).json({ error: err.message });
     }
 }
 

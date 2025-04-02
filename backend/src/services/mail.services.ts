@@ -80,6 +80,7 @@ function getSender(sessionId: SessionId) {
 }
 
 export function sendMail(receivers: Receivers, title: Title, message: Message, session: SessionId) {
+  console.log("Entering sendMail");
   // one or more receivers do not exist
   if (isValidReceiver(receivers) != true) {
     throw new Error(isValidReceiver(receivers) as string);
@@ -100,11 +101,11 @@ export function sendMail(receivers: Receivers, title: Title, message: Message, s
     message: message,
     readBy: []
   }
-
   const dataStore = getData();
   dataStore.mails.push(newMail);
   setData(dataStore);
-
+  
+  console.log("Returning from sendMail");
   return { mailId: mailId };
 }
 
