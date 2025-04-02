@@ -3,8 +3,10 @@ import { Input } from "../components/Input";
 import { Email } from "../components/Email";
 import { ComposeButton } from "../components/ComposeButton";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, MouseEvent } from "react";
 import { Button } from "../components/Button";
+import { PORT } from "../../../backend/config.json";
+import axios from "axios";
 
 const MailPage = () => {
   const navigate = useNavigate();
@@ -49,6 +51,24 @@ const MailPage = () => {
     setEmails(updatedEmails);
   };
 
+  const handleLogout = async(event: MouseEvent<HTMLElement>) => {
+    event.preventDefault();
+    console.log("I RUN");
+    try {
+      await axios.delete(
+        `http://localhost:${PORT}/auth/logout`,
+        { headers: {
+          "session": localStorage.getItem("sessionId") // Add the session ID to the request headers
+          }
+        }
+      );
+      localStorage.removeItem("sessionId");
+      navigate('/');
+    } catch(err) {
+      console.error(err);
+    }
+  }
+
   return (
     <main className="max-w-4xl mx-auto p-4 bg-white flex flex-col">
       <nav className="flex justify-between items-center">
@@ -59,9 +79,7 @@ const MailPage = () => {
           setter={setSearchTerm}
         />
         <Button
-          onClick={() => {
-            navigate("/");
-          }}
+          onClick={(e) => handleLogout(e)}
           className="bg-[#D9807E] border-2 border-black p-2 rounded"
         >
           Logout

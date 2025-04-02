@@ -1,7 +1,7 @@
 import Dialog from "@mui/material/Dialog";
 import React, { useState, MouseEvent } from "react";
 import { Input } from "./Input";
-import { PORT } from "../../../backend/config.json"
+import { PORT } from "../../../backend/config.json";
 import axios from "axios";
 
 interface NewEmailProps {
