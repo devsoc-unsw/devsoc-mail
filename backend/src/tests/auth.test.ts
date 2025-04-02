@@ -9,7 +9,7 @@ const ERROR = { error: expect.any(String) };
 const LONG_NAME = "Ramonaaaaaaaaaaaaaaaaaaaaaaaaa Flowersssssssssssssss Ramonaaaaaaaaaaaaaaaaaaaaaaaaa Flowersssssssssssssss"
 
 beforeEach(() => {
-  const c = requestClear();
+  requestClear();
 });
 
 describe('Test register', () => {

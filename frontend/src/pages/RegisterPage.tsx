@@ -8,7 +8,7 @@ import axios from "axios";
 
 const RegisterPage = () => {
   const [name, setName] = useState('');
-  const [_email, setEmail] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [_password, setConfirmPassword] = useState('');
   const [passwordScore, setPasswordScore] = useState('');
@@ -41,10 +41,10 @@ const RegisterPage = () => {
   const handleRegister = async(event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      console.log(name, _email, _password)
+      console.log(name, email, _password);
       const response = await axios.post(
         `http://localhost:${PORT}/auth/register`,
-        { name, email: _email, password: _password }
+        { name: name, email: email, password: _password }
       );
       console.log("Registration successful:", response.data);
       localStorage.setItem("sessionId", response.data.sessionId);
@@ -64,9 +64,14 @@ const RegisterPage = () => {
       >
         <h2 className="text-4xl font-semibold text-center mb-4">Register</h2>
         <Input
+          placeholder="Name"
+          setter={setName}
+          className="border-2 border-black"
+        />
+        <Input
           placeholder="Email"
           setter={setEmail}
-          className="border-2 border-black"
+          className="border-2 border-black mt-2"
         />
         <Input
           placeholder="Password"
@@ -80,7 +85,7 @@ const RegisterPage = () => {
           className="border-2 border-black mt-2"
         />
         {password && <p>{passwordScore}</p>}
-        <AuthButton to="/mail" text="Register" />
+        <AuthButton text="Register" />
         <p className="text-left">
           Already got an account? <Link to="/">Log in</Link>
         </p>
