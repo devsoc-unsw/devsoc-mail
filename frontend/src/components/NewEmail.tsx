@@ -18,10 +18,6 @@ const NewEmail = (props: NewEmailProps) => {
     props.setOpen(false);
   };
 
-  useEffect(() => {
-    console.log(to);
-  }, [to]);
-
   const handleSend = async(event: MouseEvent<HTMLElement>) => {
     event.preventDefault();
     try {
