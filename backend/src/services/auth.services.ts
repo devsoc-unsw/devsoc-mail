@@ -32,7 +32,7 @@ function isValidName(name: Name): string | boolean {
   return true;
 }
 
-function isValidEmail(email: Email): string | boolean {
+function isValidEmail(email: Email, isRegister?: boolean): string | boolean {
   if (email.length > 50) {
     return ErrorMap["EMAIL_TOO_LONG"];
   }
@@ -42,7 +42,7 @@ function isValidEmail(email: Email): string | boolean {
   }
 
   const users = getData().users;
-  if (users.find(u => u.email === email)) {
+  if (users.find(u => u.email === email) && isRegister) {
     return ErrorMap["EMAIL_ALREADY_EXISTS"];
   }
 
@@ -90,7 +90,7 @@ export function authRegister(
   }
 
   // name is greater than 100 or less than 1 characters
-  if (isValidEmail(email) !== true) {
+  if (isValidEmail(email, true) !== true) {
     throw new Error(isValidEmail(email) as string);
   }
 
