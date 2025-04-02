@@ -1,4 +1,4 @@
-import express from "express";
+import express, { NextFunction } from "express";
 import * as authController from "../controllers/auth.controllers"
 import { sessionMiddleware } from "../middleware";
 

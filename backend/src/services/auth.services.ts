@@ -1,5 +1,5 @@
 import { ErrorMap } from "../constants/errors";
-import { Name, Email, Password, Session, UserId, User } from "../constants/types";
+import { Name, Email, Password, Session, UserId, User, DataStore } from "../constants/types";
 import { generateSessionId, getData, getSessions, setData, setSessions } from "../dataStore"
 
 function generateUserId(): UserId {
@@ -79,9 +79,10 @@ export function authRegister(name: Name, email: Email, password: Password): Sess
     }
 
     const sessions: Session[] = getSessions();
+    const userId = generateUserId();
     const session: Session = {
         sessionId: generateSessionId(), 
-        userId: generateUserId()
+        userId: userId
     }
     sessions.push(session);
     setSessions(sessions);
@@ -91,7 +92,8 @@ export function authRegister(name: Name, email: Email, password: Password): Sess
         name: name,
         email: email,
         password: password,
-        inbox: {}
+        inbox: {},
+        userId: userId
     }
     database.users.push(user);
     setData(database);
