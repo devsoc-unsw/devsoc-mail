@@ -4,6 +4,7 @@
 const ErrorMap =  {
     // Generic errors
     "INVALID_SESSION": "Invalid session. Please log in again.",
+    "USER_DOES_NOT_EXIST": "User does not exist. Please log in again.",
     
     // Registration errors
     "NAME_TOO_LONG": "Your name must be less than 50 characters.",
@@ -18,7 +19,8 @@ const ErrorMap =  {
     "PASSWORD_SYMBOLS": "Your password must have at least 1 uppercase, 1 lowercase and 1 number.",
 
     // Login errors
-    "EMAIL_PASSWORD_INCORRECT": "Your email or password is incorrect",
+    "PASSWORD_INCORRECT": "Your password is incorrect.",
+    "EMAIL_DOES_NOT_EXIST": "Email does not exist.",
 
     // Mail errors
     "MAIL_MISSING": "The mail you requested could not be found.",
@@ -31,6 +33,7 @@ const ErrorMap =  {
 // Maps error messages from the enum ErrorMap to HTTP status codes
 const StatusCodeMap = {
     [ErrorMap["INVALID_SESSION"]]: 401,
+    [ErrorMap["USER_DOES_NOT_EXIST"]]: 400,
 
     [ErrorMap["NAME_TOO_LONG"]]: 400,
     [ErrorMap["NAME_TOO_SHORT"]]: 400,
@@ -43,7 +46,8 @@ const StatusCodeMap = {
     [ErrorMap["PASSWORD_LENGTH"]]: 400,
     [ErrorMap["PASSWORD_SYMBOLS"]]: 400,
 
-    [ErrorMap["EMAIL_PASSWORD_INCORRECT"]]: 400,
+    [ErrorMap["PASSWORD_INCORRECT"]]: 400,
+    [ErrorMap["EMAIL_DOES_NOT_EXIST"]]: 400,
 
     [ErrorMap["MAIL_MISSING"]]: 400,
     
