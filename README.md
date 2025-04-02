@@ -1,6 +1,6 @@
 # Workshop 4 - CSS
 
-Author: Alfie Chen, Kim Lam
+Authors: Alfie Chen, Kim Lam
 
 ## Task 1: Styling the Register Page
 
@@ -12,7 +12,7 @@ You should be able to find it under frontend/src/pages/RegisterPage.tsx.
 - Style both components if necessary
 - And style the `RegisterPage` component itself as required to match the Figma mockup
 
-> 💁‍♀️ Tip: Make sure to check out the Figma mockup of devsoc.mail at [https://tp.devso.cc/devsocmaildesign](https://tp.devso.cc/devsocmaildesign)
+> 💁‍♀️ Tip: An example of a Figma mockup of devsoc.mail can be found at [https://tp.devso.cc/devsocmaildesign](https://tp.devso.cc/devsocmaildesign) if you don't have yours on hand
 
 ## Task 2: Styling the ViewBox
 
