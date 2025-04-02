@@ -1,5 +1,5 @@
 import Dialog from "@mui/material/Dialog";
-import React, { useState, MouseEvent } from "react";
+import React, { useState, MouseEvent, useEffect } from "react";
 import { Input } from "./Input";
 import { PORT } from "../../../backend/config.json";
 import axios from "axios";
@@ -13,6 +13,7 @@ const NewEmail = (props: NewEmailProps) => {
   const [to, setTo] = useState<string[]>([]);
   const [subject, setSubject] = useState<string>("");
   const [message, setMessage] = useState<string>("");
+  const [user, setUser] = useState<string>("");
 
   const handleClose = () => {
     props.setOpen(false);
@@ -35,6 +36,16 @@ const NewEmail = (props: NewEmailProps) => {
     }
   }
 
+  useEffect(() => {
+    const data = localStorage.getItem("userData");
+    if (data) {
+      setUser(JSON.parse(data).email);
+    } else {
+      console.log("I RUN");
+      setUser("eve.miles@devsoc.mail");
+    }
+  }, []);
+
   return (
     <>
       <Dialog open={props.open} onClose={handleClose} fullWidth={true}>
@@ -50,7 +61,7 @@ const NewEmail = (props: NewEmailProps) => {
 
         <div className="flex h-12 px-6 border-b border-black items-center py-1">
           <strong className="w-20">From:</strong>
-          <p>eve.miles@devsoc.mail</p>
+          <p>{user}</p>
         </div>
         <div className="flex h-12 px-6 border-b border-black items-center py-1">
           <strong className="w-20">To:</strong>

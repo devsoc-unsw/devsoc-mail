@@ -28,6 +28,15 @@ const LoginPage = () => {
         { email: email, password: password },
         { headers: { session: sessionId } }
       );
+
+      const data = {
+        email,
+        loginTime: new Date(),
+      };
+      const dataString = JSON.stringify(data);
+      localStorage.setItem("userData", dataString);
+
+      localStorage.setItem("sessionId", response.data.sessionId);
       navigate('/mail');
     } catch(err) {
       console.error(err);
@@ -56,18 +65,7 @@ const LoginPage = () => {
         <a className="text-sm text-black-600 underline text-left mt-2">
           Forgot password?
         </a>
-        <AuthButton
-          onClick={() => {
-            const data = {
-              email,
-              password,
-              loginTime: new Date(),
-            };
-            const dataString = JSON.stringify(data);
-            localStorage.setItem("userData", dataString);
-          }}
-          text="Login"
-        />
+        <AuthButton text="Login" />
         <p className="text-left">
           Don’t have an account?{" "}
           <Link className="underline" to="/register">

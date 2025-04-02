@@ -9,14 +9,11 @@ interface AuthButtonProps {
 }
 
 const AuthButton = (props: AuthButtonProps) => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   return (
     <>
       <button
         type="submit"
-        onClick={() => {
-          navigate(props.to || "");
-        }}
         className={twMerge(
           "text-white font-semibold border-2 border-black bg-[#D9807E] rounded-lg h-[50px] mt-4 mb-4 hover:shadow-lg cursor-pointer",
           props.className

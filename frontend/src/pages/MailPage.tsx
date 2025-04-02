@@ -3,7 +3,7 @@ import { Input } from "../components/Input";
 import { Email } from "../components/Email";
 import { ComposeButton } from "../components/ComposeButton";
 import { useNavigate } from "react-router-dom";
-import { useState, MouseEvent } from "react";
+import { useState, MouseEvent, useEffect } from "react";
 import { Button } from "../components/Button";
 import { PORT } from "../../../backend/config.json";
 import axios from "axios";
@@ -68,6 +68,13 @@ const MailPage = () => {
       console.error(err);
     }
   }
+
+  useEffect(() => {
+    if (!localStorage.getItem("sessionId")) {
+      alert("Session is invalid. Please log in again.");
+      navigate('/');
+    }
+  }, []);
 
   return (
     <main className="max-w-4xl mx-auto p-4 bg-white flex flex-col">
