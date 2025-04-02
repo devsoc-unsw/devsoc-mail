@@ -27,8 +27,15 @@ describe('Test register', () => {
     expect(session.status).toStrictEqual(400);
   });
 
-  test('Bad email', () => {
+  test('Bad email (suffix)', () => {
     const session = requestAuthRegister("Ramona Flowers", "ramona@gmail.com", "010203Ab!");
+    expect(session.body).toStrictEqual(ERROR);
+    expect(session.status).toStrictEqual(400);
+  });
+
+  test('Bad email (already exists)', () => {
+    requestAuthRegister("Ramona Flowers", "ramona@devsoc.mail", "010203Ab!");
+    const session = requestAuthRegister("Ramona Flowers", "ramona@devsoc.mail", "010203Ab!");
     expect(session.body).toStrictEqual(ERROR);
     expect(session.status).toStrictEqual(400);
   });

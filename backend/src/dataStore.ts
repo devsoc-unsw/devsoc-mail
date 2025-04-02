@@ -2,7 +2,7 @@ import fs from 'fs';
 import  { v4 as uuidv4 } from 'uuid';
 import { DataStore, Session, SessionStore } from './constants/types';
 
-const sessionStore: SessionStore = { sessions: [] };
+let sessionStore: SessionStore = { sessions: [] };
 let database: DataStore = { users: [], mails: [] };
 
 const SESSION_PATH = "./src/sessions.json";
@@ -18,7 +18,7 @@ export function saveSessions() {
 export function loadSessions() {
   if (fs.existsSync(SESSION_PATH)) {
     const data = fs.readFileSync(SESSION_PATH, { flag: 'r' });
-    sessionStore.sessions = JSON.parse(data.toString());
+    sessionStore = JSON.parse(data.toString());
   } else {
     // if file doesn't exist
     saveSessions();
@@ -29,7 +29,7 @@ export function generateSessionId() {
   return uuidv4();
 }
 
-export function getSessions() {
+export function getSessions(): Session[] {
   return sessionStore.sessions;
 }
 

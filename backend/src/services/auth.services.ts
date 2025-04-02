@@ -18,7 +18,7 @@ function isValidName(name: Name): string | boolean {
     return true
 }
 
-function isValidEmail(email: Email): string | boolean {
+function isValidEmail(email: Email, isRegister: boolean): string | boolean {
     if (email.length > 50) {
         return ErrorMap["EMAIL_TOO_LONG"];
     }
@@ -27,9 +27,11 @@ function isValidEmail(email: Email): string | boolean {
         return ErrorMap["EMAIL_TOO_SHORT"];
     }
 
-    // if () {
-    // ... already exists
-    // }
+    const users = getData().users;
+    if (users.find(u => u.email === email) && isRegister) {
+        // if trying to register with existing email
+        return ErrorMap["EMAIL_ALREADY_EXISTS"];
+    }
 
     const pattern = /[a-zA-Z0-9_\-]*@devsoc.mail/;
     if (!pattern.test(email)) {
@@ -67,8 +69,8 @@ export function authRegister(name: Name, email: Email, password: Password): Sess
     }
 
     // name is greater than 100 or less than 1 characters
-    if (isValidEmail(email) !== true) {
-        throw new Error(isValidEmail(email) as string);
+    if (isValidEmail(email, true) !== true) {
+        throw new Error(isValidEmail(email, true) as string);
     }
 
     // password should have 1 uppercase, 1 lowercase, and 1 number
