@@ -26,9 +26,9 @@ loadData();
 // routes & middleware
 app.use(express.json());
 app.use(cors());
+app.use('', otherRoutes);
 app.use('', authRoutes);
 app.use('', mailRoutes);
-app.use('', otherRoutes);
 app.use(errorMiddleware);
 
 // closing the server

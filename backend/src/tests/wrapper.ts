@@ -1,6 +1,6 @@
 import request, { HttpVerb } from 'sync-request-curl';
 import { PORT } from "../../config.json"
-import { DataStore, SessionStore } from '../constants/types';
+import { DataStore, Email, MailIds, Message, Name, Password, Receivers, SessionId, SessionStore, Title } from '../constants/types';
 import { setData, setSessions } from '../dataStore';
 
 interface RequestOptions {
@@ -45,7 +45,7 @@ export function requestHelper({ method, path, payload, session }: RequestOptions
   return bodyObject;
 }
 
-export function requestAuthRegister(name: string, email: string, password: string) {
+export function requestAuthRegister(name: Name, email: Email, password: Password) {
   return requestHelper({
     method: 'POST',
     path: '/auth/register',
@@ -53,7 +53,7 @@ export function requestAuthRegister(name: string, email: string, password: strin
   });
 }
 
-export function requestAuthLogin(email: string, password: string) {
+export function requestAuthLogin(email: Email, password: Password) {
   return requestHelper({
     method: 'POST',
     path: '/auth/login',
@@ -61,7 +61,7 @@ export function requestAuthLogin(email: string, password: string) {
   });
 }
 
-export function requestMailSend(receivers: string[], title: string, message: string, session: string) {
+export function requestMailSend(receivers: Receivers, title: Title, message: Message, session: SessionId) {
   return requestHelper({
     method: 'POST',
     path: '/mail/send',
@@ -70,7 +70,17 @@ export function requestMailSend(receivers: string[], title: string, message: str
   });
 }
 
+export function requestMailDelete(mailIds: MailIds, session: SessionId) {
+  return requestHelper({
+    method: 'DELETE',
+    path: '/mail/delete',
+    payload: { mailIds: mailIds },
+    session: session
+  });
+}
+
 export function requestClear() {
+  console.log("Clearing now!");
   return requestHelper({
     method: 'DELETE',
     path: '/clear',
