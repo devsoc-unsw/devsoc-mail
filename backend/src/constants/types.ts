@@ -35,6 +35,7 @@ export type User = {
 	email: Email
 	password: Password
 	inbox: UserMail | {}
+	userId: UserId
 }
 
 export type Mail = {
