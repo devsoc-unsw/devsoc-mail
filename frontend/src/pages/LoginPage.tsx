@@ -1,17 +1,18 @@
 import Logo from "../assets/Logo.png";
 import { Input } from "../components/Input";
 import { AuthButton } from "../components/AuthButton";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  
+  const navigate = useNavigate();
   useEffect(() => {
-    const userDataObject = localStorage.getItem('userData');
-    if (userDataObject != null) {
+    const session = localStorage.getItem('sessionId');
+    if (session != null) {
       alert('User is already logged in.');
+      navigate("/mail");
     }
   }, []);
 
