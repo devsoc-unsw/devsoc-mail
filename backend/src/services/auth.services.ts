@@ -41,9 +41,10 @@ function isValidEmail(email: Email): string | boolean {
     return ErrorMap["EMAIL_TOO_SHORT"];
   }
 
-  // if () {
-  // ... already exists
-  // }
+  const users = getData().users;
+  if (users.find(u => u.email === email)) {
+    return ErrorMap["EMAIL_ALREADY_EXISTS"];
+  }
 
   const pattern = /[a-zA-Z0-9_\-]*@devsoc.mail/;
   if (!pattern.test(email)) {
@@ -160,12 +161,15 @@ export function authLogin(email: Email, password: Password) {
   }
 
   const sessions: Session[] = getSessions();
+  const sessionId = generateSessionId();
   const session: Session = {
-    sessionId: generateSessionId(),
+    sessionId: sessionId,
     userId: user.userId,
   };
   sessions.push(session);
   setSessions(sessions);
+
+  return { sessionId: sessionId };
 }
 
 export function authLogout(sessionId: SessionId) {
@@ -173,4 +177,6 @@ export function authLogout(sessionId: SessionId) {
   const sessions = store.filter((session) => session.sessionId !== sessionId);
 
   setSessions(sessions);
+
+  return {};
 }
