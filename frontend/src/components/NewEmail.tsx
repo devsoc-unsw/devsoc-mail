@@ -1,6 +1,8 @@
 import Dialog from "@mui/material/Dialog";
-import React, { useState } from "react";
+import React, { useState, MouseEvent, useEffect } from "react";
 import { Input } from "./Input";
+import { PORT } from "../../../backend/config.json"
+import axios from "axios";
 
 interface NewEmailProps {
   open: boolean;
@@ -10,9 +12,32 @@ interface NewEmailProps {
 const NewEmail = (props: NewEmailProps) => {
   const [to, setTo] = useState<string[]>([]);
   const [subject, setSubject] = useState<string>("");
+  const [message, setMessage] = useState<string>("");
+
   const handleClose = () => {
     props.setOpen(false);
   };
+
+  useEffect(() => {
+    console.log(to);
+  }, [to]);
+
+  const handleSend = async(event: MouseEvent<HTMLElement>) => {
+    event.preventDefault();
+    try {
+      await axios.post(
+        `http://localhost:${PORT}/mail/send`,
+        { receivers: to, title: subject, message: message },
+        { headers: {
+          "session": localStorage.getItem("sessionId") // Add the session ID to the request headers
+          }
+        }
+      );
+      handleClose();
+    } catch(err) {
+      console.error(err);
+    }
+  }
 
   return (
     <>
@@ -33,7 +58,7 @@ const NewEmail = (props: NewEmailProps) => {
         </div>
         <div className="flex h-12 px-6 border-b border-black items-center py-1">
           <strong className="w-20">To:</strong>
-          <Input className="flex-1" placeholder="To" setter={setTo} />
+          <Input className="flex-1" placeholder="To" setter={setTo} multipleStr={true}/>
         </div>
         <div className="flex h-12 px-6 border-b border-black items-center py-1">
           <strong className="w-20">Subject:</strong>
@@ -43,9 +68,11 @@ const NewEmail = (props: NewEmailProps) => {
         <textarea
           className="m-6 p-3 w-[calc(100%-3rem)] h-64 border border-black rounded-lg resize-none"
           placeholder="Write your message here..."
+          onChange={(e) => setMessage(e.target.value)}
         />
         <div className="px-6 pb-4">
-          <button className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors">
+          <button className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors"
+            onClick={handleSend}>
             Send Email
           </button>
         </div>

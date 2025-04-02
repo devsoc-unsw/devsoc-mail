@@ -41,12 +41,10 @@ const RegisterPage = () => {
   const handleRegister = async(event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      console.log(name, email, _password);
       const response = await axios.post(
         `http://localhost:${PORT}/auth/register`,
         { name: name, email: email, password: _password }
       );
-      console.log("Registration successful:", response.data);
       localStorage.setItem("sessionId", response.data.sessionId);
       navigate('/mail');
     } catch(err) {

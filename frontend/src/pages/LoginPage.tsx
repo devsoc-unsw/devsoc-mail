@@ -2,12 +2,13 @@ import Logo from "../assets/Logo.png";
 import { Input } from "../components/Input";
 import { AuthButton } from "../components/AuthButton";
 import { Link, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+
   useEffect(() => {
     const session = localStorage.getItem('sessionId');
     if (session != null) {
@@ -47,7 +48,6 @@ const LoginPage = () => {
             const dataString = JSON.stringify(data);
             localStorage.setItem("userData", dataString);
           }}
-          to="/mail"
           text="Login"
         />
         <p className="text-left">

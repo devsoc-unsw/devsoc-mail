@@ -24,6 +24,7 @@ async function sessionMiddleware(req: Request, _res: Response, next: NextFunctio
         next();
     } catch (e) {
         console.error("Session Middleware Error:", e);
+        return next(e);
     }
 }
 
