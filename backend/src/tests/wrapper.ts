@@ -1,5 +1,7 @@
 import request, { HttpVerb } from 'sync-request-curl';
 import { PORT } from "../../config.json"
+import { DataStore, SessionStore } from '../constants/types';
+import { setData, setSessions } from '../dataStore';
 
 interface RequestOptions {
   method: HttpVerb;
@@ -65,5 +67,13 @@ export function requestMailSend(receivers: string[], title: string, message: str
     path: '/mail/send',
     payload: { receivers, title, message },
     session: session
+  });
+}
+
+export function requestClear() {
+  return requestHelper({
+    method: 'DELETE',
+    path: '/clear',
+    payload: {}
   });
 }

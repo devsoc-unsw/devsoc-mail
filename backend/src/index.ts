@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import express from "express";
 import authRoutes from './routes/auth.routes';
 import mailRoutes from './routes/mail.routes';
+import otherRoutes from './routes/other.routes';
 // import { dbConnect, dbDisconnect } from "./db";
 import { PORT } from "../config.json"
 import { errorMiddleware } from "./middleware";
@@ -27,6 +28,7 @@ app.use(express.json());
 app.use(cors());
 app.use('', authRoutes);
 app.use('', mailRoutes);
+app.use('', otherRoutes);
 app.use(errorMiddleware);
 
 // closing the server
