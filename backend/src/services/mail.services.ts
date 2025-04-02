@@ -1,6 +1,6 @@
 import { ErrorMap } from "../constants/errors";
-import { UserId, SessionId, MailId } from "../constants/types";
-import { getData, getSessions } from "../dataStore";
+import { UserId, SessionId, MailId, Receivers, Title, Message, Mail } from "../constants/types";
+import { getData, getSessions, setData } from "../dataStore";
 
 export function viewAllMail(userId: UserId, sessionId: SessionId) {
   const sessions = getSessions();
@@ -18,6 +18,8 @@ export function viewAllMail(userId: UserId, sessionId: SessionId) {
     mail.receivers.includes(user.email)
   );
   return emails;
+}
+
 function generateMailId(): MailId {
   return Math.floor(Date.now() * Math.random() * (999999 - 100000 + 1)) + 100000;
 }
@@ -66,6 +68,8 @@ export function getEmail(userId: UserId, sessionId: SessionId, mailId: MailId) {
   }
 
   return email;
+}
+
 function getSender(sessionId: SessionId) {
   const sessions = getSessions();
   const session = sessions.find(s => s.sessionId === sessionId);
@@ -126,6 +130,5 @@ export function deleteMail(mailIds: MailId[]) {
     dataStore.mails.splice(index, 1);
   }
   setData(dataStore);
-
   return {};
 }
