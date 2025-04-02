@@ -1,8 +1,8 @@
-import Logo from '../assets/Logo.png';
-import { Input } from '../components/Input/Input';
-import { AuthButton } from '../components/AuthButton/AuthButton';
-import { Link, useNavigate } from 'react-router-dom';
-import { FormEvent, useEffect, useState } from 'react';
+import Logo from "../assets/Logo.png";
+import { Input } from "../components/Input";
+import { AuthButton } from "../components/AuthButton";
+import { Link, useNavigate } from "react-router-dom";
+import { FormEvent, useEffect, useState } from "react";
 import { PORT } from "../../../backend/config.json"
 import axios from "axios";
 
@@ -19,15 +19,14 @@ const RegisterPage = () => {
     const len = password.length;
     const nums = password.match(/\d/g) || [];
     if (len < 8) {
-      setPasswordScore('Poor');
+      setPasswordScore("Poor");
     } else if (len >= 8 && len <= 12) {
-      setPasswordScore('Good');
+      setPasswordScore("Good");
     } else if (len >= 12 && nums.length >= 2) {
-      setPasswordScore('Great');
+      setPasswordScore("Great");
     }
   };
 
-  // task 5 solution
   useEffect(() => {
     checkPassword();
   }, [password]);
@@ -56,23 +55,36 @@ const RegisterPage = () => {
   }
 
   return (
-    <>
-      <img src={Logo}></img>
-      <form id="login-box" onSubmit={handleRegister}>
-        <h2>Register</h2>
-        <Input text="Name" setter={setName} />
-        <Input text="Email" setter={setEmail} />
-        {/* note onChange for task 6 solution */}
-        <Input text="Password" setter={setPassword} onChange={checkPassword} />
-        <Input text="Confirm password" setter={setConfirmPassword} />
+    <div className="max-w-3xl mx-auto p-4 bg-white flex flex-col">
+      <img src={Logo} className="mb-15 self-center"></img>
+      <form
+        id="login-box"
+        className="min-w-full flex flex-col justify-center p-8 bg-white border-3 border-black rounded-lg shadow-md"
+      >
+        <h2 className="text-4xl font-semibold text-center mb-4">Register</h2>
+        <Input
+          placeholder="Email"
+          setter={setEmail}
+          className="border-2 border-black"
+        />
+        <Input
+          placeholder="Password"
+          setter={setPassword}
+          onChange={checkPassword}
+          className="border-2 border-black mt-2"
+        />
+        <Input
+          placeholder="Confirm Password"
+          setter={setConfirmPassword}
+          className="border-2 border-black mt-2"
+        />
         {password && <p>{passwordScore}</p>}
-        <AuthButton>Register</AuthButton>
-        <p>
+        <AuthButton to="/mail" text="Register" />
+        <p className="text-left">
           Already got an account? <Link to="/">Log in</Link>
         </p>
       </form>
-    </>
+    </div>
   );
 };
-
 export { RegisterPage };

@@ -1,11 +1,8 @@
-// DO NOT MODIFY THIS CODE
-
-import { Routes, Route } from 'react-router-dom';
-import { LoginPage } from './pages/LoginPage';
-import { RegisterPage } from './pages/RegisterPage';
-import { MailPage } from './pages/MailPage/MailPage';
-import { ViewPage } from './pages/ViewPage';
-import './App.css';
+import { Routes, Route } from "react-router-dom";
+import { LoginPage } from "./pages/LoginPage";
+import { RegisterPage } from "./pages/RegisterPage";
+import { MailPage } from "./pages/MailPage";
+import { ViewPage } from "./pages/ViewPage";
 
 function App() {
   return (
@@ -13,9 +10,8 @@ function App() {
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/mail" element={<MailPage />}>
-          <Route path=":id" element={<ViewPage />} />
-        </Route>
+        <Route path="/mail" element={<MailPage />} />
+        <Route path="/view" element={<ViewPage />} />
       </Routes>
     </>
   );
