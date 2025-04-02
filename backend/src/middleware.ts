@@ -9,7 +9,6 @@ async function sessionMiddleware(req: Request, _res: Response, next: NextFunctio
     try {
         loadSessions();
         const sessionId = req.header('session');
-        console.log("sessionId: " + sessionId);
         let sessions: Session[] = getSessions();
         const sessionExists = sessions.find(s => s.sessionId === sessionId);
 
