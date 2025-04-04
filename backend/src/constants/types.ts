@@ -46,7 +46,7 @@ export type Mail = {
 	title: Title,
 	timeSent: TimeSent,
 	message: Message,
-	readBy: Array<UserId>
+	readBy: Array<Email>
 }
 
 // types for dataStore
