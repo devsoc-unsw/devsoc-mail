@@ -107,7 +107,7 @@ function isValidMailId(mailId: MailId): string | boolean {
   return true;
 }
 
-export function deleteMail(mailIds: MailId[]) {
+export function deleteMail(mailIds: MailId[], userEmail: Email) {
   for (const mailId of mailIds) {
     if (isValidMailId(mailId) !== true) {
       throw new Error(isValidMailId(mailId) as string);
@@ -117,8 +117,13 @@ export function deleteMail(mailIds: MailId[]) {
   const dataStore = getData();
   const mails = dataStore.mails;
   for (const mailId of mailIds) {
-    const index = mails.findIndex(m => m.mailId === mailId);
-    dataStore.mails.splice(index, 1);
+    const mail = mails.find(m => m.mailId === mailId) as Mail;
+    mail.receivers = mail.receivers.filter(r => r != userEmail);
+
+    if (mail.receivers.length == 0) {
+      const index = mails.findIndex(m => m.mailId === mailId);
+      dataStore.mails.splice(index, 1);
+    }
   }
   setData(dataStore);
   return {};

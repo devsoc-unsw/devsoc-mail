@@ -39,7 +39,8 @@ async function sendMail(req: Request, res: Response) {
 async function deleteMail(req: Request, res: Response) {
   try {
     const mailIds = (req.query.mailIds as string[]).map(id => Number(id));
-    const result = mailService.deleteMail(mailIds);
+    const userEmail = req.query.email as string;
+    const result = mailService.deleteMail(mailIds, userEmail);
     res.json(result);
   } catch (err: any) {
     res.status(400).json({ error: err.message });

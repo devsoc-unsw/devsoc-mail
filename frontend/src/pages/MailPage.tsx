@@ -17,10 +17,11 @@ const MailPage = () => {
 
   const handleDelete = async() => {
     try {
+      const email = JSON.parse(localStorage.getItem("userData") as string).email;
       await axios.delete(
         `http://localhost:${PORT}/mail/delete`,
         { 
-          params: { mailIds: selectedEmails },
+          params: { mailIds: selectedEmails, email: email },
           headers: {
           "session": localStorage.getItem("sessionId") // Add the session ID to the request headers
           }
