@@ -41,8 +41,7 @@ const NewEmail = (props: NewEmailProps) => {
     if (data) {
       setUser(JSON.parse(data).email);
     } else {
-      console.log("I RUN");
-      setUser("eve.miles@devsoc.mail");
+      setUser("Error occured. Email not found!");
     }
   }, []);
 
@@ -53,7 +52,7 @@ const NewEmail = (props: NewEmailProps) => {
           <h2 className="text-2xl font-normal">New Email</h2>
           <button
             onClick={handleClose}
-            className="bg-[#D34B48] text-white px-4 py-1.5 rounded-lg border-2 border-black"
+            className="bg-[#D34B48] text-white px-4 py-1.5 rounded-lg border-2 border-black cursor-pointer"
           >
             Discard email
           </button>
@@ -78,7 +77,7 @@ const NewEmail = (props: NewEmailProps) => {
           onChange={(e) => setMessage(e.target.value)}
         />
         <div className="px-6 pb-4">
-          <button className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors"
+          <button className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors cursor-pointer"
             onClick={handleSend}>
             Send Email
           </button>

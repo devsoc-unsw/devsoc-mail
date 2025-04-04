@@ -11,7 +11,7 @@ const Button = (props: ButtonProps) => {
   return (
     <button
       className={twMerge(
-        "bg-[#D9807E] border-2 border-black p-2",
+        "bg-[#D9807E] border-2 border-black p-2 cursor-pointer",
         props.className
       )}
       onClick={props.onClick}
