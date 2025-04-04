@@ -136,13 +136,15 @@ export function readMail(mailId: MailId, session: SessionId) {
 
   const data = getData();
   const mails = data.mails;
+  const users = data.users;
   const sessions = getSessions();
 
   // assume sessions are handled correctly by middleware
-  const userId = sessions.find(s => s.sessionId == session)?.userId as number;
   const mail = mails.find(m => m.mailId == mailId) as Mail;
+  const userId = sessions.find(s => s.sessionId == session)?.userId as number;
+  const email = users.find(u => u.userId === userId)?.email as string;
+  mail.readBy.push(email);
 
-  mail.readBy.push(userId);
   setData(data);
   return {};
 }

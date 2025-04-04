@@ -14,10 +14,11 @@ const MailPage = () => {
   const [selectedEmails, setSelectedEmails] = useState<number[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [emails, setEmails] = useState<Mail[]>([]);
+  const [currEmail, setCurrEmail] = useState("");
 
   const handleDelete = async() => {
     try {
-      const email = JSON.parse(localStorage.getItem("userData") as string).email;
+      const email = currEmail;
       await axios.delete(
         `http://localhost:${PORT}/mail/delete`,
         { 
@@ -76,6 +77,7 @@ const MailPage = () => {
     }
 
     loadAllMails();
+    setCurrEmail(JSON.parse(localStorage.getItem("userData") as string).email);
   }, []);
 
   return (
@@ -117,6 +119,7 @@ const MailPage = () => {
               page=""
               setSelectedEmails={setSelectedEmails}
               selectedEmails={selectedEmails}
+              isRead={email.readBy.includes(currEmail)}
             ></Email>
           ))}
         </div>
