@@ -30,9 +30,9 @@ async function login(req: Request, res: Response) {
 }
 
 async function logout(req: Request, res: Response) {
-  const session = req.query.sessionId as string;
   try {
-    const auth = authService.authLogout(session);
+    const session = req.header('session');
+    const auth = authService.authLogout(session as string);
     res.json(auth);
   } catch (err: any) {
     res.status(400).json({ error: err.message });
