@@ -1,23 +1,19 @@
 import { ErrorMap } from "../constants/errors";
-import { UserId, SessionId, MailId, Receivers, Title, Message, Mail } from "../constants/types";
+import { UserId, SessionId, MailId, Receivers, Title, Message, Mail, Email } from "../constants/types";
 import { getData, getSessions, setData } from "../dataStore";
 
-export function viewAllMail(userId: UserId, sessionId: SessionId) {
-  const sessions = getSessions();
+export function viewAllMail(email: Email) {
   const store = getData();
-  const session = sessions.find((session) => session.sessionId === sessionId);
 
-  if (!session || session === undefined) {
-    throw new Error(ErrorMap["INVALID_SESSION"]);
-  }
-  const user = store.users.find((user) => user.userId === userId);
+  const user = store.users.find((user) => user.email === email);
   if (!user || user === undefined) {
     throw new Error(ErrorMap["USER_DOES_NOT_EXIST"]);
   }
+
   const emails = store.mails.filter((mail) =>
-    mail.receivers.includes(user.email)
+    mail.receivers.includes(email)
   );
-  return emails;
+  return { mails: emails };
 }
 
 function generateMailId(): MailId {
@@ -41,15 +37,9 @@ function isValidTitle(title: Title): string | boolean {
   return true;
 }
 
-export function getEmail(userId: UserId, sessionId: SessionId, mailId: MailId) {
-  const sessions = getSessions();
+export function getEmail(userId: UserId, mailId: MailId) {
   const store = getData();
 
-  const session = sessions.find((session) => session.sessionId === sessionId);
-
-  if (!session || session === undefined) {
-    throw new Error(ErrorMap["INVALID_SESSION"]);
-  }
   const user = store.users.find((user) => user.userId === userId);
   if (!user || user === undefined) {
     throw new Error(ErrorMap["USER_DOES_NOT_EXIST"]);

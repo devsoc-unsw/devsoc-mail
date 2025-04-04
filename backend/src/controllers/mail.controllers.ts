@@ -1,17 +1,13 @@
 import { Request, Response } from "express";
 import * as mailService from "../services/mail.services";
-import { StatusCodeMap } from "../constants/errors";
 import { MailId } from "../constants/types";
 
 async function viewAllMail(req: Request, res: Response) {
     try {
         // req.query is always passed as strings
         // Convert to integer
-        const userId = parseInt(req.query.userId as string, 10);
-
-        const sessionId = req.query.sessionId as string;
-    
-        const mail = mailService.viewAllMail(userId, sessionId);
+        const email = req.query.email;
+        const mail = mailService.viewAllMail(email as string);
         res.json(mail);
     } catch (err: any) {
         res.status(400).json({ error: err.message });
@@ -24,7 +20,7 @@ async function singleMailView(req: Request, res: Response) {
         const userId = parseInt(req.params.userId as string, 10);
         const sessionId = req.params.sessionId as string;
         const mailId = parseInt(req.params.mailId as string, 10);
-        const email = mailService.getEmail(userId, sessionId, mailId);
+        const email = mailService.getEmail(userId, mailId);
         res.json(email);
     } catch (err: any) {
         res.status(400).json({ error: err.message });

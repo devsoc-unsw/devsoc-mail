@@ -6,46 +6,19 @@ import { useNavigate } from "react-router-dom";
 import { useState, MouseEvent, useEffect } from "react";
 import { Button } from "../components/Button";
 import { PORT } from "../../../backend/config.json";
+import { Mail } from "../../../backend/src/constants/types";
 import axios from "axios";
 
 const MailPage = () => {
   const navigate = useNavigate();
   const [selectedEmails, setSelectedEmails] = useState<number[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [emails, setEmails] = useState([
-    {
-      id: 1,
-      subject: "Dummy",
-      date: "26 Jan 2025, 17:12",
-      from: "admin@devsoc.mail",
-      to: ["me@devsoc.mail", "you@devsoc.mail"],
-      body: "Lorem ipsum odor amet... ",
-      page: "/view",
-    },
-    {
-      id: 2,
-      subject: "Dummy",
-      date: "26 Jan 2025, 17:12",
-      from: "admin@devsoc.mail",
-      to: ["me@devsoc.mail", "you@devsoc.mail"],
-      body: "Lorem ipsum odor amet... ",
-      page: "/view",
-    },
-    {
-      id: 3,
-      subject: "Dummy",
-      date: "26 Jan 2025, 17:12",
-      from: "admin@devsoc.mail",
-      to: ["me@devsoc.mail", "you@devsoc.mail"],
-      body: "Lorem ipsum odor amet... ",
-      page: "/view",
-    },
-  ]);
+  const [emails, setEmails] = useState<Mail[]>([]);
 
   const deleteEmails = () => {
     console.log("delete");
     const updatedEmails = emails.filter(
-      (email) => !selectedEmails.includes(email.id)
+      (email) => !selectedEmails.includes(email.mailId)
     );
 
     setEmails(updatedEmails);
@@ -53,7 +26,6 @@ const MailPage = () => {
 
   const handleLogout = async(event: MouseEvent<HTMLElement>) => {
     event.preventDefault();
-    console.log("I RUN");
     try {
       await axios.delete(
         `http://localhost:${PORT}/auth/logout`,
@@ -63,7 +35,26 @@ const MailPage = () => {
         }
       );
       localStorage.removeItem("sessionId");
+      localStorage.removeItem("userData");
       navigate('/');
+    } catch(err) {
+      console.error(err);
+    }
+  }
+
+  const loadAllMails = async() => {
+    try {
+      const email = JSON.parse(localStorage.getItem("userData") as string).email;
+      const res = await axios.get(
+        `http://localhost:${PORT}/mail/view`,
+        { 
+          params: { email },
+          headers: {
+          "session": localStorage.getItem("sessionId") // Add the session ID to the request headers
+          }
+        }
+      );
+      setEmails(res.data.mails);
     } catch(err) {
       console.error(err);
     }
@@ -74,6 +65,8 @@ const MailPage = () => {
       alert("Session is invalid. Please log in again.");
       navigate('/');
     }
+
+    loadAllMails();
   }, []);
 
   return (
@@ -106,13 +99,13 @@ const MailPage = () => {
         <div className="flex flex-col gap-4">
           {emails.map((email) => (
             <Email
-              id={email.id}
-              subject={email.subject}
-              date={email.date}
-              from={email.from}
-              to={email.to}
-              body={email.body}
-              page={email.page}
+              id={email.mailId}
+              subject={email.title}
+              date={email.timeSent.toString()}
+              from={email.sender}
+              to={email.receivers}
+              body={email.message}
+              page=""
               setSelectedEmails={setSelectedEmails}
               selectedEmails={selectedEmails}
             ></Email>

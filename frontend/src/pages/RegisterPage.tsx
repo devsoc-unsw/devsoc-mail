@@ -46,6 +46,12 @@ const RegisterPage = () => {
         { name: name, email: email, password: _password }
       );
       localStorage.setItem("sessionId", response.data.sessionId);
+      const data = {
+              email,
+              loginTime: new Date(),
+            };
+      const dataString = JSON.stringify(data);
+      localStorage.setItem("userData", dataString);
       navigate('/mail');
     } catch(err) {
       console.error(err);
