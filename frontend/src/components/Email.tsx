@@ -52,7 +52,7 @@ const Email = (props: EmailProps) => {
 
   return (
     <div className={
-      twMerge("flex gap-2.5 bg-white items-center border border-black",
+      twMerge("flex gap-2.5 bg-white items-center border border-black cursor-pointer",
         read ? "bg-gray-300" : ""
       )
     }>
@@ -65,7 +65,7 @@ const Email = (props: EmailProps) => {
           navigate(props.page);
           handleRead();
         }}
-        className="border-0 text-center flex gap-2 w-full"
+        className="border-0 text-center flex gap-2 w-full cursor-pointer"
       >
         <p className="font-bold">{props.from}</p>
         <p className="font-bold">{props.subject}</p>
