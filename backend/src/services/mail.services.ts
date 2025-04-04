@@ -109,19 +109,19 @@ export function sendMail(receivers: Receivers, title: Title, message: Message, s
   return { mailId: mailId };
 }
 
-function isValidMailId(mailIds: MailId[]): string | boolean {
+function isValidMailId(mailId: MailId): string | boolean {
   const mails = getData().mails;
-  for (const mailId of mailIds) {
-    if (!mails.find(m => m.mailId === mailId)) {
-      return ErrorMap["MAIL_MISSING"];
-    }
+  if (!mails.find(m => m.mailId === mailId)) {
+    return ErrorMap["MAIL_MISSING"];
   }
   return true;
 }
 
 export function deleteMail(mailIds: MailId[]) {
-  if (isValidMailId(mailIds) !== true) {
-    throw new Error(isValidMailId(mailIds) as string);
+  for (const mailId of mailIds) {
+    if (isValidMailId(mailId) !== true) {
+      throw new Error(isValidMailId(mailId) as string);
+    }
   }
 
   const dataStore = getData();
@@ -131,5 +131,23 @@ export function deleteMail(mailIds: MailId[]) {
     dataStore.mails.splice(index, 1);
   }
   setData(dataStore);
+  return {};
+}
+
+export function readMail(mailId: MailId, session: SessionId) {
+  if (isValidMailId(mailId) !== true) {
+    throw new Error(isValidMailId(mailId) as string);
+  }
+
+  const data = getData();
+  const mails = data.mails;
+  const sessions = getSessions();
+
+  // assume sessions are handled correctly by middleware
+  const userId = sessions.find(s => s.sessionId == session)?.userId as number;
+  const mail = mails.find(m => m.mailId == mailId) as Mail;
+
+  mail.readBy.push(userId);
+  setData(data);
   return {};
 }

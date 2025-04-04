@@ -53,9 +53,13 @@ async function deleteMail(req: Request, res: Response) {
 }
 
 async function markMailAsRead(req: Request, res: Response) {
-    try {
-    } catch (err) {
-    }
+  try {
+    const { mailId, session } = req.body;
+    const readMail = mailService.readMail(mailId, session);
+    res.json(readMail);
+  } catch (err: any) {
+    res.status(400).json({ error: err.message });
+  }
 }
 
 export { viewAllMail, singleMailView, sendMail, deleteMail, markMailAsRead };
