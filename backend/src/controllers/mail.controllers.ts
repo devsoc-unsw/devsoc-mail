@@ -16,9 +16,7 @@ async function viewAllMail(req: Request, res: Response) {
 
 async function singleMailView(req: Request, res: Response) {
     try {
-        // const { userId, sessionId, mailId } = req.params;
         const userId = parseInt(req.params.userId as string, 10);
-        const sessionId = req.params.sessionId as string;
         const mailId = parseInt(req.params.mailId as string, 10);
         const email = mailService.getEmail(userId, mailId);
         res.json(email);

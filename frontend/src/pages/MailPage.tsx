@@ -15,14 +15,22 @@ const MailPage = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [emails, setEmails] = useState<Mail[]>([]);
 
-  const deleteEmails = () => {
-    console.log("delete");
-    const updatedEmails = emails.filter(
-      (email) => !selectedEmails.includes(email.mailId)
-    );
-
-    setEmails(updatedEmails);
-  };
+  const handleDelete = async() => {
+    try {
+      await axios.delete(
+        `http://localhost:${PORT}/mail/delete`,
+        { 
+          params: { mailIds: selectedEmails },
+          headers: {
+          "session": localStorage.getItem("sessionId") // Add the session ID to the request headers
+          }
+        }
+      );
+      loadAllMails();
+    } catch(err) {
+      console.error(err);
+    }
+  }
 
   const handleLogout = async(event: MouseEvent<HTMLElement>) => {
     event.preventDefault();
@@ -90,7 +98,7 @@ const MailPage = () => {
         <div className="mt-4 mb-4 flex justify-between px-4">
           <Button
             className="cursor-pointer text-white bg-[#D34B48] border-2 border-black p-2 rounded"
-            onClick={deleteEmails}
+            onClick={handleDelete}
           >
             Delete All
           </Button>
