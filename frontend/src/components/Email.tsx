@@ -65,10 +65,6 @@ const Email = (props: EmailProps) => {
     }
   }
 
-  const convertDateToString = (date: Date) => {
-    return new Date(date).toLocaleDateString("en-AU");
-  }
-
   return (
     <div
       className={twMerge(
@@ -90,7 +86,7 @@ const Email = (props: EmailProps) => {
         <p className="font-bold truncate">{props.subject}</p>
         <p className="truncate">{props.body}</p>
         <div className="flex justify-end w-40/100">
-          <p className="text-right">{convertDateToString(props.date)}</p>
+          <p className="text-right">{new Date(props.date).toLocaleDateString("en-AU")}</p>
         </div>
       </button>
     </div>

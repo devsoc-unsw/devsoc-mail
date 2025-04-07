@@ -3,7 +3,7 @@ import ArrowBackIosRoundedIcon from "@mui/icons-material/ArrowBackIosRounded";
 
 interface ViewBoxProps {
   subject: string;
-  date: string; // change this into Date object once database is implemented
+  date: Date;
   from: string;
   to: string[];
   body: string;
@@ -23,7 +23,7 @@ const ViewBox = (props: ViewBoxProps) => {
           </button>
           <h2 className="text-xl font-bold">{props.subject}</h2>
         </div>
-        <p>{props.date}</p>
+        <p>{new Date(props.date).toLocaleDateString("en-AU")}</p>
       </div>
 
       <div className="flex h-12 px-6 border-b-2 border-black items-center">
