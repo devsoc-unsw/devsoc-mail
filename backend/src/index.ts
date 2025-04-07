@@ -17,7 +17,7 @@ const port = process.env.PORT || PORT;
 
 app.listen(port, () => {
     console.log(`Devsoc-mail server is running at http://localhost:${port}`);
-})
+});
 
 // database connection
 // dbConnect();

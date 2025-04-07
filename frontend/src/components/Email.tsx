@@ -35,19 +35,35 @@ const Email = (props: EmailProps) => {
   const readEmail = async (id: number) => {
     try {
       const mailId = id;
-      console.log(mailId);
-
       const res = await axios.get(`http://localhost:${PORT}/mail/${mailId}`, {
         headers: {
           session: localStorage.getItem("sessionId"),
         },
       });
+      await handleRead();
+      setRead(true);
       navigate("/view", { state: res.data });
     } catch (err) {
       console.log("mail cannot be found");
       console.log(err);
     }
   };
+
+  const handleRead = async() => {
+    try {
+      await axios.put(
+        `http://localhost:${PORT}/mail/read`,
+        { mailId: props.id },
+        {
+          headers: {
+          "session": localStorage.getItem("sessionId")
+          }
+        }
+      );
+    } catch(err) {
+      console.error(err);
+    }
+  }
 
   return (
     <div
