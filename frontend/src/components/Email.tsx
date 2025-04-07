@@ -1,14 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import { Checkbox } from "@mui/material";
 import { twMerge } from "tailwind-merge";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { PORT } from "../../../backend/config.json";
 import axios from "axios";
 
 interface EmailProps {
   id: number;
   subject: string;
-  date: string;
+  date: Date;
   from: string;
   to: string[];
   body: string;
@@ -65,6 +65,10 @@ const Email = (props: EmailProps) => {
     }
   }
 
+  const convertDateToString = (date: Date) => {
+    return new Date(date).toLocaleDateString("en-AU");
+  }
+
   return (
     <div
       className={twMerge(
@@ -83,11 +87,10 @@ const Email = (props: EmailProps) => {
         className="border-0 text-center flex gap-2 w-full cursor-pointer"
       >
         <p className="font-bold">{props.from}</p>
-        <p className="font-bold">{props.subject}</p>
-        <p>{props.body}</p>
+        <p className="font-bold truncate">{props.subject}</p>
+        <p className="truncate">{props.body}</p>
         <div className="flex justify-end w-40/100">
-          <div></div>
-          <p className="text-right">{props.date}</p>
+          <p className="text-right">{convertDateToString(props.date)}</p>
         </div>
       </button>
     </div>

@@ -112,7 +112,7 @@ const MailPage = () => {
             <Email
               id={email.mailId}
               subject={email.title}
-              date={email.timeSent.toString()}
+              date={email.timeSent}
               from={email.sender}
               to={email.receivers}
               body={email.message}
@@ -120,7 +120,7 @@ const MailPage = () => {
               setSelectedEmails={setSelectedEmails}
               selectedEmails={selectedEmails}
               isRead={email.readBy.includes(currEmail)}
-            ></Email>
+            />
           ))}
         </div>
       </div>
