@@ -147,7 +147,10 @@ export function readMail(mailId: MailId, session: SessionId) {
   const mail = mails.find(m => m.mailId == mailId) as Mail;
   const userId = sessions.find(s => s.sessionId == session)?.userId as number;
   const email = users.find(u => u.userId === userId)?.email as string;
-  mail.readBy.push(email);
+
+  if (!mail.readBy.includes(email)) {
+    mail.readBy.push(email);
+  }
 
   setData(data);
   return {};
