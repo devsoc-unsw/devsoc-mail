@@ -37,27 +37,31 @@ function isValidTitle(title: Title): string | boolean {
   return true;
 }
 
-export function getEmail(userId: UserId, mailId: MailId) {
-  const store = getData();
 
-  const user = store.users.find((user) => user.userId === userId);
-  if (!user || user === undefined) {
-    throw new Error(ErrorMap["USER_DOES_NOT_EXIST"]);
+
+export function getEmail(session: SessionId, mailId: MailId) {
+  if (isValidMailId(mailId) !== true) {
+    throw new Error(isValidMailId(mailId) as string);
   }
 
-  const email = store.mails.find((mail) => mail.mailId === mailId);
+  const data = getData();
+  const mails = data.mails;
+  const sessions = getSessions();
 
-  // email does not exist
+  const email = mails.find(m => m.mailId == mailId) as Mail;
   if (!email || email === undefined) {
     throw new Error(ErrorMap["EMAIL_DOES_NOT_EXIST"]);
   }
 
-  // email does not exist in user's inbox
-  if (!email.receivers.some((reciever) => reciever === user.email)) {
-    throw new Error(ErrorMap["EMAIL_DOES_NOT_EXIST"]);
+
+  const user = sessions.find(s => s.sessionId == session)?.userId as number;
+  if (!user || user === undefined) {
+    throw new Error(ErrorMap["USER_DOES_NOT_EXIST"]);
   }
 
   return email;
+
+
 }
 
 function getSender(sessionId: SessionId) {

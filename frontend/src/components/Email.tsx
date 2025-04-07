@@ -32,38 +32,37 @@ const Email = (props: EmailProps) => {
     );
   };
 
-  const handleRead = async() => {
+  const readEmail = async (id: number) => {
     try {
-      await axios.put(
-        `http://localhost:${PORT}/mail/read`,
-        { mailId: props.id },
-        {
-          headers: {
-          "session": localStorage.getItem("sessionId")
-          }
-        }
-      );
-      setRead(true);
-      console.log("Mail read!");
-    } catch(err) {
-      console.error(err);
+      const mailId = id;
+      console.log(mailId);
+
+      const res = await axios.get(`http://localhost:${PORT}/mail/${mailId}`, {
+        headers: {
+          session: localStorage.getItem("sessionId"),
+        },
+      });
+      navigate("/view", { state: res.data });
+    } catch (err) {
+      console.log("mail cannot be found");
+      console.log(err);
     }
-  }
+  };
 
   return (
-    <div className={
-      twMerge("flex gap-2.5 bg-white items-center border border-black cursor-pointer",
+    <div
+      className={twMerge(
+        "flex gap-2.5 bg-white items-center border border-black cursor-pointer",
         read ? "bg-gray-300" : ""
-      )
-    }>
+      )}
+    >
       <Checkbox
         checked={props.selectedEmails.includes(props.id)}
         onChange={() => selectEmail(props.id)}
       />
       <button
         onClick={() => {
-          navigate(props.page);
-          handleRead();
+          readEmail(props.id);
         }}
         className="border-0 text-center flex gap-2 w-full cursor-pointer"
       >

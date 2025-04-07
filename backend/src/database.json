@@ -1,0 +1,65 @@
+{
+  "users": [
+    {
+      "name": "alyssa",
+      "email": "alyssa@devsoc.mail",
+      "password": "Password12",
+      "inbox": {},
+      "userId": 804135
+    }
+  ],
+  "mails": [
+    {
+      "mailId": 475337029702958340,
+      "sender": "alyssa@devsoc.mail",
+      "receivers": [
+        "alyssa@devsoc.mail"
+      ],
+      "title": "ghi",
+      "timeSent": "2025-04-07T04:06:37.158Z",
+      "message": "hi ",
+      "readBy": [
+        "alyssa@devsoc.mail",
+        "alyssa@devsoc.mail",
+        "alyssa@devsoc.mail",
+        "alyssa@devsoc.mail",
+        "alyssa@devsoc.mail",
+        "alyssa@devsoc.mail",
+        "alyssa@devsoc.mail"
+      ]
+    },
+    {
+      "mailId": 1015085743604654000,
+      "sender": "alyssa@devsoc.mail",
+      "receivers": [
+        "alyssa@devsoc.mail"
+      ],
+      "title": "hi",
+      "timeSent": "2025-04-07T04:13:29.870Z",
+      "message": "hiiiiiiiiii",
+      "readBy": []
+    },
+    {
+      "mailId": 181913058611443300,
+      "sender": "alyssa@devsoc.mail",
+      "receivers": [
+        "alyssa@devsoc.mail"
+      ],
+      "title": "hiiiiiiiiiiiii",
+      "timeSent": "2025-04-07T04:13:43.674Z",
+      "message": "",
+      "readBy": []
+    },
+    {
+      "mailId": 863141130659834600,
+      "sender": "alyssa@devsoc.mail",
+      "receivers": [
+        "alyssa@devsoc.mail"
+      ],
+      "title": "hi",
+      "timeSent": "2025-04-07T04:14:10.214Z",
+      "message": "hiahkjdhjkafhjkafhjkafhjk",
+      "readBy": []
+    }
+  ]
+}
