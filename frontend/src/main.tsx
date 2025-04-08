@@ -1,10 +1,17 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.tsx'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import "./index.css";
+import App from "./App.tsx";
+import { BrowserRouter } from "react-router-dom";
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+createRoot(document.getElementById("root")!).render(
+  <BrowserRouter>
+    <StrictMode>
+      <App />
+    </StrictMode>
+  </BrowserRouter>
+);
+
+/**
+ * Workshop 2: App component has been wrapped with <BrowserRouter> already.
+ */
