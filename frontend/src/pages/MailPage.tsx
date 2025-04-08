@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, MouseEvent, useEffect } from "react";
 import { Button } from "../components/Button";
 import { PORT } from "../../../backend/config.json";
-import { Mail } from "../../../backend/src/constants/types";
+import { Mail } from "../../../shared/constants/types";
 import axios from "axios";
 
 const MailPage = () => {

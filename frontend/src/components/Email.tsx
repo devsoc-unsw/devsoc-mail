@@ -32,23 +32,6 @@ const Email = (props: EmailProps) => {
     );
   };
 
-  const readEmail = async (id: number) => {
-    try {
-      const mailId = id;
-      const res = await axios.get(`http://localhost:${PORT}/mail/${mailId}`, {
-        headers: {
-          session: localStorage.getItem("sessionId"),
-        },
-      });
-      await handleRead();
-      setRead(true);
-      navigate("/view", { state: res.data });
-    } catch (err) {
-      console.log("mail cannot be found");
-      console.log(err);
-    }
-  };
-
   const handleRead = async() => {
     try {
       await axios.put(
@@ -60,6 +43,8 @@ const Email = (props: EmailProps) => {
           }
         }
       );
+      setRead(true);
+      navigate(`/mail/${props.id}`);
     } catch(err) {
       console.error(err);
     }
@@ -77,15 +62,13 @@ const Email = (props: EmailProps) => {
         onChange={() => selectEmail(props.id)}
       />
       <button
-        onClick={() => {
-          readEmail(props.id);
-        }}
-        className="border-0 text-center flex gap-2 w-full cursor-pointer"
+        onClick={handleRead}
+        className="border-0 text-center flex gap-2 cursor-pointer overflow-hidden"
       >
         <p className="font-bold">{props.from}</p>
         <p className="font-bold truncate">{props.subject}</p>
         <p className="truncate">{props.body}</p>
-        <div className="flex justify-end w-40/100">
+        <div className="flex justify-end w-40/100 mr-2">
           <p className="text-right">{new Date(props.date).toLocaleDateString("en-AU")}</p>
         </div>
       </button>

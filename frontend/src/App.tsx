@@ -10,8 +10,10 @@ function App() {
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/mail" element={<MailPage />} />
-        <Route path="/view" element={<ViewPage />} />
+        <Route path="/mail">
+          <Route index element={<MailPage />} />
+          <Route path=":id" element={<ViewPage />} />
+        </Route>
       </Routes>
     </>
   );

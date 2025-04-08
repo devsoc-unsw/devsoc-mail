@@ -1,11 +1,35 @@
 import { ViewBox } from "../components/ViewBox";
 import Logo from "../assets/Logo.png";
 import { useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { PORT } from "../../../backend/config.json";
+import { Mail } from "../../../backend/src/constants/types";
 
 const ViewPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const emailData = location.state;
+  const [url, mailId] = location.pathname.split("/mail/");
+  const [emailData, setEmailData] = useState<Mail>();
+
+  const getEmail = async () => {
+    try {
+      const res = await axios.get(`http://localhost:${PORT}/mail/${mailId}`, {
+        headers: {
+          session: localStorage.getItem("sessionId"),
+        },
+      });
+      setEmailData(res.data);
+    } catch (err) {
+      console.log("mail cannot be found");
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    getEmail();
+  }, []);
+
   return (
     <div className="max-w-4xl mx-auto bg-white p-6">
       <div className="flex justify-between items-center mb-6">
@@ -18,11 +42,11 @@ const ViewPage = () => {
         </button>
       </div>
       <ViewBox
-        subject={emailData.title}
-        date={emailData.timeSent}
-        from={emailData.sender}
-        to={emailData.receivers}
-        body={emailData.message}
+        subject={emailData?.title || ""}
+        date={emailData?.timeSent || new Date()}
+        from={emailData?.sender || ""}
+        to={emailData?.receivers || []}
+        body={emailData?.message || ""}
       />
     </div>
   );

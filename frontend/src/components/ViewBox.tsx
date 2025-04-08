@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import ArrowBackIosRoundedIcon from "@mui/icons-material/ArrowBackIosRounded";
 
-interface ViewBoxProps {
+export interface ViewBoxProps {
   subject: string;
   date: Date;
   from: string;
