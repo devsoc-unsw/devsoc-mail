@@ -19,6 +19,7 @@ const NewEmail = (props: NewEmailProps) => {
     props.setOpen(false);
   };
 
+  // EXAMPLE
   const handleSend = async(event: MouseEvent<HTMLElement>) => {
     event.preventDefault();
     try {

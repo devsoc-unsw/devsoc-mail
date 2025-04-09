@@ -38,24 +38,9 @@ const RegisterPage = () => {
     }
   }, []);
 
+  // DEMO
   const handleRegister = async(event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    try {
-      const response = await axios.post(
-        `http://localhost:${PORT}/auth/register`,
-        { name: name, email: email, password: _password }
-      );
-      localStorage.setItem("sessionId", response.data.sessionId);
-      const data = {
-              email,
-              loginTime: new Date(),
-            };
-      const dataString = JSON.stringify(data);
-      localStorage.setItem("userData", dataString);
-      navigate('/mail');
-    } catch(err) {
-      console.error(err);
-    }
+  
   }
 
   return (

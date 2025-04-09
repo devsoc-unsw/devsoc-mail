@@ -32,6 +32,7 @@ const Email = (props: EmailProps) => {
     );
   };
 
+  // EXAMPLE
   const handleRead = async() => {
     try {
       await axios.put(

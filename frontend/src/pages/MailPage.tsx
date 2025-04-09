@@ -15,7 +15,14 @@ const MailPage = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [emails, setEmails] = useState<Mail[]>([]);
   const [currEmail, setCurrEmail] = useState("");
+  
+  // DEMO
+  const handleLogout = async(event: MouseEvent<HTMLElement>) => {
+    event.preventDefault();
 
+  }
+  
+  // EXAMPLE
   const handleDelete = async() => {
     try {
       const email = currEmail;
@@ -34,41 +41,19 @@ const MailPage = () => {
     }
   }
 
-  const handleLogout = async(event: MouseEvent<HTMLElement>) => {
-    event.preventDefault();
-    try {
-      await axios.delete(
-        `http://localhost:${PORT}/auth/logout`,
-        { headers: {
-          "session": localStorage.getItem("sessionId") // Add the session ID to the request headers
-          }
-        }
-      );
-      localStorage.removeItem("sessionId");
-      localStorage.removeItem("userData");
-      navigate('/');
-    } catch(err) {
-      console.error(err);
-    }
+  /**
+   * Route: /mail/view
+   * const email = JSON.parse(localStorage.getItem("userData") as string).email;
+   *  params: { email },
+      headers: {
+          "session": localStorage.getItem("sessionId")
+      }
+   * 
+   */
+  const loadAllMails = async() => {
+    
   }
 
-  const loadAllMails = async() => {
-    try {
-      const email = JSON.parse(localStorage.getItem("userData") as string).email;
-      const res = await axios.get(
-        `http://localhost:${PORT}/mail/view`,
-        { 
-          params: { email },
-          headers: {
-          "session": localStorage.getItem("sessionId") // Add the session ID to the request headers
-          }
-        }
-      );
-      setEmails(res.data.mails);
-    } catch(err) {
-      console.error(err);
-    }
-  }
 
   useEffect(() => {
     if (!localStorage.getItem("sessionId")) {

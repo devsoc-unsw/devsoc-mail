@@ -12,18 +12,14 @@ const ViewPage = () => {
   const [url, mailId] = location.pathname.split("/mail/");
   const [emailData, setEmailData] = useState<Mail>();
 
-  const getEmail = async () => {
-    try {
-      const res = await axios.get(`http://localhost:${PORT}/mail/${mailId}`, {
-        headers: {
-          session: localStorage.getItem("sessionId"),
-        },
-      });
-      setEmailData(res.data);
-    } catch (err) {
-      console.log("mail cannot be found");
-      console.log(err);
+  /**
+   * Route: /mail/${mailId}
+   * headers: {
+          session: localStorage.getItem("sessionId")
     }
+   */
+  const getEmail = async () => {
+   
   };
 
   useEffect(() => {

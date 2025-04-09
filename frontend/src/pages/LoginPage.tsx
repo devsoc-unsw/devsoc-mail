@@ -19,6 +19,7 @@ const LoginPage = () => {
     }
   }, []);
 
+  // EXAMPLE
   const handleLogin = async(event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
