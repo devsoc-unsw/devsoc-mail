@@ -16,6 +16,83 @@ import {
   setSessions,
 } from "../dataStore";
 
+/**
+ * You can use the following helper functions in your code:
+ *
+ * - generateUserId(): UserId
+ *   ➤ Generates a random 6-digit user ID.
+ *
+ * - isValidName(name: Name): string | boolean
+ *   ➤ Checks if the provided name is within 1 to 100 characters.
+ *   ➤ Returns true if valid, or an error string if not.
+ *
+ * - isValidEmail(email: Email, isRegister?: boolean): string | boolean
+ *   ➤ Checks if the provided email is within 1 to
+ *      50 characters and ends with `@devsoc.mail`.
+ *   ➤ Checks if the email already exists during registration.
+ *   ➤ Returns true if valid, or an error string if not.
+ *
+ * - isValidPassword(password: Password): string | boolean
+ *   ➤ Checks if the password is at least 6 characters long and contains at
+ *      least one lowercase letter, one uppercase letter, and one number.
+ *   ➤ Returns true if valid, or an error string if not.
+ */
+
+/** DEMO
+ * Registers a new user by validating their name, email, and password, and
+ * then creating a new session and user record.
+ *
+ * @param name - The name of the user to register.
+ * @param email - The email of the user to register.
+ * @param password - The password of the user to register.
+ * @returns The newly created session object with sessionId and userId.
+ *
+ * @throws {Error} If the name is invalid (too long or too short).
+ * @throws {Error} If the email is invalid (too long, too short, or already
+ * exists).
+ * @throws {Error} If the password is invalid (does not contain at least one
+ * uppercase letter, one lowercase letter, and one number).
+ */
+export function authRegister(
+  name: Name,
+  email: Email,
+  password: Password
+): Session {
+  // return session;
+}
+
+/**
+ * Logs in an existing user and returns a session
+ * Workshop 5 Exercise 1
+ *
+ * Errors to handle:
+ * 400 Email does not have the suffix @devsoc.mail
+ * 400 Email does not exist
+ * 400 Password is incorrect
+ *
+ * Otherwise, return a session + store the session into sessionStore
+ *
+ * HINT: see function authRegister
+ *
+ * @param email - The email of the user attempting to log in.
+ * @param password - The password of the user attempting to log in.
+ * @returns An object containing the sessionId for the logged-in user.
+ */
+export function authLogin(email: Email, password: Password) {
+  // return { sessionId: sessionId };
+}
+
+/** DEMO
+ * Logs out a user by removing their session from the active session list.
+ * 
+ * @param sessionId - The session ID of the user to log out.
+ * @returns An empty object after successfully logging the user out.
+ */
+export function authLogout(sessionId: SessionId) {
+  // return {};
+}
+
+////////////////////////////// HELPER FUNCTIONS  ////////////////////////////////
 function generateUserId(): UserId {
   return Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
 }
@@ -42,7 +119,7 @@ function isValidEmail(email: Email, isRegister?: boolean): string | boolean {
   }
 
   const users = getData().users;
-  if (users.find(u => u.email === email) && isRegister) {
+  if (users.find((u) => u.email === email) && isRegister) {
     return ErrorMap["EMAIL_ALREADY_EXISTS"];
   }
 
@@ -71,112 +148,4 @@ function isValidPassword(password: Password): string | boolean {
   }
 
   return true;
-}
-
-/**
- * Registers and logs in a new email and returns a session
- * @param name
- * @param email
- * @param password
- */
-export function authRegister(
-  name: Name,
-  email: Email,
-  password: Password
-): Session {
-  // name is greater than 100 or less than 1 characters
-  if (isValidName(name) !== true) {
-    throw new Error(isValidName(name) as string);
-  }
-
-  // name is greater than 100 or less than 1 characters
-  if (isValidEmail(email, true) !== true) {
-    throw new Error(isValidEmail(email) as string);
-  }
-
-  // password should have 1 uppercase, 1 lowercase, and 1 number
-  if (isValidPassword(password) !== true) {
-    throw new Error(isValidPassword(password) as string);
-  }
-
-  const userId = generateUserId();
-
-  const sessions: Session[] = getSessions();
-  const session: Session = {
-    sessionId: generateSessionId(),
-    userId: userId,
-  };
-  sessions.push(session);
-  setSessions(sessions);
-
-  const database = getData();
-  const user: User = {
-    name: name,
-    email: email,
-    password: password,
-    inbox: {},
-    userId: userId
-  };
-  database.users.push(user);
-  setData(database);
-
-  return session;
-}
-
-/**
- * Logs in an existing user and returns a session
- * Workshop 5 Exercise 1
- *
- * Errors to handle:
- * 400 Email does not have the suffix @devsoc.mail
- * 400 Email does not exist
- * 400 Password is incorrect
- *
- * Otherwise, return a session + store the session into sessionStore
- *
- * HINT: see function authRegister
- *
- * @param email
- * @param password
- */
-export function authLogin(email: Email, password: Password) {
-  const store = getData();
-
-  // if email does not have suffix
-  if (isValidEmail(email) !== true) {
-    throw new Error(isValidEmail(email) as string);
-  }
-
-  // find the user from the email
-  const user = store.users.find((user) => user.email === email);
-
-  // if email does not exist
-  if (!user || user === undefined) {
-    throw new Error(ErrorMap["EMAIL_DOES_NOT_EXIST"]);
-  }
-
-  // if password is incorrect
-  if (user.password !== password) {
-    throw new Error(ErrorMap["PASSWORD_INCORRECT"]);
-  }
-
-  const sessions: Session[] = getSessions();
-  const sessionId = generateSessionId();
-  const session: Session = {
-    sessionId: sessionId,
-    userId: user.userId,
-  };
-  sessions.push(session);
-  setSessions(sessions);
-
-  return { sessionId: sessionId };
-}
-
-export function authLogout(sessionId: SessionId) {
-  const store = getSessions();
-  const sessions = store.filter((session) => session.sessionId !== sessionId);
-
-  setSessions(sessions);
-
-  return {};
 }
