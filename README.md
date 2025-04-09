@@ -1,6 +1,17 @@
 # devsoc mail
 
-epic training program project
+API Docs
+| HTTP Verb | Path               | Variables                             | Returns                                                          | Description                                                     | Error Conditions                                                                                         |
+|-----------|--------------------|---------------------------------------|------------------------------------------------------------------|-----------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|
+| POST      | /auth/register      | body `name`, `email`, `password`           | `{ "session": "abc123" }`                                          | Registers and logs in a new email and returns a session.       | 400 Full name is greater than 100 characters or less than 1 character.<br>400 Email address is greater than 50 characters or less than 1 character.<br>400 Email already exists<br>400 Email does not have the suffix @devsoc.mail<br>400 Password must be greater than 6 characters and have at least 1 uppercase, 1 lowercase and 1 number. |
+| POST      | /auth/login         | body `email, password`                 | `{ "session": "abc123" }`                                          | Logs in an existing user and returns a session.                | 400 Email does not have the suffix @devsoc.mail<br>400 Email does not exist<br>400 Password is incorrect  |
+| DELETE    | /auth/logout        | header `session`                       | `{}`                                                             | Logs out a logged in user                                       | 401 Invalid session                                                                                        |
+| GET       | /mail/view          | header `session`                       | `{ "mail": [ { "mailId": 1234, "senderName": "Eve", "sender": "eve@devsoc.mail", "subject": "amazing subject", "timeSent": 1683019484, "read": false } ] }` | Returns a list of all the user’s existing mail                  | 401 Invalid session                                                                                        |
+| GET       | /mail/:mailId       | path `mailId`, header `session`         | `{ "mail": [ { "sender": "eve@devsoc.mail", "subject": "amazing subject", "timeSent": 1683019484, "receivers": ["a@devsoc.mail", "b@devsoc.mail"], "message": "mail content" } ] }` | View one specific mail in a user’s inbox                        | 400 Mail ID does not exist in user’s inbox<br>401 Invalid session                                         |
+| POST      | /mail/send          | header `session`, body `receivers`, `title`, `message` | `{ "mailId": 1234 }`                                               | Sends mail from a user to a list of receivers                   | 401 Invalid session<br>400 1 or more receivers do not exist<br>400 Title is greater than 50 characters     |
+| DELETE    | /mail/delete        | header `session`, body `mailIds`        | `{}`                                                             | Deletes a list of mail (can be just one) from the user’s inbox  | 401 Invalid session<br>400 1 or more mail ID does not exist                                               |
+| PUT       | /mail/read          | header `session`, body `mailId`        | `{}`                                                             | Marks mail as read if unread and unread if read                 | 401 Invalid session<br>400 mail ID does not exist                                                           |
+
 
 # Workshop 5 - Express
 
