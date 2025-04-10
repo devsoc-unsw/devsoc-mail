@@ -30,12 +30,13 @@ Here’s how it all connects:
 
 ## Task 0: General setup 
 `cd backend && npm i`
+
 `backend/constants/errors.ts` This contains a map of error messages used when the server fails to make a request
+
 `backend/constants/types.ts` This contains types (omg no way!!!) of different objects we are storing in the database. 
 
-
-## Task 1: Setting up the server 
-Inside `backend/index.ts` add the following imports
+## Files Walkthrough
+Inside `backend/index.ts`
 ```ts
 // backend/index.ts
 import dotenv from "dotenv";              // Loads environment variables from a .env file
@@ -55,7 +56,9 @@ dotenv.config();
 ```
 
 `app` is the express server
+
 `port` is from an .env file or from config.json
+
 ```ts
 // backend/index.ts
 const app = express();
@@ -74,7 +77,7 @@ Load the data from database.json
 loadData();
 ```
 
-Add the following for middleware and routes.
+For middleware and routes.
 ```ts
 //backend/index.ts
 app.use(express.json());     // Parses incoming JSON
@@ -84,7 +87,7 @@ app.use('', authRoutes);
 app.use('', mailRoutes);
 app.use(errorMiddleware);    // Handles errors across the app
 ```
-Add the following to make sure server closes.
+This makes sure server closes.
 ```ts
 //backend/index.ts
 process.on("SIGINT", async () => {    
@@ -93,17 +96,16 @@ process.on("SIGINT", async () => {
 });
 ```
 
-## Task 2: Setting up the database
-Inside `backend/dataStore.ts` add the following imports.
+Inside `backend/dataStore.ts` we have the following imports.
 ```ts
 // backend/dataStore.ts
 import fs from 'fs';                              // File system module to interact with JSON files
 import { v4 as uuidv4 } from 'uuid';              // To generate unique session IDs
 import { DataStore, Session, SessionStore } from './constants/types'; // Type definitions
 ```
-> fs: This module helps in reading and writing to files (database.json and sessions.json).
-> uuid: Used to generate unique session IDs.
-> constants/types: This is where your custom TypeScript types (DataStore, Session, SessionStore) are defined.
+- `fs`: This module helps in reading and writing to files (database.json and sessions.json).
+- `uuid`: Used to generate unique session IDs. (See https://www.npmjs.com/package/uuid)
+- `constants/types`: This is where your custom TypeScript types (DataStore, Session, SessionStore) are defined.
 
 Define variables for session and database.
 ```ts
@@ -114,9 +116,10 @@ let database: DataStore = { users: [], mails: [] };  // Store for users and mail
 const SESSION_PATH = "./src/sessions.json";  // Path to the session file
 const DATA_PATH = "./src/database.json";    // Path to the data file (users & mails)
 ```
-> sessionStore: In-memory object that holds session data.
-> database: In-memory object for storing users and mails.
-> SESSION_PATH and DATA_PATH: File paths where data will be saved.
+
+- `sessionStore`: In-memory object that holds session data.
+- `database`: In-memory object for storing users and mails.
+- `SESSION_PATH` and `DATA_PATH`: File paths where data will be saved.
 
 This function writes the current session store to the `sessions.json` file:
 ```ts
@@ -203,8 +206,7 @@ export function setData(newData: DataStore) {
 }
 ```
 
-## Task 3: Setting up middleware
-Inside `backend/middleware.ts`, add the following imports:
+Inside `backend/middleware.ts`
 ```ts
 // backend/middleware.ts
 import { Request, Response, NextFunction } from "express";   // Express request, response, and next function types
@@ -213,11 +215,11 @@ import { ErrorMap, StatusCodeMap } from "./constants/errors";  // Error mappings
 import { Session } from "./constants/types";                   // Session type definition
 // import { getSessionsCollection } from "./db";               // Database session collection (commented out)
 ```
-> express: The Express library is used for handling HTTP requests and middleware.
-> dataStore: This module helps load and manage session data.
-> constants/errors: This module contains error mappings for the application. constants/types: This module contains type definitions for Session.
+- `express`: The Express library is used for handling HTTP requests and middleware.
+- `dataStore`: This module helps load and manage session data.
+- `constants/errors`: This module contains error mappings for the application. constants/types: This module contains type definitions for Session.
 
-This middleware function checks if a valid session exists in the request. If the session is invalid or not found, it returns an error:
+This middleware function checks if a valid session exists in the request. If the session is invalid or not found, it passes an error object to the `next` function:
 ```ts
 // backend/middleware.ts
 
@@ -262,8 +264,6 @@ Finally, the middleware functions are exported so they can be used in the app’
 export { errorMiddleware, sessionMiddleware }; // Exports both middlewares for use in routing
 ```
 
-
-## Task 4: Setting up routes
 Inside the `backend/routes` directory,`auth.routes.ts`, `mail.routes.ts` and `other.routes.ts` files contain some routes. 
 
 Each route can be associated with different HTTP methods, such as:
@@ -273,7 +273,7 @@ Each route can be associated with different HTTP methods, such as:
 * DELETE: Used to remove a resource from the server.
 
 
-## Task 6: Set up backend logic
+## Task 1: Set up backend logic
 Backend logic in the directory `backend/services` get/update data from the database. For example, the below function registers a user and stores them in the database. 
 ```ts
 
@@ -337,7 +337,7 @@ export function authLogin(email: Email, password: Password) {
 }
 ```
 
-## Task 7: Setting up controllers
+## Task 2: Setting up controllers
 This function handles an incoming HTTP request (from the client). It extracts the name, email and password from the request body and calls the function `authRegister(name, email, password)` to register a user.
 ```ts
 // backend/controllers/auth.controllers.ts
@@ -363,7 +363,7 @@ async function login(req: Request, res: Response) {
 }
 ```
 
-## Task 8: Sending HTTP requests to backend
+## Task 3: Sending HTTP requests from Frontend to the Backend
 Now we want to send requests from the frontend. Navigate to `frontend/src/pages/RegisterPage.tsx`.
 This function sends a POST request to register a user and navigates to the `/mail` page, otherwise throws an error.
 ```ts
@@ -388,7 +388,8 @@ This function sends a POST request to register a user and navigates to the `/mai
     }
   }
 ```
-Task: Go to `LoginPage.tsx` and add a POST request for the user to login. Then add the rest of the requests (Hint: Check if the request is POST/GET/PUT/DELETE by checking the routes).
+Task: Go to `LoginPage.tsx` and add a POST request for the user to login. Then add the rest of the requests 
+> Hint: Check if the request is POST/GET/PUT/DELETE by checking the routes
 ```ts
 
   const handleLogin = async(event: FormEvent<HTMLFormElement>) => {
