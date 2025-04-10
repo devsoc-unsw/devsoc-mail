@@ -76,7 +76,7 @@ export function getEmail(session: SessionId, mailId: MailId) {
     throw new Error(ErrorMap["USER_DOES_NOT_EXIST"]);
   }
 
-  return email;
+  return { mail: email };
 }
 /**
  * Sends an email to the specified receivers with the given title and message.
