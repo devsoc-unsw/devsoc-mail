@@ -7,7 +7,7 @@ import otherRoutes from './routes/other.routes';
 import { PORT } from "../config.json"
 import { errorMiddleware } from "./middleware";
 import cors from "cors";
-import { loadData } from "./dataStore";
+import { loadData, connectToDatabase} from "./dataStore";
 
 dotenv.config();
 
@@ -15,21 +15,34 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || PORT;
 
-app.listen(port, () => {
-    console.log(`Devsoc-mail server is running at http://localhost:${port}`);
-});
-
 // database connection
 // dbConnect();
-loadData();
+//loadData();
 
-// routes & middleware
-app.use(express.json());
-app.use(cors());
-app.use('', otherRoutes);
-app.use('', authRoutes);
-app.use('', mailRoutes);
-app.use(errorMiddleware);
+async function startServer() {
+    try {
+        await connectToDatabase(); 
+        await loadData();
+
+        app.listen(port, () => {
+            console.log(`Devsoc-mail server is running at http://localhost:${port}`);
+        });
+        
+        // Routes & middleware
+        app.use(express.json());
+        app.use(cors());
+        app.use('', otherRoutes);
+        app.use('', authRoutes);
+        app.use('', mailRoutes);
+        app.use(errorMiddleware);
+
+    } catch (error) {
+        console.error('Error starting the server:', error);
+        process.exit(1);
+    }
+}
+
+startServer();
 
 // closing the server
 process.on("SIGINT", async () => {    
