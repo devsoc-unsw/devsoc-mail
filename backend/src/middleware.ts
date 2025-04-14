@@ -1,37 +1,70 @@
 import { Request, Response, NextFunction } from "express";
-import {loadSessions, getSessions } from "./dataStore"
 import { ErrorMap, StatusCodeMap } from "./constants/errors";
 import { Session } from "./constants/types";
-// import { getSessionsCollection } from "./db";
+import { sessionsCollection } from "./db";
+import { ObjectId } from "mongodb";
 
 // Session check middleware
-async function sessionMiddleware(req: Request, _res: Response, next: NextFunction) {
-    try {
-        loadSessions();
-        const sessionId = req.header('session');
-        let sessions: Session[] = getSessions();
-        const sessionExists = sessions.find(s => s.sessionId === sessionId);
+async function sessionMiddleware(
+  req: Request,
+  _res: Response,
+  next: NextFunction
+) {
+  try {
+    const sessionId = req.header("session");
 
-        if (!sessionId || !sessionExists) {
-            // Next error rather than throw is due to this being an asynchronous function
-            return next({
-                status: StatusCodeMap[ErrorMap["INVALID_SESSION"]],
-                message: ErrorMap["INVALID_SESSION"]
-            });
-        } 
-
-        next();
-    } catch (e) {
-        console.error("Session Middleware Error:", e);
-        return next(e);
+    if (!sessionId) {
+      return next({
+        status: StatusCodeMap[ErrorMap["INVALID_SESSION"]],
+        message: ErrorMap["INVALID_SESSION"],
+      });
     }
+
+    // Query MongoDB directly for the session
+    const sessionDoc = await sessionsCollection.findOne({
+      _id: new ObjectId(sessionId),
+    });
+
+    console.log("sessionDoc: ", sessionDoc);
+
+    if (!sessionDoc) {
+      return next({
+        status: StatusCodeMap[ErrorMap["INVALID_SESSION"]],
+        message: ErrorMap["INVALID_SESSION"],
+      });
+    }
+
+    // Attach the session to the request for later use
+    (req as any).userId = sessionDoc.userId;
+
+    next();
+  } catch (e) {
+    console.error("Session Middleware Error:", e);
+    return next(e);
+  }
 }
 
 // Error catching and throwing middleware
-function errorMiddleware(err: Error, _req: Request, res: Response, _next: NextFunction) {
-    const message = err.message;
-    const status = StatusCodeMap[message];
-    res.status(status).json({ error: message });
+function errorMiddleware(
+  err: Error,
+  _req: Request,
+  res: Response,
+  _next: NextFunction
+) {
+  const message = err.message;
+  const status = StatusCodeMap[message] || 500;
+  res.status(status).json({ error: message });
 }
 
-export { errorMiddleware, sessionMiddleware };
+// Create a middleware that provides user data
+function withUser(handler: (req: Request, res: Response) => Promise<void>) {
+  return async (req: Request, res: Response) => {
+    try {
+      await handler(req, res);
+    } catch (err: any) {
+      res.status(400).json({ error: err.message });
+    }
+  };
+}
+
+export { errorMiddleware, sessionMiddleware, withUser };

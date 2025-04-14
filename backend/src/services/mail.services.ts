@@ -1,29 +1,67 @@
+import { ObjectId } from "mongodb";
 import { ErrorMap } from "../constants/errors";
-import { UserId, SessionId, MailId, Receivers, Title, Message, Mail, Email } from "../constants/types";
-import { getData, getSessions, setData } from "../dataStore";
+import {
+  UserId,
+  SessionId,
+  MailId,
+  Receivers,
+  Title,
+  Message,
+  Mail,
+  Email,
+  Session,
+} from "../constants/types";
+import { mailsCollection, sessionsCollection, usersCollection } from "../db";
 
-export function viewAllMail(email: Email) {
-  const store = getData();
+export async function viewAllMail(email: string, userId: string) {
+  try {
+    // Convert string userId to ObjectId if needed
+    const userObjectId = new ObjectId(userId);
 
-  const user = store.users.find((user) => user.email === email);
-  if (!user || user === undefined) {
-    throw new Error(ErrorMap["USER_DOES_NOT_EXIST"]);
+    // Get users from MongoDB
+    const user = await usersCollection.findOne({
+      _id: userObjectId,
+    });
+    // const users = usersDoc?.users || [];
+
+    // Check if user exists
+    // const user = users.find((user: any) => user.email === email);
+    if (!user || user === undefined) {
+      throw new Error(ErrorMap["USER_DOES_NOT_EXIST"]);
+    }
+
+    // Get mails from MongoDB
+    const mailsDoc = await mailsCollection.findOne({
+      _id: new ObjectId("placeholder"),
+    });
+    const mails = mailsDoc?.mails || [];
+
+    // Filter mails by receiver
+    const emails = mails.filter((mail: Mail) => mail.receivers.includes(email));
+
+    return { mails: emails };
+  } catch (error) {
+    // Handle error
   }
-
-  const emails = store.mails.filter((mail) =>
-    mail.receivers.includes(email)
-  );
-  return { mails: emails };
 }
 
 function generateMailId(): MailId {
-  return Math.floor(Date.now() * Math.random() * (999999 - 100000 + 1)) + 100000;
+  return (
+    Math.floor(Date.now() * Math.random() * (999999 - 100000 + 1)) + 100000
+  );
 }
 
-function isValidReceiver(receivers: Receivers): string | boolean {
-  const users = getData().users;
+async function isValidReceiver(
+  receivers: Receivers
+): Promise<string | boolean> {
+  // Get users from MongoDB
+  const usersDoc = await usersCollection.findOne({
+    _id: new ObjectId("placeholder"),
+  });
+  const users = usersDoc?.users || [];
+
   for (const receiver of receivers) {
-    if (!users.find(u => u.email === receiver)) {
+    if (!users.find((u: any) => u.email === receiver)) {
       return ErrorMap["RECEIVER_MISSING"];
     }
   }
@@ -37,121 +75,193 @@ function isValidTitle(title: Title): string | boolean {
   return true;
 }
 
-
-
-export function getEmail(session: SessionId, mailId: MailId) {
-  if (isValidMailId(mailId) !== true) {
-    throw new Error(isValidMailId(mailId) as string);
+export async function getEmail(session: SessionId, mailId: MailId) {
+  if ((await isValidMailId(mailId)) !== true) {
+    throw new Error((await isValidMailId(mailId)) as string);
   }
 
-  const data = getData();
-  const mails = data.mails;
-  const sessions = getSessions();
+  // Get mails from MongoDB
+  const mailsDoc = await mailsCollection.findOne({
+    _id: new ObjectId("placeholder"),
+  });
+  const mails = mailsDoc?.mails || [];
 
-  const email = mails.find(m => m.mailId == mailId) as Mail;
+  // Get sessions from MongoDB
+  const sessionsDoc = await sessionsCollection.findOne({
+    _id: new ObjectId("sessions"),
+  });
+  const sessions = sessionsDoc?.sessions || [];
+
+  // Find mail by ID
+  const email = mails.find((m: Mail) => m.mailId == mailId) as Mail;
   if (!email || email === undefined) {
     throw new Error(ErrorMap["EMAIL_DOES_NOT_EXIST"]);
   }
 
-
-  const user = sessions.find(s => s.sessionId == session)?.userId as number;
+  // Find user by session
+  const user = sessions.find((s: any) => s.sessionId == session)
+    ?.userId as number;
   if (!user || user === undefined) {
     throw new Error(ErrorMap["USER_DOES_NOT_EXIST"]);
   }
 
   return email;
-
-
 }
 
-function getSender(sessionId: SessionId) {
-  const sessions = getSessions();
-  const session = sessions.find(s => s.sessionId === sessionId);
+async function getSender(sessionId: SessionId) {
+  // Get sessions from MongoDB
+  const sessionsDoc = await sessionsCollection.findOne({
+    _id: new ObjectId("sessions"),
+  });
+  const sessions = sessionsDoc?.sessions || [];
+
+  // Find session by ID
+  const session = sessions.find((s: any) => s.sessionId === sessionId);
   const userId = session?.userId;
-  const users = getData().users;
-  const addr = users.find(u => u.userId === userId)?.email;
+
+  // Get users from MongoDB
+  const usersDoc = await usersCollection.findOne({
+    _id: new ObjectId("placeholder"),
+  });
+  const users = usersDoc?.users || [];
+
+  // Find user by ID
+  const addr = users.find((u: any) => u.userId === userId)?.email;
   return addr;
 }
 
-export function sendMail(receivers: Receivers, title: Title, message: Message, session: SessionId) {
+export async function sendMail(
+  receivers: Receivers,
+  title: Title,
+  message: Message,
+  session: SessionId
+) {
   console.log("Entering sendMail");
-  // one or more receivers do not exist
-  if (isValidReceiver(receivers) != true) {
-    throw new Error(isValidReceiver(receivers) as string);
+
+  // Validate receivers
+  if ((await isValidReceiver(receivers)) != true) {
+    throw new Error((await isValidReceiver(receivers)) as string);
   }
 
-  // title is greater thqn 50 characters
+  // Validate title
   if (isValidTitle(title) != true) {
     throw new Error(isValidTitle(title) as string);
   }
 
+  // Generate mail ID
   const mailId = generateMailId();
+
+  // Create mail
   const newMail: Mail = {
     mailId: mailId,
-    sender: getSender(session) as string,
+    sender: (await getSender(session)) as string,
     receivers: receivers,
     title: title,
     timeSent: new Date(),
     message: message,
-    readBy: []
-  }
-  const dataStore = getData();
-  dataStore.mails.push(newMail);
-  setData(dataStore);
-  
+    readBy: [],
+  };
+
+  // Add mail to MongoDB
+  await mailsCollection.updateOne(
+    { _id: new ObjectId("placeholder") },
+    { $push: { mails: newMail } as any },
+    { upsert: true }
+  );
+
   console.log("Returning from sendMail");
   return { mailId: mailId };
 }
 
-function isValidMailId(mailId: MailId): string | boolean {
-  const mails = getData().mails;
-  if (!mails.find(m => m.mailId === mailId)) {
+async function isValidMailId(mailId: MailId): Promise<string | boolean> {
+  // Get mails from MongoDB
+  const mailsDoc = await mailsCollection.findOne({
+    _id: new ObjectId("placeholder"),
+  });
+  const mails = mailsDoc?.mails || [];
+
+  if (!mails.find((m: Mail) => m.mailId === mailId)) {
     return ErrorMap["MAIL_MISSING"];
   }
   return true;
 }
 
-export function deleteMail(mailIds: MailId[], userEmail: Email) {
+export async function deleteMail(mailIds: MailId[], userEmail: Email) {
   for (const mailId of mailIds) {
-    if (isValidMailId(mailId) !== true) {
-      throw new Error(isValidMailId(mailId) as string);
+    if ((await isValidMailId(mailId)) !== true) {
+      throw new Error((await isValidMailId(mailId)) as string);
     }
   }
 
-  const dataStore = getData();
-  const mails = dataStore.mails;
+  // Get mails from MongoDB
+  const mailsDoc = await mailsCollection.findOne({
+    _id: new ObjectId("placeholder"),
+  });
+  const mails = mailsDoc?.mails || [];
+
+  // Process each mail
   for (const mailId of mailIds) {
-    const mail = mails.find(m => m.mailId === mailId) as Mail;
-    mail.receivers = mail.receivers.filter(r => r != userEmail);
+    const mail = mails.find((m: Mail) => m.mailId === mailId) as Mail;
+    mail.receivers = mail.receivers.filter((r) => r != userEmail);
 
     if (mail.receivers.length == 0) {
-      const index = mails.findIndex(m => m.mailId === mailId);
-      dataStore.mails.splice(index, 1);
+      // Remove mail from MongoDB if no receivers left
+      await mailsCollection.updateOne(
+        { _id: new ObjectId("placeholder") },
+        { $pull: { mails: { mailId: mailId } } as any },
+        { upsert: true }
+      );
+    } else {
+      // Update mail in MongoDB
+      await mailsCollection.updateOne(
+        { _id: new ObjectId("placeholder"), "mails.mailId": mailId },
+        { $set: { "mails.$.receivers": mail.receivers } }
+      );
     }
   }
-  setData(dataStore);
+
   return {};
 }
 
-export function readMail(mailId: MailId, session: SessionId) {
-  if (isValidMailId(mailId) !== true) {
-    throw new Error(isValidMailId(mailId) as string);
+export async function readMail(mailId: MailId, session: SessionId) {
+  if ((await isValidMailId(mailId)) !== true) {
+    throw new Error((await isValidMailId(mailId)) as string);
   }
 
-  const data = getData();
-  const mails = data.mails;
-  const users = data.users;
-  const sessions = getSessions();
+  // Get data from MongoDB
+  const mailsDoc = await mailsCollection.findOne({
+    _id: new ObjectId("placeholder"),
+  });
+  const mails = mailsDoc?.mails || [];
 
-  // assume sessions are handled correctly by middleware
-  const mail = mails.find(m => m.mailId == mailId) as Mail;
-  const userId = sessions.find(s => s.sessionId == session)?.userId as number;
-  const email = users.find(u => u.userId === userId)?.email as string;
+  const usersDoc = await usersCollection.findOne({
+    _id: new ObjectId("placeholder"),
+  });
+  const users = usersDoc?.users || [];
 
+  const sessionsDoc = await sessionsCollection.findOne({
+    _id: new ObjectId("sessions"),
+  });
+  const sessions = sessionsDoc?.sessions || [];
+
+  // Find mail by ID
+  const mail = mails.find((m: Mail) => m.mailId == mailId) as Mail;
+
+  // Find user by session
+  const userId = sessions.find((s: any) => s.sessionId == session)
+    ?.userId as number;
+  const email = users.find((u: any) => u.userId === userId)?.email as string;
+
+  // Mark mail as read if not already
   if (!mail.readBy.includes(email)) {
     mail.readBy.push(email);
+
+    // Update mail in MongoDB
+    await mailsCollection.updateOne(
+      { _id: new ObjectId("placeholder"), "mails.mailId": mailId },
+      { $set: { "mails.$.readBy": mail.readBy } }
+    );
   }
 
-  setData(data);
   return {};
 }
