@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "start": "npx tsx src/index.ts",
-    "dev": "tsc -w",
+    "start": "nodemon --exec npx tsx src/index.ts",
+    "watch": "tsc -w",
     "build": "tsc -b",
     "lint": "eslint .",
     "test": "jest"
@@ -16,6 +16,7 @@
     "@types/jest": "^29.5.14",
     "eslint": "^9.17.0",
     "jest": "^29.7.0",
+    "nodemon": "^3.1.9",
     "ts-jest": "^29.3.0",
     "typescript": "~5.6.2",
     "typescript-eslint": "^8.18.2"
