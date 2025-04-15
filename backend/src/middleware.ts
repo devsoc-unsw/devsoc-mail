@@ -21,9 +21,20 @@ async function sessionMiddleware(
     }
 
     // Query MongoDB directly for the session
+
     const sessionDoc = await sessionsCollection.findOne({
-      _id: new ObjectId(sessionId),
+      sessionId: sessionId
     });
+    
+    // const sessionDoc = await sessionsCollection.findOne({});
+    // if (!sessionDoc) {
+    //   return next({
+    //     status: StatusCodeMap[ErrorMap["INVALID_SESSION"]],
+    //     message: ErrorMap["INVALID_SESSION"],
+    //   });
+    // }
+
+    //const session = sessionDoc.sessions.find((s: any) => s.sessionId === sessionId);
 
     console.log("sessionDoc: ", sessionDoc);
 

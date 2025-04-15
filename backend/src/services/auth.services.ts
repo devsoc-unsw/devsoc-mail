@@ -109,18 +109,21 @@ export async function authRegister(
   };
 
   // Add session to MongoDB
-  await sessionsCollection.updateOne(
-    {},
-    { $push: { sessions: session } as any },
-    { upsert: true }
-  );
+  // await sessionsCollection.updateOne(
+  //   {},
+  //   { $push: { sessions: session } as any },
+  //   { upsert: true }
+  // );
+  await sessionsCollection.insertOne(session);
 
   // Add user to MongoDB
-  await usersCollection.updateOne(
-    {},
-    { $push: { users: user } as any },
-    { upsert: true }
-  );
+  // await usersCollection.updateOne(
+  //   {},
+  //   { $push: { users: user } as any },
+  //   { upsert: true }
+  // );
+
+  await usersCollection.insertOne(user);
 
   return session;
 }
@@ -137,19 +140,26 @@ export async function authLogin(email: Email, password: Password) {
 
   // Check if user exists
   if (!user) {
+    console.log("should error here");
     throw new Error(
       `${ErrorMap["EMAIL_DOES_NOT_EXIST"]} or ${ErrorMap["PASSWORD_INCORRECT"]}`
     );
   }
 
   // Add session to MongoDB
-  const sessionDoc = await sessionsCollection.insertOne({
-    userId: user._id.toString(),
-  });
+  // const sessionDoc = await sessionsCollection.insertOne({
+  //   sessionId: 
+  //   userId: user.userId,
+  // });
 
-  console.log(sessionDoc.insertedId.toString());
+  const session: Session = {
+    sessionId: uuidv4(),
+    userId: uuidv4(),
+  };
 
-  return sessionDoc.insertedId.toString();
+  await sessionsCollection.insertOne(session);
+
+  return session.sessionId;
 }
 
 export async function authLogout(sessionId: SessionId) {

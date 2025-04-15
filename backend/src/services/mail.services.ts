@@ -1,4 +1,4 @@
-import { ObjectId } from "mongodb";
+import { ObjectId, WithId } from "mongodb";
 import { ErrorMap } from "../constants/errors";
 import {
   UserId,
@@ -16,11 +16,11 @@ import { mailsCollection, sessionsCollection, usersCollection } from "../db";
 export async function viewAllMail(email: string, userId: string) {
   try {
     // Convert string userId to ObjectId if needed
-    const userObjectId = new ObjectId(userId);
+    //const userObjectId = new ObjectId(userId);
 
     // Get users from MongoDB
     const user = await usersCollection.findOne({
-      _id: userObjectId,
+      userId: userId
     });
     // const users = usersDoc?.users || [];
 
@@ -31,13 +31,19 @@ export async function viewAllMail(email: string, userId: string) {
     }
 
     // Get mails from MongoDB
-    const mailsDoc = await mailsCollection.findOne({
-      _id: new ObjectId("placeholder"),
-    });
-    const mails = mailsDoc?.mails || [];
+
+    // const mailsDoc = await mailsCollection.findOne({
+    //   _id: new ObjectId("placeholder"),
+    // });
+    // const mails = mailsDoc?.mails || [];
+
+    const mails = await mailsCollection.find().toArray() as WithId<Mail>[];
+    //const allMails: Mail[] = mails.flatMap((mails) => mails.mails);
 
     // Filter mails by receiver
+    //console.log(allMails);
     const emails = mails.filter((mail: Mail) => mail.receivers.includes(email));
+    //console.log(emails);
 
     return { mails: emails };
   } catch (error) {
@@ -55,16 +61,18 @@ async function isValidReceiver(
   receivers: Receivers
 ): Promise<string | boolean> {
   // Get users from MongoDB
-  const usersDoc = await usersCollection.findOne({
-    _id: new ObjectId("placeholder"),
-  });
-  const users = usersDoc?.users || [];
+  // const usersDoc = await usersCollection.findOne({
+  //   _id: new ObjectId("placeholder"),
+  // });
+  // const users = usersDoc?.users || [];
 
+  const users = await usersCollection.find().toArray();
   for (const receiver of receivers) {
     if (!users.find((u: any) => u.email === receiver)) {
       return ErrorMap["RECEIVER_MISSING"];
     }
   }
+  
   return true;
 }
 
@@ -81,16 +89,23 @@ export async function getEmail(session: SessionId, mailId: MailId) {
   }
 
   // Get mails from MongoDB
-  const mailsDoc = await mailsCollection.findOne({
-    _id: new ObjectId("placeholder"),
-  });
-  const mails = mailsDoc?.mails || [];
+
+  // const mailsDoc = await mailsCollection.findOne({
+  //   _id: new ObjectId("placeholder"),
+  // });
+  // const mails = mailsDoc?.mails || [];
+
+  const mails = await mailsCollection.find().toArray() as WithId<Mail>[];
+  //const allMails: Mail[] = mails.flatMap((mails) => mails.mails);
 
   // Get sessions from MongoDB
-  const sessionsDoc = await sessionsCollection.findOne({
-    _id: new ObjectId("sessions"),
-  });
-  const sessions = sessionsDoc?.sessions || [];
+
+  // const sessionsDoc = await sessionsCollection.findOne({
+  //   _id: new ObjectId("sessions"),
+  // });
+  // const sessions = sessionsDoc?.sessions || [];
+
+  const sessions = await sessionsCollection.find().toArray();
 
   // Find mail by ID
   const email = mails.find((m: Mail) => m.mailId == mailId) as Mail;
@@ -104,26 +119,32 @@ export async function getEmail(session: SessionId, mailId: MailId) {
   if (!user || user === undefined) {
     throw new Error(ErrorMap["USER_DOES_NOT_EXIST"]);
   }
-
+  //console.log(email);
   return email;
 }
 
 async function getSender(sessionId: SessionId) {
   // Get sessions from MongoDB
-  const sessionsDoc = await sessionsCollection.findOne({
-    _id: new ObjectId("sessions"),
-  });
-  const sessions = sessionsDoc?.sessions || [];
+
+  // const sessionsDoc = await sessionsCollection.findOne({
+  //   _id: new ObjectId("sessions"),
+  // });
+  // const sessions = sessionsDoc?.sessions || [];
+
+  const sessions = await sessionsCollection.find().toArray() as WithId<Session>[];
 
   // Find session by ID
   const session = sessions.find((s: any) => s.sessionId === sessionId);
   const userId = session?.userId;
 
   // Get users from MongoDB
-  const usersDoc = await usersCollection.findOne({
-    _id: new ObjectId("placeholder"),
-  });
-  const users = usersDoc?.users || [];
+  
+  // const usersDoc = await usersCollection.findOne({
+  //   _id: new ObjectId("placeholder"),
+  // });
+  // const users = usersDoc?.users || [];
+
+  const users = await usersCollection.find().toArray();
 
   // Find user by ID
   const addr = users.find((u: any) => u.userId === userId)?.email;
@@ -163,11 +184,15 @@ export async function sendMail(
   };
 
   // Add mail to MongoDB
-  await mailsCollection.updateOne(
-    { _id: new ObjectId("placeholder") },
-    { $push: { mails: newMail } as any },
-    { upsert: true }
-  );
+  //const mailIdObj = new ObjectId();
+
+  // await mailsCollection.updateOne(
+  //   { _id: mailIdObj },
+  //   { $push: { mails: newMail } as any },
+  //   { upsert: true }
+  // );
+
+  await mailsCollection.insertOne(newMail);
 
   console.log("Returning from sendMail");
   return { mailId: mailId };
@@ -175,11 +200,13 @@ export async function sendMail(
 
 async function isValidMailId(mailId: MailId): Promise<string | boolean> {
   // Get mails from MongoDB
-  const mailsDoc = await mailsCollection.findOne({
-    _id: new ObjectId("placeholder"),
-  });
-  const mails = mailsDoc?.mails || [];
 
+  // const mailsDoc = await mailsCollection.findOne({
+  //   _id: new ObjectId("placeholder"),
+  // });
+  // const mails = mailsDoc?.mails || [];
+  const mails = await mailsCollection.find().toArray() as WithId<Mail>[];
+  
   if (!mails.find((m: Mail) => m.mailId === mailId)) {
     return ErrorMap["MAIL_MISSING"];
   }
@@ -194,27 +221,30 @@ export async function deleteMail(mailIds: MailId[], userEmail: Email) {
   }
 
   // Get mails from MongoDB
-  const mailsDoc = await mailsCollection.findOne({
-    _id: new ObjectId("placeholder"),
-  });
-  const mails = mailsDoc?.mails || [];
 
+  // const mailsDoc = await mailsCollection.findOne({
+  //   _id: new ObjectId("placeholder"),
+  // });
+  // const mails = mailsDoc?.mails || [];
+
+  const mails = await mailsCollection.find().toArray() as WithId<Mail>[];
+  //const allMails: Mail[] = mails.flatMap((mails) => mails.mails);
   // Process each mail
   for (const mailId of mailIds) {
     const mail = mails.find((m: Mail) => m.mailId === mailId) as Mail;
     mail.receivers = mail.receivers.filter((r) => r != userEmail);
-
+    const mailIdObj = new ObjectId();
     if (mail.receivers.length == 0) {
       // Remove mail from MongoDB if no receivers left
       await mailsCollection.updateOne(
-        { _id: new ObjectId("placeholder") },
+        { _id: mailIdObj },
         { $pull: { mails: { mailId: mailId } } as any },
         { upsert: true }
       );
     } else {
       // Update mail in MongoDB
       await mailsCollection.updateOne(
-        { _id: new ObjectId("placeholder"), "mails.mailId": mailId },
+        { _id: mailIdObj, "mails.mailId": mailId },
         { $set: { "mails.$.receivers": mail.receivers } }
       );
     }
@@ -229,20 +259,27 @@ export async function readMail(mailId: MailId, session: SessionId) {
   }
 
   // Get data from MongoDB
-  const mailsDoc = await mailsCollection.findOne({
-    _id: new ObjectId("placeholder"),
-  });
-  const mails = mailsDoc?.mails || [];
 
-  const usersDoc = await usersCollection.findOne({
-    _id: new ObjectId("placeholder"),
-  });
-  const users = usersDoc?.users || [];
+  // const mailsDoc = await mailsCollection.findOne({
+  //   _id: new ObjectId("placeholder"),
+  // });
+  // const mails = mailsDoc?.mails || [];
 
-  const sessionsDoc = await sessionsCollection.findOne({
-    _id: new ObjectId("sessions"),
-  });
-  const sessions = sessionsDoc?.sessions || [];
+  const mails = await mailsCollection.find().toArray() as WithId<Mail>[];
+
+  // const usersDoc = await usersCollection.findOne({
+  //   _id: new ObjectId("placeholder"),
+  // });
+  // const users = usersDoc?.users || [];
+
+  const users = await usersCollection.find().toArray();
+
+  // const sessionsDoc = await sessionsCollection.findOne({
+  //   _id: new ObjectId("sessions"),
+  // });
+  // const sessions = sessionsDoc?.sessions || [];
+
+  const sessions = await sessionsCollection.find().toArray();
 
   // Find mail by ID
   const mail = mails.find((m: Mail) => m.mailId == mailId) as Mail;
@@ -257,8 +294,9 @@ export async function readMail(mailId: MailId, session: SessionId) {
     mail.readBy.push(email);
 
     // Update mail in MongoDB
+    const mailIdObj = new ObjectId();
     await mailsCollection.updateOne(
-      { _id: new ObjectId("placeholder"), "mails.mailId": mailId },
+      { _id: mailIdObj, "mails.mailId": mailId },
       { $set: { "mails.$.readBy": mail.readBy } }
     );
   }
