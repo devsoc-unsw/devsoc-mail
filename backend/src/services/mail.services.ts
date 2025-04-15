@@ -30,7 +30,7 @@ export async function viewAllMail(email: string, userId: string) {
     if (!user || user === undefined) {
       throw new Error(ErrorMap["USER_DOES_NOT_EXIST"]);
     }
-
+    console.log("user email is " + user.email);
     // Get mails from MongoDB
 
     // const mailsDoc = await mailsCollection.findOne({
@@ -38,14 +38,15 @@ export async function viewAllMail(email: string, userId: string) {
     // });
     // const mails = mailsDoc?.mails || [];
 
-    const mails = await mailsCollection.find().toArray() as WithId<Mail>[];
+    //const mails = await mailsCollection.find().toArray() as WithId<Mail>[];
     //const allMails: Mail[] = mails.flatMap((mails) => mails.mails);
 
     // Filter mails by receiver
     //console.log(allMails);
-    const emails = mails.filter((mail: Mail) => mail.receivers.includes(email));
-    console.log("emails are " + emails);
-
+    //const emails = mails.filter((mail: Mail) => mail.receivers.includes(email));
+    const emails = await mailsCollection.find({ receivers: email }).toArray();
+    //const plainEmails = emails.map(({ _id, ...rest }) => rest);
+    console.log("emails are " + JSON.stringify({mails: emails}, null, 2));
     return { mails: emails };
   } catch (error) {
     // Handle error
