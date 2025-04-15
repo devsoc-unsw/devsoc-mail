@@ -15,6 +15,7 @@ import { mailsCollection, sessionsCollection, usersCollection } from "../db";
 
 export async function viewAllMail(email: string, userId: string) {
   try {
+    console.log("view all mail called");
     // Convert string userId to ObjectId if needed
     //const userObjectId = new ObjectId(userId);
 
@@ -43,7 +44,7 @@ export async function viewAllMail(email: string, userId: string) {
     // Filter mails by receiver
     //console.log(allMails);
     const emails = mails.filter((mail: Mail) => mail.receivers.includes(email));
-    //console.log(emails);
+    console.log("emails are " + emails);
 
     return { mails: emails };
   } catch (error) {
@@ -123,20 +124,17 @@ export async function getEmail(session: SessionId, mailId: MailId) {
   return email;
 }
 
-async function getSender(sessionId: SessionId) {
+async function getSender(userId: UserId) {
   // Get sessions from MongoDB
 
-  // const sessionsDoc = await sessionsCollection.findOne({
-  //   _id: new ObjectId("sessions"),
-  // });
-  // const sessions = sessionsDoc?.sessions || [];
+  // const session = await sessionsCollection.findOne({ sessionId });
 
-  const sessions = await sessionsCollection.find().toArray() as WithId<Session>[];
 
   // Find session by ID
-  const session = sessions.find((s: any) => s.sessionId === sessionId);
-  const userId = session?.userId;
+  //const session = sessions.find((s: any) => s.sessionId === sessionId);
 
+  //const userId = session?.userId;
+  console.log("userId for getSender is: " + userId);
   // Get users from MongoDB
   
   // const usersDoc = await usersCollection.findOne({
@@ -145,17 +143,19 @@ async function getSender(sessionId: SessionId) {
   // const users = usersDoc?.users || [];
 
   const users = await usersCollection.find().toArray();
-
+  console.log("users collection is " + users);
   // Find user by ID
-  const addr = users.find((u: any) => u.userId === userId)?.email;
-  return addr;
+  const user = await usersCollection.findOne({ userId });
+  console.log("found user " + user);
+  //const addr = users.find((u: any) => u.userId === userId)?.email;
+  return user?.email;
 }
 
 export async function sendMail(
   receivers: Receivers,
   title: Title,
   message: Message,
-  session: SessionId
+  userId: UserId
 ) {
   console.log("Entering sendMail");
 
@@ -175,7 +175,7 @@ export async function sendMail(
   // Create mail
   const newMail: Mail = {
     mailId: mailId,
-    sender: (await getSender(session)) as string,
+    sender: (await getSender(userId)) as string,
     receivers: receivers,
     title: title,
     timeSent: new Date(),

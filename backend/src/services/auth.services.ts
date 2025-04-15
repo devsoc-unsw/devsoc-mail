@@ -147,18 +147,14 @@ export async function authLogin(email: Email, password: Password) {
   }
 
   // Add session to MongoDB
-  // const sessionDoc = await sessionsCollection.insertOne({
-  //   sessionId: 
-  //   userId: user.userId,
-  // });
 
   const session: Session = {
     sessionId: uuidv4(),
-    userId: uuidv4(),
+    userId: user.userId,
   };
 
   await sessionsCollection.insertOne(session);
-
+  console.log(session.sessionId);
   return session.sessionId;
 }
 
