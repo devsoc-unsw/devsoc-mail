@@ -109,22 +109,10 @@ export async function authRegister(
   };
 
   // Add session to MongoDB
-  // await sessionsCollection.updateOne(
-  //   {},
-  //   { $push: { sessions: session } as any },
-  //   { upsert: true }
-  // );
   await sessionsCollection.insertOne(session);
 
   // Add user to MongoDB
-  // await usersCollection.updateOne(
-  //   {},
-  //   { $push: { users: user } as any },
-  //   { upsert: true }
-  // );
-
   await usersCollection.insertOne(user);
-
   return session;
 }
 
