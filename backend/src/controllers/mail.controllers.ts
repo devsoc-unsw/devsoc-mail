@@ -23,7 +23,7 @@ async function singleMailView(req: Request, res: Response) {
     // Use userId from request object instead of session header
     const userId = req.userId;
     const mailId = parseInt(req.params.mailid as string, 10);
-    const email = mailService.getEmail(userId, mailId);
+    const email = await mailService.getEmail(userId, mailId);
     res.json(email);
   } catch (err: any) {
     res.status(400).json({ error: err.message });
@@ -35,7 +35,7 @@ async function sendMail(req: Request, res: Response) {
     const { receivers, title, message } = req.body;
     // Use userId from request object instead of session header
     const userId = req.userId;
-    const resp = mailService.sendMail(receivers, title, message, userId);
+    const resp = await mailService.sendMail(receivers, title, message, userId);
     res.json(resp);
   } catch (err: any) {
     res.status(400).json({ error: err.message });
@@ -46,7 +46,7 @@ async function deleteMail(req: Request, res: Response) {
   try {
     const mailIds = (req.query.mailIds as string[]).map((id) => Number(id));
     const userEmail = req.query.email as string;
-    const result = mailService.deleteMail(mailIds, userEmail);
+    const result = await mailService.deleteMail(mailIds, userEmail);
     res.json(result);
   } catch (err: any) {
     res.status(400).json({ error: err.message });
@@ -58,7 +58,7 @@ async function markMailAsRead(req: Request, res: Response) {
     const { mailId } = req.body;
     // Use userId from request object instead of session header
     const userId = req.userId;
-    const readMail = mailService.readMail(mailId, userId);
+    const readMail = await mailService.readMail(mailId, userId);
     res.json(readMail);
   } catch (err: any) {
     res.status(400).json({ error: err.message });
