@@ -11,21 +11,18 @@ import {
 } from "../constants/types";
 import { mailsCollection, usersCollection } from "../db";
 
+//
+// Exercise 1 - ViewAllMail (COMPLETE THIS FUNCTION)
+//
 export async function viewAllMail(email: string, userId: string) {
   
   // Get users from MongoDB
-  const user = await usersCollection.findOne({
-    userId: userId
-  });
 
   // Check if user exists
-  if (!user || user === undefined) {
-    throw new Error(ErrorMap["USER_DOES_NOT_EXIST"]);
-  }
-  // Get mails from MongoDB
-  const emails = await mailsCollection.find({ receivers: email }).toArray();
-  return { mails: emails };
 
+  // Get mails from MongoDB
+
+  //return { mails: emails };
 }
 
 function generateMailId(): MailId {
@@ -57,31 +54,31 @@ function isValidTitle(title: Title): string | boolean {
   return true;
 }
 
+//
+// Exercise 2 - getEmail (COMPLETE THIS FUNCTION)
+//
 export async function getEmail(userId: UserId, mailId: MailId) {
+
   if ((await isValidMailId(mailId)) !== true) {
     throw new Error((await isValidMailId(mailId)) as string);
   }
 
   // Get mails from MongoDB
-  const mails = await mailsCollection.find().toArray() as WithId<Mail>[];
 
   // Find mail by ID
-  const email = mails.find((m: WithId<Mail>) => m.mailId == mailId);
+
   if (!email || email === undefined) {
     throw new Error(ErrorMap["EMAIL_DOES_NOT_EXIST"]);
   }
 
   // Find user by userId
-  const user = await usersCollection.findOne({
-    userId: userId
-  });
 
   if (!user || user === undefined) {
     console.log("user not found");
     throw new Error(ErrorMap["USER_DOES_NOT_EXIST"]);
   }
   
-  return email;
+  //return email;
 }
 
 async function getSender(userId: UserId) {
@@ -90,6 +87,9 @@ async function getSender(userId: UserId) {
   return user?.email;
 }
 
+//
+// Exercise 3 - sendMail (COMPLETE THIS FUNCTION)
+//
 export async function sendMail(
   receivers: Receivers,
   title: Title,
@@ -109,19 +109,9 @@ export async function sendMail(
   // Generate mail ID
   const mailId = generateMailId();
 
-  // Create mail
-  const newMail: Mail = {
-    mailId: mailId,
-    sender: (await getSender(userId)) as string,
-    receivers: receivers,
-    title: title,
-    timeSent: new Date(),
-    message: message,
-    readBy: [],
-  };
+  // Create mail 
 
   // Add mail to MongoDB
-  await mailsCollection.insertOne(newMail);
 
   return { mailId: mailId };
 }
@@ -165,16 +155,17 @@ export async function deleteMail(mailIds: MailId[], userEmail: Email) {
   return {};
 }
 
+//
+// Exercise 4 - readMail (COMPLETE THIS FUNCTION)
+//
 export async function readMail(mailId: MailId, userId: UserId) {
   if ((await isValidMailId(mailId)) !== true) {
     throw new Error((await isValidMailId(mailId)) as string);
   }
 
   // Get mails from MongoDB
-  const mails = await mailsCollection.find().toArray() as WithId<Mail>[];
 
   // Get users from MongoDB
-  const users = await usersCollection.find().toArray();
 
   // Find mail by ID
   const mail = mails.find((m: Mail) => m.mailId == mailId) as Mail;
@@ -186,10 +177,6 @@ export async function readMail(mailId: MailId, userId: UserId) {
     mail.readBy.push(email);
 
     // Update mail in MongoDB
-    await mailsCollection.updateOne(
-      { mailId: mailId},
-      { $set: { readBy: mail.readBy } }
-    );
   }
 
   return {};
