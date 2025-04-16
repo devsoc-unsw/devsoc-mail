@@ -15,7 +15,7 @@ import { mailsCollection, sessionsCollection, usersCollection } from "../db";
 
 export async function viewAllMail(email: string, userId: string) {
   try {
-    console.log("view all mail called");
+    //console.log("view all mail called");
     // Convert string userId to ObjectId if needed
     //const userObjectId = new ObjectId(userId);
 
@@ -30,7 +30,7 @@ export async function viewAllMail(email: string, userId: string) {
     if (!user || user === undefined) {
       throw new Error(ErrorMap["USER_DOES_NOT_EXIST"]);
     }
-    console.log("user email is " + user.email);
+    //console.log("user email is " + user.email);
     // Get mails from MongoDB
 
     // const mailsDoc = await mailsCollection.findOne({
@@ -45,9 +45,9 @@ export async function viewAllMail(email: string, userId: string) {
     //console.log(allMails);
     //const emails = mails.filter((mail: Mail) => mail.receivers.includes(email));
     const emails = await mailsCollection.find({ receivers: email }).toArray();
-    const plainEmails = emails.map(({ _id, ...rest }) => rest);
-    console.log("emails are " + JSON.stringify({mails: plainEmails}, null, 2));
-    return { mails: plainEmails };
+    //const plainEmails = emails.map(({ _id, ...rest }) => rest);
+    //console.log("emails are " + JSON.stringify({mails: plainEmails}, null, 2));
+    return { mails: emails };
   } catch (error) {
     // Handle error
   }
@@ -85,7 +85,7 @@ function isValidTitle(title: Title): string | boolean {
   return true;
 }
 
-export async function getEmail(session: SessionId, mailId: MailId) {
+export async function getEmail(userId: UserId, mailId: MailId) {
   if ((await isValidMailId(mailId)) !== true) {
     throw new Error((await isValidMailId(mailId)) as string);
   }
@@ -107,21 +107,33 @@ export async function getEmail(session: SessionId, mailId: MailId) {
   // });
   // const sessions = sessionsDoc?.sessions || [];
 
-  const sessions = await sessionsCollection.find().toArray();
+  //const sessions = await sessionsCollection.find().toArray();
 
   // Find mail by ID
-  const email = mails.find((m: Mail) => m.mailId == mailId) as Mail;
+  const email = mails.find((m: WithId<Mail>) => m.mailId == mailId);
   if (!email || email === undefined) {
     throw new Error(ErrorMap["EMAIL_DOES_NOT_EXIST"]);
   }
 
   // Find user by session
-  const user = sessions.find((s: any) => s.sessionId == session)
-    ?.userId as number;
+  // const user = sessions.find((s: any) => s.sessionId == session)
+  //   ?.userId as number;
+
+  // const session = await sessionsCollection.findOne({ sessionId });
+  // const user = session?.userId;
+  
+  const user = await usersCollection.findOne({
+    userId: userId
+  });
+
   if (!user || user === undefined) {
+    console.log("user not found");
     throw new Error(ErrorMap["USER_DOES_NOT_EXIST"]);
   }
-  //console.log(email);
+  delete (email as any)._id;
+
+  console.log("email found is: " + JSON.stringify({ mail: email }, null, 2));
+  console.log("user found is: " + JSON.stringify(user, null, 2));
   return email;
 }
 
@@ -140,7 +152,7 @@ export async function sendMail(
   message: Message,
   userId: UserId
 ) {
-  console.log("Entering sendMail");
+  //console.log("Entering sendMail");
 
   // Validate receivers
   if ((await isValidReceiver(receivers)) != true) {
@@ -177,7 +189,7 @@ export async function sendMail(
 
   await mailsCollection.insertOne(newMail);
 
-  console.log("Returning from sendMail");
+  //console.log("Returning from sendMail");
   return { mailId: mailId };
 }
 
@@ -211,24 +223,24 @@ export async function deleteMail(mailIds: MailId[], userEmail: Email) {
   // const mails = mailsDoc?.mails || [];
 
   const mails = await mailsCollection.find().toArray() as WithId<Mail>[];
-  //const allMails: Mail[] = mails.flatMap((mails) => mails.mails);
+
   // Process each mail
   for (const mailId of mailIds) {
     const mail = mails.find((m: Mail) => m.mailId === mailId) as Mail;
     mail.receivers = mail.receivers.filter((r) => r != userEmail);
-    const mailIdObj = new ObjectId();
     if (mail.receivers.length == 0) {
       // Remove mail from MongoDB if no receivers left
-      await mailsCollection.updateOne(
-        { _id: mailIdObj },
-        { $pull: { mails: { mailId: mailId } } as any },
-        { upsert: true }
-      );
+      // await mailsCollection.updateOne(
+      //   { _id: mailIdObj },
+      //   { $pull: { mails: { mailId: mailId } } as any },
+      //   { upsert: true }
+      // );
+      await mailsCollection.deleteOne({mailId: mailId});
     } else {
       // Update mail in MongoDB
       await mailsCollection.updateOne(
-        { _id: mailIdObj, "mails.mailId": mailId },
-        { $set: { "mails.$.receivers": mail.receivers } }
+        {mailId: mailId },
+        { $set: { receivers: mail.receivers } }
       );
     }
   }
@@ -236,7 +248,7 @@ export async function deleteMail(mailIds: MailId[], userEmail: Email) {
   return {};
 }
 
-export async function readMail(mailId: MailId, session: SessionId) {
+export async function readMail(mailId: MailId, userId: UserId) {
   if ((await isValidMailId(mailId)) !== true) {
     throw new Error((await isValidMailId(mailId)) as string);
   }
@@ -262,14 +274,15 @@ export async function readMail(mailId: MailId, session: SessionId) {
   // });
   // const sessions = sessionsDoc?.sessions || [];
 
-  const sessions = await sessionsCollection.find().toArray();
+  //const sessions = await sessionsCollection.find().toArray();
 
   // Find mail by ID
   const mail = mails.find((m: Mail) => m.mailId == mailId) as Mail;
 
   // Find user by session
-  const userId = sessions.find((s: any) => s.sessionId == session)
-    ?.userId as number;
+  // const userId = sessions.find((s: any) => s.sessionId == session)
+  //   ?.userId as number;
+
   const email = users.find((u: any) => u.userId === userId)?.email as string;
 
   // Mark mail as read if not already
@@ -277,10 +290,9 @@ export async function readMail(mailId: MailId, session: SessionId) {
     mail.readBy.push(email);
 
     // Update mail in MongoDB
-    const mailIdObj = new ObjectId();
     await mailsCollection.updateOne(
-      { _id: mailIdObj, "mails.mailId": mailId },
-      { $set: { "mails.$.readBy": mail.readBy } }
+      { mailId: mailId},
+      { $set: { readBy: mail.readBy } }
     );
   }
 

@@ -8,10 +8,10 @@ async function viewAllMail(req: Request, res: Response) {
     const email = req.query.email;
     const userId = req.userId; // Using the extended Request type
 
-    console.log("userId: ", userId);
+    //console.log("userId: ", userId);
     // Pass userId as is - let the service handle ObjectId conversion if needed
     const mail = await mailService.viewAllMail(email as string, userId);
-    console.log("mail: ", mail);
+    //console.log("mail: ", mail);
     res.json(mail);
   } catch (err: any) {
     res.status(400).json({ error: err.message });
