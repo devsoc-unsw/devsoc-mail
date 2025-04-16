@@ -45,9 +45,9 @@ export async function viewAllMail(email: string, userId: string) {
     //console.log(allMails);
     //const emails = mails.filter((mail: Mail) => mail.receivers.includes(email));
     const emails = await mailsCollection.find({ receivers: email }).toArray();
-    //const plainEmails = emails.map(({ _id, ...rest }) => rest);
-    console.log("emails are " + JSON.stringify({mails: emails}, null, 2));
-    return { mails: emails };
+    const plainEmails = emails.map(({ _id, ...rest }) => rest);
+    console.log("emails are " + JSON.stringify({mails: plainEmails}, null, 2));
+    return { mails: plainEmails };
   } catch (error) {
     // Handle error
   }
@@ -126,25 +126,7 @@ export async function getEmail(session: SessionId, mailId: MailId) {
 }
 
 async function getSender(userId: UserId) {
-  // Get sessions from MongoDB
-
-  // const session = await sessionsCollection.findOne({ sessionId });
-
-
-  // Find session by ID
-  //const session = sessions.find((s: any) => s.sessionId === sessionId);
-
-  //const userId = session?.userId;
-  console.log("userId for getSender is: " + userId);
-  // Get users from MongoDB
-  
-  // const usersDoc = await usersCollection.findOne({
-  //   _id: new ObjectId("placeholder"),
-  // });
-  // const users = usersDoc?.users || [];
-
-  const users = await usersCollection.find().toArray();
-  console.log("users collection is " + users);
+  //const users = await usersCollection.find().toArray();
   // Find user by ID
   const user = await usersCollection.findOne({ userId });
   console.log("found user " + user);
