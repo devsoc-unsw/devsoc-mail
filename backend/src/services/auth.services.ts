@@ -105,7 +105,7 @@ export async function authRegister(
     email: email,
     password: password,
     inbox: {},
-    userId: uuidv4(),
+    userId: session.userId,
   };
 
   // Add session to MongoDB
