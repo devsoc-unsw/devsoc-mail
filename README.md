@@ -21,10 +21,10 @@ Interest in DevSoc? Find more about us through our website: https://devsoc.app/
 ## Contributors
 Training Program would be nothing without its contributors! In no particular order, a huge thanks to:
   The 2025 DevSoc Training Program Team:
-    - Lachlan Shoesmith
-    - Eve Miles
-    - Khye Jac Low
-    - Giselle Putri
-    - Alyssa Cheong
-    - Kim Lam
-    - Alfie Chen
+- Lachlan Shoesmith
+- Eve Miles
+- Khye Jac Low
+- Giselle Putri
+- Alyssa Cheong
+- Kim Lam
+- Alfie Chen
