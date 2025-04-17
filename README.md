@@ -16,7 +16,7 @@ Run the backend with the commands: ``cd backend``, ``npm i``, ``npm start``.
 ## Feedback
 Have any feedback? Feel free to open an issue or make a pull request. Have an idea for a workshop? Contact the Training Program directors on discord! You can find the public DevSoc discord server link here: https://discord.com/invite/u9p34WUTcs 
 
-Interest in DevSoc? Find more about us through our website: https://devsoc.app/
+Interested in DevSoc? Find more about us through our website: https://devsoc.app/
 
 ## Contributors
 Training Program would be nothing without its contributors! In no particular order, a huge thanks to:
