@@ -72,7 +72,7 @@ function isValidPassword(password: Password): string | boolean {
 }
 
 /**
- * Registers and logs in a new email and returns a session
+ * Registers and logs in a new email and returns a session - TO DEMO 
  */
 export async function authRegister(
   name: Name,
@@ -80,40 +80,24 @@ export async function authRegister(
   password: Password
 ): Promise<Session> {
   // Validate name
-  if (isValidName(name) !== true) {
-    throw new Error(isValidName(name) as string);
-  }
 
   // Validate email
-  if ((await isValidEmail(email, true)) !== true) {
-    throw new Error((await isValidEmail(email, true)) as string);
-  }
+
 
   // Validate password
-  if (isValidPassword(password) !== true) {
-    throw new Error(isValidPassword(password) as string);
-  }
+
   // Create session
-  const session: Session = {
-    sessionId: uuidv4(),
-    userId: uuidv4(),
-  };
+
 
   // Create user
-  const user: User = {
-    name: name,
-    email: email,
-    password: password,
-    inbox: {},
-    userId: session.userId,
-  };
+
 
   // Add session to MongoDB
-  await sessionsCollection.insertOne(session);
+
 
   // Add user to MongoDB
-  await usersCollection.insertOne(user);
-  return session;
+
+  //return session;
 }
 
 /**

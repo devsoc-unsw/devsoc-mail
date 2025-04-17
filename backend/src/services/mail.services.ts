@@ -12,7 +12,7 @@ import {
 import { mailsCollection, usersCollection } from "../db";
 
 //
-// Exercise 1 - ViewAllMail (COMPLETE THIS FUNCTION)
+// DEMO (MAKE SURE TO FOLLOW ALONG)
 //
 export async function viewAllMail(email: string, userId: string) {
   
@@ -55,7 +55,7 @@ function isValidTitle(title: Title): string | boolean {
 }
 
 //
-// Exercise 2 - getEmail (COMPLETE THIS FUNCTION)
+// Exercise 1 - getEmail (COMPLETE THIS FUNCTION)
 //
 export async function getEmail(userId: UserId, mailId: MailId) {
 
@@ -88,7 +88,7 @@ async function getSender(userId: UserId) {
 }
 
 //
-// Exercise 3 - sendMail (COMPLETE THIS FUNCTION)
+// Exercise 2 - sendMail (COMPLETE THIS FUNCTION)
 //
 export async function sendMail(
   receivers: Receivers,
@@ -156,7 +156,7 @@ export async function deleteMail(mailIds: MailId[], userEmail: Email) {
 }
 
 //
-// Exercise 4 - readMail (COMPLETE THIS FUNCTION)
+// Exercise 3 - readMail (COMPLETE THIS FUNCTION)
 //
 export async function readMail(mailId: MailId, userId: UserId) {
   if ((await isValidMailId(mailId)) !== true) {
