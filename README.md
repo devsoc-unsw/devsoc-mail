@@ -6,6 +6,11 @@ Additional information on the workshop can be found in the book: https://devsoc-
 
 Made for uni students, by uni students.
 
+## Stack
+Frontend: React, Typescript, TailwindCSS and Axios. 
+
+Backend: Express, Typescript, MongoDB and Jest. 
+
 ## Running the code
 Please note that currently, the backend will not work because we do not supply a .env file that contains a MongoDB connection string. You will need to setup a MongoDB database and connect it yourself.
 
