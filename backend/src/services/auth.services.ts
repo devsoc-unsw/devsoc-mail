@@ -8,17 +8,9 @@ import {
   User,
   SessionId,
 } from "../constants/types";
-import {
-  generateSessionId,
-  getData,
-  getSessions,
-  setData,
-  setSessions,
-} from "../dataStore";
-
-function generateUserId(): UserId {
-  return Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
-}
+import { v4 as uuidv4 } from "uuid";
+import { sessionsCollection, usersCollection } from "../db";
+import { ObjectId } from "mongodb";
 
 function isValidName(name: Name): string | boolean {
   if (name.length > 100) {
@@ -32,7 +24,10 @@ function isValidName(name: Name): string | boolean {
   return true;
 }
 
-function isValidEmail(email: Email, isRegister?: boolean): string | boolean {
+async function isValidEmail(
+  email: Email,
+  isRegister?: boolean
+): Promise<string | boolean> {
   if (email.length > 50) {
     return ErrorMap["EMAIL_TOO_LONG"];
   }
@@ -41,8 +36,11 @@ function isValidEmail(email: Email, isRegister?: boolean): string | boolean {
     return ErrorMap["EMAIL_TOO_SHORT"];
   }
 
-  const users = getData().users;
-  if (users.find(u => u.email === email) && isRegister) {
+  // Get users directly from MongoDB
+  const usersDoc = await usersCollection.findOne({});
+  const users = usersDoc?.users || [];
+
+  if (users.find((u: User) => u.email === email) && isRegister) {
     return ErrorMap["EMAIL_ALREADY_EXISTS"];
   }
 
@@ -75,108 +73,85 @@ function isValidPassword(password: Password): string | boolean {
 
 /**
  * Registers and logs in a new email and returns a session
- * @param name
- * @param email
- * @param password
  */
-export function authRegister(
+export async function authRegister(
   name: Name,
   email: Email,
   password: Password
-): Session {
-  // name is greater than 100 or less than 1 characters
+): Promise<Session> {
+  // Validate name
   if (isValidName(name) !== true) {
     throw new Error(isValidName(name) as string);
   }
 
-  // name is greater than 100 or less than 1 characters
-  if (isValidEmail(email, true) !== true) {
-    throw new Error(isValidEmail(email) as string);
+  // Validate email
+  if ((await isValidEmail(email, true)) !== true) {
+    throw new Error((await isValidEmail(email, true)) as string);
   }
 
-  // password should have 1 uppercase, 1 lowercase, and 1 number
+  // Validate password
   if (isValidPassword(password) !== true) {
     throw new Error(isValidPassword(password) as string);
   }
-
-  const userId = generateUserId();
-
-  const sessions: Session[] = getSessions();
+  // Create session
   const session: Session = {
-    sessionId: generateSessionId(),
-    userId: userId,
+    sessionId: uuidv4(),
+    userId: uuidv4(),
   };
-  sessions.push(session);
-  setSessions(sessions);
 
-  const database = getData();
+  // Create user
   const user: User = {
     name: name,
     email: email,
     password: password,
     inbox: {},
-    userId: userId
+    userId: session.userId,
   };
-  database.users.push(user);
-  setData(database);
 
+  // Add session to MongoDB
+  await sessionsCollection.insertOne(session);
+
+  // Add user to MongoDB
+  await usersCollection.insertOne(user);
   return session;
 }
 
 /**
  * Logs in an existing user and returns a session
- * Workshop 5 Exercise 1
- *
- * Errors to handle:
- * 400 Email does not have the suffix @devsoc.mail
- * 400 Email does not exist
- * 400 Password is incorrect
- *
- * Otherwise, return a session + store the session into sessionStore
- *
- * HINT: see function authRegister
- *
- * @param email
- * @param password
  */
-export function authLogin(email: Email, password: Password) {
-  const store = getData();
+export async function authLogin(email: Email, password: Password) {
+  // Get user from MongoDB
+  const user = await usersCollection.findOne({
+    email: email,
+    password: password,
+  });
 
-  // if email does not have suffix
-  if (isValidEmail(email) !== true) {
-    throw new Error(isValidEmail(email) as string);
+  // Check if user exists
+  if (!user) {
+    console.log("should error here");
+    throw new Error(
+      `${ErrorMap["EMAIL_DOES_NOT_EXIST"]} or ${ErrorMap["PASSWORD_INCORRECT"]}`
+    );
   }
 
-  // find the user from the email
-  const user = store.users.find((user) => user.email === email);
+  // Add session to MongoDB
 
-  // if email does not exist
-  if (!user || user === undefined) {
-    throw new Error(ErrorMap["EMAIL_DOES_NOT_EXIST"]);
-  }
-
-  // if password is incorrect
-  if (user.password !== password) {
-    throw new Error(ErrorMap["PASSWORD_INCORRECT"]);
-  }
-
-  const sessions: Session[] = getSessions();
-  const sessionId = generateSessionId();
   const session: Session = {
-    sessionId: sessionId,
+    sessionId: uuidv4(),
     userId: user.userId,
   };
-  sessions.push(session);
-  setSessions(sessions);
 
-  return { sessionId: sessionId };
+  await sessionsCollection.insertOne(session);
+  console.log(session.sessionId);
+  return session.sessionId;
 }
 
-export function authLogout(sessionId: SessionId) {
-  const store = getSessions();
-  const sessions = store.filter((session) => session.sessionId !== sessionId);
-
-  setSessions(sessions);
+export async function authLogout(sessionId: SessionId) {
+  console.log("sessionId: ", sessionId);
+  // Remove session from MongoDB
+  await sessionsCollection.deleteOne({
+    sessionId: sessionId,
+  });
 
   return {};
 }

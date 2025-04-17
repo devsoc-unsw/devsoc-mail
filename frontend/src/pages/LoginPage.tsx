@@ -3,31 +3,29 @@ import { Input } from "../components/Input";
 import { AuthButton } from "../components/AuthButton";
 import { Link, useNavigate } from "react-router-dom";
 import { FormEvent, useEffect, useState } from "react";
-import { PORT } from "../../../backend/config.json"
+import { PORT } from "../../../backend/config.json";
 import axios from "axios";
 
 const LoginPage = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
-    const session = localStorage.getItem('sessionId');
-    if (session != null) {
-      alert('User is already logged in.');
+    const sessionId = localStorage.getItem("sessionId");
+    if (sessionId !== undefined && sessionId !== null) {
+      alert("User is already logged in.");
       navigate("/mail");
     }
   }, []);
 
-  const handleLogin = async(event: FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      const sessionId = localStorage.getItem("sessionId");
-      const response = await axios.post(
-        `http://localhost:${PORT}/auth/login`,
-        { email: email, password: password },
-        { headers: { session: sessionId } }
-      );
+      const response = await axios.post(`http://localhost:${PORT}/auth/login`, {
+        email: email,
+        password: password,
+      });
 
       const data = {
         email,
@@ -36,12 +34,12 @@ const LoginPage = () => {
       const dataString = JSON.stringify(data);
       localStorage.setItem("userData", dataString);
 
-      localStorage.setItem("sessionId", response.data.sessionId);
-      navigate('/mail');
-    } catch(err) {
+      localStorage.setItem("sessionId", response.data);
+      navigate("/mail");
+    } catch (err) {
       console.error(err);
     }
-  }
+  };
 
   return (
     <div className="max-w-3xl mx-auto flex flex-col items-center min-h-screen p-4 bg-white">

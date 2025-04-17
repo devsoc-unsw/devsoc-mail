@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, MouseEvent, useEffect } from "react";
 import { Button } from "../components/Button";
 import { PORT } from "../../../backend/config.json";
-import { Mail } from "../../../shared/constants/types";
+import { Mail } from "../../../backend/src/constants/types";
 import axios from "axios";
 
 const MailPage = () => {
@@ -16,64 +16,58 @@ const MailPage = () => {
   const [emails, setEmails] = useState<Mail[]>([]);
   const [currEmail, setCurrEmail] = useState("");
 
-  const handleDelete = async() => {
+  const handleDelete = async () => {
     try {
       const email = currEmail;
-      await axios.delete(
-        `http://localhost:${PORT}/mail/delete`,
-        { 
-          params: { mailIds: selectedEmails, email: email },
-          headers: {
-          "session": localStorage.getItem("sessionId") // Add the session ID to the request headers
-          }
-        }
-      );
+      await axios.delete(`http://localhost:${PORT}/mail/delete`, {
+        params: { mailIds: selectedEmails, email: email },
+        headers: {
+          session: localStorage.getItem("sessionId"), // Add the session ID to the request headers
+        },
+      });
       loadAllMails();
-    } catch(err) {
+    } catch (err) {
       console.error(err);
     }
-  }
+  };
 
-  const handleLogout = async(event: MouseEvent<HTMLElement>) => {
+  const handleLogout = async (event: MouseEvent<HTMLElement>) => {
     event.preventDefault();
     try {
-      await axios.delete(
-        `http://localhost:${PORT}/auth/logout`,
-        { headers: {
-          "session": localStorage.getItem("sessionId") // Add the session ID to the request headers
-          }
-        }
-      );
+      await axios.delete(`http://localhost:${PORT}/auth/logout`, {
+        headers: {
+          session: localStorage.getItem("sessionId"), // Add the session ID to the request headers
+        },
+      });
       localStorage.removeItem("sessionId");
       localStorage.removeItem("userData");
-      navigate('/');
-    } catch(err) {
+      navigate("/");
+    } catch (err) {
       console.error(err);
     }
-  }
+  };
 
-  const loadAllMails = async() => {
+  const loadAllMails = async () => {
     try {
-      const email = JSON.parse(localStorage.getItem("userData") as string).email;
-      const res = await axios.get(
-        `http://localhost:${PORT}/mail/view`,
-        { 
-          params: { email },
-          headers: {
-          "session": localStorage.getItem("sessionId") // Add the session ID to the request headers
-          }
-        }
-      );
+      const email = JSON.parse(
+        localStorage.getItem("userData") as string
+      ).email;
+      const res = await axios.get(`http://localhost:${PORT}/mail/view`, {
+        params: { email },
+        headers: {
+          session: localStorage.getItem("sessionId"), // Add the session ID to the request headers
+        },
+      });
       setEmails(res.data.mails);
-    } catch(err) {
+    } catch (err) {
       console.error(err);
     }
-  }
+  };
 
   useEffect(() => {
     if (!localStorage.getItem("sessionId")) {
       alert("Session is invalid. Please log in again.");
-      navigate('/');
+      navigate("/");
     }
 
     loadAllMails();
@@ -108,7 +102,7 @@ const MailPage = () => {
           <ComposeButton className="bg-[#5DAB61] border-2 border-black p-2 rounded" />
         </div>
         <div className="flex flex-col gap-4">
-          {emails.map((email) => (
+          {emails?.map((email) => (
             <Email
               id={email.mailId}
               subject={email.title}

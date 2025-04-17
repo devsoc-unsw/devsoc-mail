@@ -1,32 +1,52 @@
+import { WithId } from "mongodb";
 import { ErrorMap } from "../constants/errors";
-import { UserId, SessionId, MailId, Receivers, Title, Message, Mail, Email } from "../constants/types";
-import { getData, getSessions, setData } from "../dataStore";
+import {
+  UserId,
+  MailId,
+  Receivers,
+  Title,
+  Message,
+  Mail,
+  Email,
+} from "../constants/types";
+import { mailsCollection, usersCollection } from "../db";
 
-export function viewAllMail(email: Email) {
-  const store = getData();
+export async function viewAllMail(email: string, userId: string) {
+  
+  // Get users from MongoDB
+  const user = await usersCollection.findOne({
+    userId: userId
+  });
 
-  const user = store.users.find((user) => user.email === email);
+  // Check if user exists
   if (!user || user === undefined) {
     throw new Error(ErrorMap["USER_DOES_NOT_EXIST"]);
   }
-
-  const emails = store.mails.filter((mail) =>
-    mail.receivers.includes(email)
-  );
+  // Get mails from MongoDB
+  const emails = await mailsCollection.find({ receivers: email }).toArray();
   return { mails: emails };
+
 }
 
 function generateMailId(): MailId {
-  return Math.floor(Date.now() * Math.random() * (999999 - 100000 + 1)) + 100000;
+  return (
+    Math.floor(Date.now() * Math.random() * (999999 - 100000 + 1)) + 100000
+  );
 }
 
-function isValidReceiver(receivers: Receivers): string | boolean {
-  const users = getData().users;
+async function isValidReceiver(
+  receivers: Receivers
+): Promise<string | boolean> {
+
+  // Get users from MongoDB
+  const users = await usersCollection.find().toArray();
+
   for (const receiver of receivers) {
-    if (!users.find(u => u.email === receiver)) {
+    if (!users.find((u: any) => u.email === receiver)) {
       return ErrorMap["RECEIVER_MISSING"];
     }
   }
+  
   return true;
 }
 
@@ -37,121 +57,140 @@ function isValidTitle(title: Title): string | boolean {
   return true;
 }
 
-
-
-export function getEmail(session: SessionId, mailId: MailId) {
-  if (isValidMailId(mailId) !== true) {
-    throw new Error(isValidMailId(mailId) as string);
+export async function getEmail(userId: UserId, mailId: MailId) {
+  if ((await isValidMailId(mailId)) !== true) {
+    throw new Error((await isValidMailId(mailId)) as string);
   }
 
-  const data = getData();
-  const mails = data.mails;
-  const sessions = getSessions();
+  // Get mails from MongoDB
+  const mails = await mailsCollection.find().toArray() as WithId<Mail>[];
 
-  const email = mails.find(m => m.mailId == mailId) as Mail;
+  // Find mail by ID
+  const email = mails.find((m: WithId<Mail>) => m.mailId == mailId);
   if (!email || email === undefined) {
     throw new Error(ErrorMap["EMAIL_DOES_NOT_EXIST"]);
   }
 
+  // Find user by userId
+  const user = await usersCollection.findOne({
+    userId: userId
+  });
 
-  const user = sessions.find(s => s.sessionId == session)?.userId as number;
   if (!user || user === undefined) {
+    console.log("user not found");
     throw new Error(ErrorMap["USER_DOES_NOT_EXIST"]);
   }
-
+  
   return email;
-
-
 }
 
-function getSender(sessionId: SessionId) {
-  const sessions = getSessions();
-  const session = sessions.find(s => s.sessionId === sessionId);
-  const userId = session?.userId;
-  const users = getData().users;
-  const addr = users.find(u => u.userId === userId)?.email;
-  return addr;
+async function getSender(userId: UserId) {
+  // Find user by ID
+  const user = await usersCollection.findOne({ userId });
+  return user?.email;
 }
 
-export function sendMail(receivers: Receivers, title: Title, message: Message, session: SessionId) {
-  console.log("Entering sendMail");
-  // one or more receivers do not exist
-  if (isValidReceiver(receivers) != true) {
-    throw new Error(isValidReceiver(receivers) as string);
+export async function sendMail(
+  receivers: Receivers,
+  title: Title,
+  message: Message,
+  userId: UserId
+) {
+  // Validate receivers
+  if ((await isValidReceiver(receivers)) != true) {
+    throw new Error((await isValidReceiver(receivers)) as string);
   }
 
-  // title is greater thqn 50 characters
+  // Validate title
   if (isValidTitle(title) != true) {
     throw new Error(isValidTitle(title) as string);
   }
 
+  // Generate mail ID
   const mailId = generateMailId();
+
+  // Create mail
   const newMail: Mail = {
     mailId: mailId,
-    sender: getSender(session) as string,
+    sender: (await getSender(userId)) as string,
     receivers: receivers,
     title: title,
     timeSent: new Date(),
     message: message,
-    readBy: []
-  }
-  const dataStore = getData();
-  dataStore.mails.push(newMail);
-  setData(dataStore);
-  
-  console.log("Returning from sendMail");
+    readBy: [],
+  };
+
+  // Add mail to MongoDB
+  await mailsCollection.insertOne(newMail);
+
   return { mailId: mailId };
 }
 
-function isValidMailId(mailId: MailId): string | boolean {
-  const mails = getData().mails;
-  if (!mails.find(m => m.mailId === mailId)) {
+async function isValidMailId(mailId: MailId): Promise<string | boolean> {
+  // Get mails from MongoDB
+  const mails = await mailsCollection.find().toArray() as WithId<Mail>[];
+  
+  if (!mails.find((m: Mail) => m.mailId === mailId)) {
     return ErrorMap["MAIL_MISSING"];
   }
   return true;
 }
 
-export function deleteMail(mailIds: MailId[], userEmail: Email) {
+export async function deleteMail(mailIds: MailId[], userEmail: Email) {
   for (const mailId of mailIds) {
-    if (isValidMailId(mailId) !== true) {
-      throw new Error(isValidMailId(mailId) as string);
+    if ((await isValidMailId(mailId)) !== true) {
+      throw new Error((await isValidMailId(mailId)) as string);
     }
   }
 
-  const dataStore = getData();
-  const mails = dataStore.mails;
-  for (const mailId of mailIds) {
-    const mail = mails.find(m => m.mailId === mailId) as Mail;
-    mail.receivers = mail.receivers.filter(r => r != userEmail);
+  // Get mails from MongoDB
+  const mails = await mailsCollection.find().toArray() as WithId<Mail>[];
 
+  // Process each mail
+  for (const mailId of mailIds) {
+    const mail = mails.find((m: Mail) => m.mailId === mailId) as Mail;
+    mail.receivers = mail.receivers.filter((r) => r != userEmail);
     if (mail.receivers.length == 0) {
-      const index = mails.findIndex(m => m.mailId === mailId);
-      dataStore.mails.splice(index, 1);
+      // Remove mail from MongoDB if no receivers left
+      await mailsCollection.deleteOne({mailId: mailId});
+    } else {
+      // Update mail in MongoDB
+      await mailsCollection.updateOne(
+        {mailId: mailId },
+        { $set: { receivers: mail.receivers } }
+      );
     }
   }
-  setData(dataStore);
+
   return {};
 }
 
-export function readMail(mailId: MailId, session: SessionId) {
-  if (isValidMailId(mailId) !== true) {
-    throw new Error(isValidMailId(mailId) as string);
+export async function readMail(mailId: MailId, userId: UserId) {
+  if ((await isValidMailId(mailId)) !== true) {
+    throw new Error((await isValidMailId(mailId)) as string);
   }
 
-  const data = getData();
-  const mails = data.mails;
-  const users = data.users;
-  const sessions = getSessions();
+  // Get mails from MongoDB
+  const mails = await mailsCollection.find().toArray() as WithId<Mail>[];
 
-  // assume sessions are handled correctly by middleware
-  const mail = mails.find(m => m.mailId == mailId) as Mail;
-  const userId = sessions.find(s => s.sessionId == session)?.userId as number;
-  const email = users.find(u => u.userId === userId)?.email as string;
+  // Get users from MongoDB
+  const users = await usersCollection.find().toArray();
 
+  // Find mail by ID
+  const mail = mails.find((m: Mail) => m.mailId == mailId) as Mail;
+
+  const email = users.find((u: any) => u.userId === userId)?.email as string;
+
+  // Mark mail as read if not already
   if (!mail.readBy.includes(email)) {
     mail.readBy.push(email);
+
+    // Update mail in MongoDB
+    await mailsCollection.updateOne(
+      { mailId: mailId},
+      { $set: { readBy: mail.readBy } }
+    );
   }
 
-  setData(data);
   return {};
 }
