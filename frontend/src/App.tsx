@@ -13,9 +13,8 @@ function App() {
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/mail" element={<MailPage />}>
-          <Route path=":id" element={<ViewPage />} />
-        </Route>
+        <Route path="/mail" element={<MailPage />} />
+        <Route path="/view/:id" element={<ViewPage />} />
       </Routes>
     </>
   );

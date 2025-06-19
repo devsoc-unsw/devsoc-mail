@@ -3,7 +3,8 @@ import styles from "./MailPage.module.css";
 import { Composebutton } from "../../components/ComposeButton";
 import { IconButton } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
-import {Email} from "../../components/Email/Email";
+import { Email } from "../../components/Email/Email";
+import { useNavigate } from "react-router-dom";
 
 /**
  * Workshop 2: Routes exercise
@@ -19,10 +20,12 @@ import {Email} from "../../components/Email/Email";
  */
 
 const MailPage = () => {
+  const navigate = useNavigate();
+
   return (
     <>
       <IconButton
-      // Step 6: Add logic to make this button navigate to logout screen.
+        onClick={() => navigate("/")}
       >
         <LogoutIcon></LogoutIcon>
       </IconButton>
@@ -39,7 +42,7 @@ const MailPage = () => {
         from="alyssa@devsoc.mail"
         to={["alyssa@devsoc.mail"]}
         body="This is a test email"
-        page="/view"
+        page="/view/1"
       />
       <img src={Logo} className={styles.devsocLogo}></img>
     </>
