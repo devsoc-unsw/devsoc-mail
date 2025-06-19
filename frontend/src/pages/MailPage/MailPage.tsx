@@ -32,9 +32,8 @@ const MailPage = () => {
 
       <button>Delete All</button>
       <Composebutton />
-
-      {/* Step 5: Add an email here!!! */}
-
+       
+       {/* Step 5: Add an email here!!! */}
       <Email
         id={1}
         subject="Hello"
@@ -44,6 +43,7 @@ const MailPage = () => {
         body="This is a test email"
         page="/view/1"
       />
+      
       <img src={Logo} className={styles.devsocLogo}></img>
     </>
   );
