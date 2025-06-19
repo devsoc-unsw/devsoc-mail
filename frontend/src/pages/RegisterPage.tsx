@@ -12,7 +12,7 @@ const RegisterPage = () => {
         <Input text="Email" />
         <Input text="Password" />
         <Input text="Confirm password" />
-        <AuthButton to="/mail">Register</AuthButton>
+        <AuthButton to="/mail" text="login" />
         <p>
           Already got an account? <Link to="/">Log in</Link>
         </p>
