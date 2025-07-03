@@ -14,8 +14,22 @@ const LoginPage = () => {
   //     alert("User is already logged in.");
   //   }
   // }, []);
-  
-  return <div>nothing is here...</div>;
+
+  return (
+    <main>
+      <form>
+        <img src={Logo} />
+        <h2>Login</h2>
+        <Input placeholder="Email" setter={setEmail} />
+        <Input placeholder="Password" setter={setPassword} />
+        <a>Forgot password?</a>
+        <AuthButton to="/mail" text="Login" />
+        <p>
+          Don't have an account? <span>Register</span>
+        </p>
+      </form>
+    </main>
+  );
 };
 
 export { LoginPage };
