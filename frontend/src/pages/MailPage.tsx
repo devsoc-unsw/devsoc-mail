@@ -1,45 +1,41 @@
-import Logo from "../assets/Logo.png";
-import { Input } from "../components/Input";
-import { Email } from "../components/Email";
-import { ComposeButton } from "../components/ComposeButton";
-import { useNavigate } from "react-router-dom";
-import { useState, MouseEvent, useEffect } from "react";
-import { Button } from "../components/Button";
-import { PORT } from "../../../backend/config.json";
-import { Mail } from "../../../shared/constants/types";
-import axios from "axios";
+import Logo from '../assets/Logo.png';
+import { Input } from '../components/Input';
+import { Email } from '../components/Email';
+import { ComposeButton } from '../components/ComposeButton';
+import { useNavigate, Outlet } from 'react-router-dom';
+import { useState, MouseEvent, useEffect } from 'react';
+import { Button } from '../components/Button';
+import { PORT } from '../../../backend/config.json';
+import { Mail } from '../../../shared/constants/types';
+import axios from 'axios';
 
 const MailPage = () => {
   const navigate = useNavigate();
   const [selectedEmails, setSelectedEmails] = useState<number[]>([]);
-  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [searchTerm, setSearchTerm] = useState<string>('');
   const [emails, setEmails] = useState<Mail[]>([]);
-  const [currEmail, setCurrEmail] = useState("");
-  
-  // DEMO
-  const handleLogout = async(event: MouseEvent<HTMLElement>) => {
-    event.preventDefault();
+  const [currEmail, setCurrEmail] = useState('');
 
-  }
-  
+  // DEMO
+  const handleLogout = async (event: MouseEvent<HTMLElement>) => {
+    event.preventDefault();
+  };
+
   // EXAMPLE
-  const handleDelete = async() => {
+  const handleDelete = async () => {
     try {
       const email = currEmail;
-      await axios.delete(
-        `http://localhost:${PORT}/mail/delete`,
-        { 
-          params: { mailIds: selectedEmails, email: email },
-          headers: {
-          "session": localStorage.getItem("sessionId") // Add the session ID to the request headers
-          }
-        }
-      );
+      await axios.delete(`http://localhost:${PORT}/mail/delete`, {
+        params: { mailIds: selectedEmails, email: email },
+        headers: {
+          session: localStorage.getItem('sessionId'), // Add the session ID to the request headers
+        },
+      });
       loadAllMails();
-    } catch(err) {
+    } catch (err) {
       console.error(err);
     }
-  }
+  };
 
   /**
    * Route: /mail/view
@@ -50,19 +46,16 @@ const MailPage = () => {
       }
    * 
    */
-  const loadAllMails = async() => {
-    
-  }
-
+  const loadAllMails = async () => {};
 
   useEffect(() => {
-    if (!localStorage.getItem("sessionId")) {
-      alert("Session is invalid. Please log in again.");
+    if (!localStorage.getItem('sessionId')) {
+      alert('Session is invalid. Please log in again.');
       navigate('/');
     }
 
     loadAllMails();
-    setCurrEmail(JSON.parse(localStorage.getItem("userData") as string).email);
+    setCurrEmail(JSON.parse(localStorage.getItem('userData') as string).email);
   }, []);
 
   return (
@@ -109,6 +102,8 @@ const MailPage = () => {
           ))}
         </div>
       </div>
+
+      <Outlet />
     </main>
   );
 };
