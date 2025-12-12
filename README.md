@@ -28,9 +28,13 @@ Training Program would be nothing without its contributors! In no particular ord
   
 The 2025 DevSoc Training Program Team:
 - Lachlan Shoesmith
-- Eve Miles
+- Ray Miles
 - Khye Jac Low
 - Giselle Putri
 - Alyssa Cheong
 - Kim Lam
 - Alfie Chen
+- Christopher Casolin
+- Aryaman Sakthivel
+- Danny Zhang
+- Jenny Liu
