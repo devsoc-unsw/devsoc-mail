@@ -28,8 +28,11 @@
     "dotenv": "^16.6.1",
     "express": "^4.22.1",
     "mongodb": "^6.21.0",
-    "sync-request-curl": "^3.3.3",
+    "sync-request-curl": "^3.0.0",
     "ts-node": "^10.9.2",
     "uuid": "^11.1.0"
+  },
+  "overrides": {
+    "tar": "^7.5.8"
   }
 }

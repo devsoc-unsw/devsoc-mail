@@ -1,6 +1,5 @@
 import { MongoClient, Collection, Db, ObjectId } from "mongodb";
 import * as dotenv from "dotenv";
-import { v4 as uuidv4 } from "uuid";
 
 let client: MongoClient;
 let db: Db;

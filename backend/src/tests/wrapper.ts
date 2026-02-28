@@ -1,7 +1,7 @@
 import request, { HttpVerb } from 'sync-request-curl';
 import { PORT } from "../../config.json"
 import { DataStore, Email, MailIds, Message, Name, Password, Receivers, SessionId, SessionStore, Title } from '../constants/types';
-import { setData, setSessions } from '../dataStore';
+// import { setData, setSessions } from '../dataStore';
 
 interface RequestOptions {
   method: HttpVerb;

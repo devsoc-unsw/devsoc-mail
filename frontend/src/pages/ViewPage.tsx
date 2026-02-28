@@ -35,7 +35,7 @@ const ViewPage = () => {
       <div className="flex justify-between items-center mb-6">
         <img src={Logo} alt="DevSoc Mail Logo" className="h-12" />
         <button
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/mail")}
           className="bg-[#D9807E] text-white px-4 py-2 rounded-lg border-2 border-black hover:bg-[#c57471] transition-colors"
         >
           Exit
