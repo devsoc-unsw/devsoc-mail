@@ -3,6 +3,7 @@ import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
 import { MailPage } from "./pages/MailPage";
 import { ViewPage } from "./pages/ViewPage";
+import { MailPageGrid } from "./pages/MailPageGridView"
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/mail" element={<MailPage />} />
         <Route path="/view" element={<ViewPage />} />
+        <Route path="/mailgrid" element={<MailPageGrid/>} />
       </Routes>
     </>
   );
