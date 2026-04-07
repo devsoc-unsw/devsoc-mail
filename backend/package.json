@@ -22,6 +22,7 @@
     "typescript-eslint": "^8.18.2"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.102.0",
     "@types/express": "^5.0.0",
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",
