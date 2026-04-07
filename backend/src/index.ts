@@ -6,7 +6,8 @@ import otherRoutes from "./routes/other.routes";
 import { PORT } from "../config.json";
 import { errorMiddleware } from "./middleware";
 import cors from "cors";
-import { connectToDatabase, closeDatabaseConnection } from "./db";
+import { connectToDatabase, closeDatabaseConnection } from "./lib/mongo";
+import { connectToSupabase } from "./lib/supabase";
 
 dotenv.config();
 
@@ -18,7 +19,7 @@ async function startServer() {
   try {
     // Connect to MongoDB
     await connectToDatabase();
-
+    await connectToSupabase();
     app.listen(port, () => {
       console.log(`Devsoc-mail server is running at http://localhost:${port}`);
     });

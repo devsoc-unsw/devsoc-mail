@@ -9,7 +9,7 @@ import {
   SessionId,
 } from "../constants/types";
 import { v4 as uuidv4 } from "uuid";
-import { sessionsCollection, usersCollection } from "../db";
+import { sessionsCollection, usersCollection } from "../lib/mongo";
 import { ObjectId } from "mongodb";
 
 function isValidName(name: Name): string | boolean {

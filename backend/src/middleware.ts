@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { ErrorMap, StatusCodeMap } from "./constants/errors";
 import { Session } from "./constants/types";
-import { sessionsCollection } from "./db";
+import { sessionsCollection } from "./lib/mongo";
 
 // Session check middleware
 async function sessionMiddleware(

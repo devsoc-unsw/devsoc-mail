@@ -9,7 +9,7 @@ import {
   Mail,
   Email,
 } from "../constants/types";
-import { mailsCollection, usersCollection } from "../db";
+import { mailsCollection, usersCollection } from "../lib/mongo";
 
 export async function viewAllMail(email: string, userId: string) {
   
