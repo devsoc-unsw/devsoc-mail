@@ -11,6 +11,7 @@ import {
 import { v4 as uuidv4 } from "uuid";
 import { sessionsCollection, usersCollection } from "../lib/mongo";
 import { ObjectId } from "mongodb";
+import { getSupabaseClient } from "../lib/supabase";
 
 function isValidName(name: Name): string | boolean {
   if (name.length > 100) {
@@ -155,3 +156,58 @@ export async function authLogout(sessionId: SessionId) {
 
   return {};
 }
+
+// AUTH FUNCTIONS USING SUPABASE CLIENT
+// NOTE THAT SESSIONS WILL FAIL UNDER THE SUPABASE LOGIN
+// MIDDLEWARE.TS IS CURRENTLY Checking through the MongoDB collection
+
+// export async function authRegister(name: Name, email: Email, password: Password): Promise<Session> {
+//   if (isValidName(name) !== true) throw new Error(isValidName(name) as string);
+//   if ((await isValidEmail(email, true)) !== true) throw new Error((await isValidEmail(email, true)) as string);
+//   if (isValidPassword(password) !== true) throw new Error(isValidPassword(password) as string);
+
+//   const userId = uuidv4();
+//   const sessionId = uuidv4();
+
+//   const { error: userError } = await getSupabaseClient()
+//     .from("users")
+//     .insert({ user_id: userId, name, email, password });
+//   if (userError) throw new Error(userError.message);
+
+//   const { error: sessionError } = await getSupabaseClient()
+//     .from("sessions")
+//     .insert({ session_id: sessionId, user_id: userId });
+//   if (sessionError) throw new Error(sessionError.message);
+
+//   return { sessionId, userId };
+// }
+
+// export async function authLogin(email: Email, password: Password) {
+//   const { data: user, error } = await getSupabaseClient()
+//     .from("users")
+//     .select("user_id")
+//     .eq("email", email)
+//     .eq("password", password)
+//     .single();
+
+//   if (error || !user) {
+//     throw new Error(`${ErrorMap["EMAIL_DOES_NOT_EXIST"]} or ${ErrorMap["PASSWORD_INCORRECT"]}`);
+//   }
+
+//   const sessionId = uuidv4();
+//   const { error: sessionError } = await getSupabaseClient()
+//     .from("sessions")
+//     .insert({ session_id: sessionId, user_id: user.user_id });
+//   if (sessionError) throw new Error(sessionError.message);
+
+//   return sessionId;
+// }
+
+// export async function authLogout(sessionId: SessionId) {
+//   const { error } = await getSupabaseClient()
+//     .from("sessions")
+//     .delete()
+//     .eq("session_id", sessionId);
+//   if (error) throw new Error(error.message);
+//   return {};
+// }
