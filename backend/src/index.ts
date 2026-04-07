@@ -19,7 +19,8 @@ async function startServer() {
   try {
     // Connect to MongoDB
     await connectToDatabase();
-    await connectToSupabase();
+    // Uncomment to connect to Supabase
+    // await connectToSupabase();
     app.listen(port, () => {
       console.log(`Devsoc-mail server is running at http://localhost:${port}`);
     });
