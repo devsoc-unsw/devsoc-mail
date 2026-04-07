@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import * as authService from "../services/auth.services";
+// Supabase Service
+// import * as authService from "../services2/auth.services";
 
 async function register(req: Request, res: Response) {
   try {

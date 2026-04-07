@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import * as mailService from "../services/mail.services";
+// Supabase Service
+// import * as mailService from "../services2/mail.services";
 import { MailId, Session } from "../constants/types";
 
 async function viewAllMail(req: Request, res: Response) {
