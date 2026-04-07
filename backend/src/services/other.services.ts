@@ -1,4 +1,4 @@
-import { sessionsCollection, usersCollection, mailsCollection } from "../db";
+import { sessionsCollection, usersCollection, mailsCollection } from "../lib/mongo";
 import { ObjectId } from "mongodb";
 
 // doesn't work but I think you shouldn't be able to clear from a route design wise anyways lol
